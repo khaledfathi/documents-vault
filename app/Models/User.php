@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'group_id',
     ];
 
     /**
@@ -44,5 +45,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function phones(){
+        $this->hasMany(Phone::class , 'user_id');
+    }
+    public function settings (){
+        $this->hasMany(Setting::class , 'user_id');
+    }
+    public function group (){
+        $this->belongsTo(Group::class , 'group_id');
+    }
+    public function documents(){
+        $this->hasMany(Document::class , 'document_id');
     }
 }
