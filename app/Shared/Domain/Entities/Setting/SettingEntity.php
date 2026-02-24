@@ -4,8 +4,9 @@ namespace App\Shared\Domain\Entities\Setting;
 
 class SettingEntity {
     public function __construct(
-        public ?int $id ,
-        public ?string $key,
-        public ?string $value,
+        public ?int $id = null ,
+        public ?int $userId = null ,
+        public ?string $key = null ,
+        public ?string $value = null,
     ) { }
 }
