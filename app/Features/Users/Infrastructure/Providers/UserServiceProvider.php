@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Infrastructure\Providers;
+namespace App\Features\Users\Infrastructure\Providers; 
 
 use App\Features\Users\Application\Contracts\CreateUserContract;
 use App\Features\Users\Application\Contracts\DestroyUserContract;

@@ -12,7 +12,7 @@ class UserEntity{
      * @param  ?string $email
      * @param  ?string $password
      * @param  ?array<PhoneEntity> $phones,
-     * @param  ?array<GroupEntity> $groups
+     * @param  ?GroupEntity $group
      */
     public function __construct(
         public ?int $id = null,
@@ -21,6 +21,6 @@ class UserEntity{
         public ?string $email = null,
         public ?string $password = null,
         public ?array $phones = null,
-        public ?array $groups = null, 
+        public ?GroupEntity $group = null, 
     ) { }
 }

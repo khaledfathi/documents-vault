@@ -6,11 +6,12 @@ namespace App\Shared\Infrastructure\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable , HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -47,15 +48,15 @@ class User extends Authenticatable
         ];
     }
     public function phones(){
-        $this->hasMany(Phone::class , 'user_id');
+        return $this->hasMany(Phone::class , 'user_id');
     }
     public function settings (){
-        $this->hasMany(Setting::class , 'user_id');
+        return $this->hasMany(Setting::class , 'user_id');
     }
     public function group (){
-        $this->belongsTo(Group::class , 'group_id');
+        return $this->belongsTo(Group::class , 'group_id');
     }
     public function documents(){
-        $this->hasMany(Document::class , 'document_id');
+        return $this->hasMany(Document::class , 'document_id');
     }
 }

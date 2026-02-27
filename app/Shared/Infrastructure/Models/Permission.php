@@ -11,6 +11,6 @@ class Permission extends Model
     ];
 
     public function groupPermissions(){
-        $this->hasMany(Permission::class, 'permission_id');
+        return $this->hasMany(Permission::class, 'permission_id');
     }
 }

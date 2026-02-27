@@ -11,6 +11,6 @@ class Phone extends Model
     ];
 
     public function user (){
-        $this->belongsTo(User::class , 'user_id');
+        return $this->belongsTo(User::class , 'user_id');
     }
 }
