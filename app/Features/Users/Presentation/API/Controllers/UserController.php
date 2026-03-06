@@ -28,7 +28,7 @@ class UserController extends Controller
         return response()->json(['target' => __CLASS__.":".__FUNCTION__]);
     }
     public function show (Request $request , string $userId){
-        $currentUserId = $request->user()->id;
+        $currentUserId = $request->user()->id ?? 0 ;
         $presenter = new ShowUserPresenter();
         $this->showUserUsecase->execute($currentUserId , $userId , $presenter);
         return $presenter->handle(); 

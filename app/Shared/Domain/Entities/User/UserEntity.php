@@ -1,6 +1,9 @@
 <?php
 declare (strict_types=1);
-namespace App\Shared\Domain\Entities\User; 
+namespace App\Shared\Domain\Entities\User;
+
+use App\Shared\Domain\Enums\User\PermissionType;
+use Dom\Element; 
 
 
 class UserEntity{
@@ -23,4 +26,36 @@ class UserEntity{
         public ?array $phones = null,
         public ?GroupEntity $group = null, 
     ) { }
+
+    public function toArray ():array{ 
+        return [
+            "id"=> $this->id,
+            "name"=> $this->name,
+            "email"=> $this->email,
+            "phones"=> $this->getPhoneNumbers() ,
+            "group"=> [ 
+                $this->group->id,
+                $this->group->name,
+            ],
+            "permissions"=> $this->permissionsAsArray(),
+        ];
+    }
+
+    private function getPhoneNumbers ():array { 
+        $phones=[]; 
+        foreach ($this->phones as $phone) { 
+            $phones[] = $phone->phone;
+        }
+        return $phones;
+    }
+    private function permissionsAsArray ():array{
+        $permissions = []; 
+        foreach ($this->group->permissions as $permission) {
+            $permissions[] = [ 
+                "id"=> $permission->id,
+                "permission"=> $permission->permission->permissionType->value,
+            ];
+        }
+        return $permissions;
+    }
 }

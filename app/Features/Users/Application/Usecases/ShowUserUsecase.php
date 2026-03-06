@@ -20,9 +20,13 @@ final class ShowUserUsecase implements ShowUserContract {
         try {
             if ( ! $this->permissionGateway->can($currentUserId, PermissionType::VIEW_USER ) ){
                 $presenter->onUnauthorized();
-            } ;
+                return ;
+            } 
             $userEntity = $this->userRepository->show($userId);
-            if(! $userEntity) return $presenter->onNotFound();
+            if(! $userEntity) {
+                $presenter->onNotFound();
+                return ; 
+            }
             $presenter->onSuccess($userEntity);
         }catch(Exception $e){
             $presenter->onFailure($e->getMessage());     

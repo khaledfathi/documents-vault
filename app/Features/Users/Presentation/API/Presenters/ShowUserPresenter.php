@@ -10,16 +10,34 @@ final class ShowUserPresenter implements ShowUserOutput {
 
     private Closure $response ; 
     public function onSuccess (UserEntity $userEntity):void{
-        dd('sueccess', $userEntity);
+        $this->response = fn()=> response()->json([
+            "success"=> true,
+            "message"=> "" ,
+            'data' => $userEntity->toArray()
+        ]);
     }
     public function onNotFound ():void{
-        dd('notfound');
+        $this->response = fn()=> response()->json([
+            "success"=> false,
+            "message"=> "User is not found" ,
+            'data' => null,  
+        ]);
     }
     public function onUnauthorized():void{
-        dd('unauthorized');
+        $this->response = fn()=> response()->json([
+            "success"=> false,
+            "message"=> "current user is Unauthorized to do this action" ,
+            'data' => null,  
+        ]);
     }
     public function onFailure (string $error):void{
-        dd('failure' , $error);
+        $data = [
+            "success"=> false,
+            "message"=> "internal server error" ,
+            'data' => null,  
+        ];
+        if(getenv('APP_DEBUG'))  $data['error'] = $error;
+        $this->response = fn()=> response()->json($data);
     }
     public function handle(){
         return ($this->response)();
