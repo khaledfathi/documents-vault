@@ -5,9 +5,9 @@ namespace App\Shared\Domain\Entities\User;
 
 use App\Shared\Domain\Enums\User\PermissionType;
 
-class PermissionEntity {
+final class PermissionEntity {
     public function __construct(
-        public ?int $id = null, 
-        public ?PermissionType $permission = null, 
+        public ?int $id = null,
+        public ?PermissionType $permissionType = null,
     ) { }
 }

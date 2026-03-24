@@ -5,4 +5,7 @@ namespace App\Features\Users\Application\Outputs;
 use App\Shared\Domain\Entities\User\UserEntity;
 
 interface StoreUserOutput {
+    public function onSuccess(UserEntity $userEntity):void;
+    public function onUnauthorized():void;
+    public function onFailure(string $error):void;
 }

@@ -17,12 +17,12 @@ class Document extends Model
     ];
 
     public function user (){
-        $this->belongsTo(User::class , 'user_id');
+        return $this->belongsTo(User::class , 'user_id');
     }
     public function files (){
-        $this->hasMany(File::class , 'document_id');
+        return $this->hasMany(File::class , 'document_id');
     }
     public function documentCategories (){
-        $this->hasMany(DocumentCategory::class , 'category_id');
+        return $this->hasMany(DocumentCategory::class , 'category_id');
     }
 }

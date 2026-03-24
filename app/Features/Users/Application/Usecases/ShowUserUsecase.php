@@ -4,8 +4,34 @@ declare (strict_types=1);
 namespace App\Features\Users\Application\Usecases;
 
 use App\Features\Users\Application\Contracts\ShowUserContract;
-
+use App\Features\Users\Application\Outputs\ShowUserOutput;
+use App\Shared\Application\Contracts\CurrentUserContract;
+use App\Shared\Domain\Enums\User\PermissionType;
+use App\Shared\Domain\Gateways\PermissionGateway;
+use App\Shared\Domain\Repositories\UserRepository;
+use Exception;
 
 final class ShowUserUsecase implements ShowUserContract {
 
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly PermissionGateway $permissionGateway,
+        private readonly CurrentUserContract $currentUser,
+    ) { }
+    public function execute ( int $userId , ShowUserOutput $presenter){
+        try {
+            if ( ! $this->permissionGateway->can($this->currentUser->id(), PermissionType::VIEW_USER ) ){
+                $presenter->onUnauthorized();
+                return ;
+            }
+            $userEntity = $this->userRepository->show($userId);
+            if(! $userEntity) {
+                $presenter->onNotFound();
+                return ;
+            }
+            $presenter->onSuccess($userEntity);
+        }catch(Exception $e){
+            $presenter->onFailure($e->getMessage());
+        }
+    }
 }

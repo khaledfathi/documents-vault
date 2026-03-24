@@ -4,15 +4,15 @@ use App\Features\Users\Presentation\API\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
-
-
-/***** Admin *****/
+/***** API Auth *****/
+Route::post('/login' , [UserController::class , 'login'])->name('user.login');
 
 /***** Users *****/
-Route::resource('/users', UserController::class);
+Route::middleware('auth:sanctum')->group(function (){
+    Route::resource('/users', UserController::class);
+    Route::get('/logout' , [UserController::class , 'logout'])->name('user.logout');
+});
+
 /***** Documents *****/
 
 /***** Settings *****/

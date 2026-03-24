@@ -2,7 +2,7 @@
 declare (strict_types=1);
 namespace App\Shared\Domain\Entities\User;
 
-class PhoneEntity {
+final class PhoneEntity {
     public function __construct(
         public ?int $id = null ,
         public ?string $phone = null,

@@ -1,17 +1,21 @@
 <?php
 
-namespace App\Shared\Infrastructure\Providers;
+namespace App\Features\Users\Infrastructure\Providers; 
 
 use App\Features\Users\Application\Contracts\CreateUserContract;
+use App\Features\Users\Application\Contracts\DestroyTokenContract;
 use App\Features\Users\Application\Contracts\DestroyUserContract;
 use App\Features\Users\Application\Contracts\EditUserContract;
+use App\Features\Users\Application\Contracts\GenerateTokenContract;
 use App\Features\Users\Application\Contracts\PaginateUsersContract;
 use App\Features\Users\Application\Contracts\ShowUserContract;
 use App\Features\Users\Application\Contracts\StoreUserContract;
 use App\Features\Users\Application\Contracts\UpdateUserContract;
 use App\Features\Users\Application\Usecases\CreateUserUsecase;
+use App\Features\Users\Application\Usecases\DestroyTokenUsecase;
 use App\Features\Users\Application\Usecases\DestroyUserContractUsecase;
 use App\Features\Users\Application\Usecases\EditUserContractUsecase;
+use App\Features\Users\Application\Usecases\GenerateTokenUsecase;
 use App\Features\Users\Application\Usecases\PaginateUsersUsecase;
 use App\Features\Users\Application\Usecases\ShowUserUsecase;
 use App\Features\Users\Application\Usecases\StoreUserUsecase;
@@ -32,6 +36,8 @@ class UserServiceProvider extends ServiceProvider
         $this->app->bind(StoreUserContract::class , StoreUserUsecase::class);
         $this->app->bind(ShowUserContract::class, ShowUserUsecase::class);
         $this->app->bind(UpdateUserContract::class , UpdateUserUsecase::class);
+        $this->app->bind(GenerateTokenContract::class , GenerateTokenUsecase::class);
+        $this->app->bind(DestroyTokenContract::class , DestroyTokenUsecase::class);
     }
 
     /**

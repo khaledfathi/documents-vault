@@ -12,9 +12,9 @@ class DocumentCategory extends Model
     ];
 
     public function document (){
-        $this->belongsTo(Document::class , 'document_id');
+        return $this->belongsTo(Document::class , 'document_id');
     }
     public function category (){
-        $this->belongsTo(Category::class , 'category_id');
+        return $this->belongsTo(Category::class , 'category_id');
     }
 }
