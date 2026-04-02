@@ -2,8 +2,9 @@
 declare (strict_types= 1);
 namespace App\Shared\Infrastructure\Utilities;
 
-use App\Shared\Application\Contracts\TokenGeneratorContract;
+use App\Shared\Application\Contracts\Utilities\TokenGeneratorContract;
 use App\Shared\Infrastructure\Models\User;
+
 use function Illuminate\Support\minutes;
 
 final class TokenGeneratorUtility implements TokenGeneratorContract {

@@ -1,14 +1,14 @@
 <?php
 declare (strict_types= 1);
-namespace App\Shared\Domain\ValuObjects; 
+namespace App\Shared\Domain\ValuObjects;
 
 
 /**
- * @template T 
+ * @template T
  */
-class EntitiesWithPagination{
+final class EntitiesWithPagination{
     /**
-     * 
+     *
      * @param ?{agination $pagination
      * @param ?array<T> $entities
      */

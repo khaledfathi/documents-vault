@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Entities\Document;
 
-class FileEntity
+final class FileEntity
 {
     public function __construct(
         public ?int $id = null,

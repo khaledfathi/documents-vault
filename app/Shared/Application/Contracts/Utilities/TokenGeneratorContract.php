@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace App\Shared\Application\Contracts;
+namespace  App\Shared\Application\Contracts\Utilities;
 
 interface TokenGeneratorContract
 {

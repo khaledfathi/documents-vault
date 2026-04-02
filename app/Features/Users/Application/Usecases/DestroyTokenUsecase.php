@@ -5,7 +5,7 @@ namespace App\Features\Users\Application\Usecases;
 
 use App\Features\Users\Application\Contracts\DestroyTokenContract;
 use App\Features\Users\Application\Outputs\DestroyTokenOutput;
-use App\Shared\Application\Contracts\TokenGeneratorContract;
+use App\Shared\Application\Contracts\Utilities\TokenGeneratorContract;
 use Exception;
 
 final class DestroyTokenUsecase implements DestroyTokenContract

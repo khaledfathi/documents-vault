@@ -6,6 +6,8 @@ namespace App\Shared\Application\Enums;
 final class Messages {
     //errors
     const SERVER_ERROR = "internal server error";
-    const UNAUTHORIZED = "current user is Unauthorized to do this action";
+    const UNAUTHENTICATED = "Unauthenticated :  Please provide a valid API token.";
+    const UNAUTHORIZED = "Unauthorized : current user is unable to do this action";
+    const VALIDATION_FAILED = "Validation Failed";
     const NOT_FOUND= "record is not found";
 }

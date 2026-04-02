@@ -5,7 +5,7 @@ namespace App\Features\Users\Application\Usecases;
 
 use App\Features\Users\Application\Contracts\StoreUserContract;
 use App\Features\Users\Application\Outputs\StoreUserOutput;
-use App\Shared\Application\Contracts\CurrentUserContract;
+use App\Shared\Application\Contracts\Security\CurrentUserContract;
 use App\Shared\Domain\Entities\User\UserEntity;
 use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Gateways\PermissionGateway;

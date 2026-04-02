@@ -2,7 +2,7 @@
 declare (strict_types=1);
 namespace App\Shared\Domain\Entities\Setting;
 
-class SettingEntity {
+final class SettingEntity {
     public function __construct(
         public ?int $id = null ,
         public ?int $userId = null ,

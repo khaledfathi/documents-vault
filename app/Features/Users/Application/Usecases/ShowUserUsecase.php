@@ -5,7 +5,7 @@ namespace App\Features\Users\Application\Usecases;
 
 use App\Features\Users\Application\Contracts\ShowUserContract;
 use App\Features\Users\Application\Outputs\ShowUserOutput;
-use App\Shared\Application\Contracts\CurrentUserContract;
+use App\Shared\Application\Contracts\Security\CurrentUserContract;
 use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\UserRepository;
@@ -24,6 +24,7 @@ final class ShowUserUsecase implements ShowUserContract {
                 $presenter->onUnauthorized();
                 return ;
             }
+            $this->userRepository->getPermissions($userId);
             $userEntity = $this->userRepository->show($userId);
             if(! $userEntity) {
                 $presenter->onNotFound();

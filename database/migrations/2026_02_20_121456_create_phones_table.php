@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->text('phone')->unique();
+            $table->string('phone')->unique();
             //FK
             $table->foreignId('user_id')
                 ->references('id')
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_phones');
+        Schema::dropIfExists('phones');
     }
 };

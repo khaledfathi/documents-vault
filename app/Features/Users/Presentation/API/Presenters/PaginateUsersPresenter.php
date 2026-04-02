@@ -21,7 +21,7 @@ final class PaginateUsersPresenter implements PaginateUsersOutput {
             // 'pagination' => $entitiesWithPagination->pagination->toJson(),
         ]);
     }
-    public function onFailure(string $error){
+    public function onFailure(string $error):void{
         //log the error ,
         //....
         //action

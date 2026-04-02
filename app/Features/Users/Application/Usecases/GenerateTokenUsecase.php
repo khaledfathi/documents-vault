@@ -4,8 +4,8 @@ namespace App\Features\Users\Application\Usecases;
 
 use App\Features\Users\Application\Contracts\GenerateTokenContract;
 use App\Features\Users\Application\Outputs\GenerateTokenOutput;
-use App\Shared\Application\Contracts\PasswordHasherContract;
-use App\Shared\Application\Contracts\TokenGeneratorContract;
+use App\Shared\Application\Contracts\Utilities\PasswordHasherContract;
+use App\Shared\Application\Contracts\Utilities\TokenGeneratorContract;
 use App\Shared\Domain\Repositories\UserRepository;
 use Exception;
 
@@ -29,7 +29,7 @@ final class GenerateTokenUsecase implements GenerateTokenContract
                 if ($this->passwordHasher->check($password, $user->password)) {
                     $token = $this->tokenGenerator->generate($user->id ?? 0);
                     $presenter->onSuccess($token);
-                    return; 
+                    return;
                 }
             }
             $presenter->onCredentialFailed();

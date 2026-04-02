@@ -18,22 +18,6 @@ final class StoreUserPresenter implements StoreUserOutput
     {
         $this->response = fn() => response()->json($userEntity->toArray());
     }
-    public function onUnauthorized(): void
-    {
-        $this->response = fn() => response()->json([
-            "success" => false,
-            "message" => Messages::UNAUTHORIZED,
-        ]);
-    }
-    public function onFailure(string $error): void
-    {
-        $data = [
-            "success" => false,
-            "message" => Messages::SERVER_ERROR,
-        ];
-        $this->onDebug($data, $error);
-        $this->response = fn() => response()->json($data);
-    }
     public function handle()
     {
         return ($this->response)();

@@ -1,7 +1,7 @@
 <?php
 declare (strict_types=1);
 
-namespace App\Shared\Application\Contracts;
+namespace App\Shared\Application\Contracts\Security;
 
 use App\Shared\Domain\Entities\User\UserEntity;
 

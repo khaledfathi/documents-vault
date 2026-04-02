@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Domain\ValuObjects; 
+namespace App\Shared\Domain\ValuObjects;
 
 final class Pagination
 {
@@ -47,7 +47,7 @@ final class Pagination
         $pageNumber = $this->currentPage > 1 ? $this->currentPage - 1 : $this->currentPage;
         return $this->generatePageURL($pageNumber) . $this->queires;
     }
-    public function withQueryParameters(array $parameters): self 
+    public function withQueryParameters(array $parameters): self
     {
         $this->queryParameters = $parameters;
         foreach ($parameters as $key => $value) {

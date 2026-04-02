@@ -6,7 +6,7 @@ namespace App\Features\Users\Application\Usecases;
 
 use App\Features\Users\Application\Contracts\PaginateUsersContract;
 use App\Features\Users\Application\Outputs\PaginateUsersOutput;
-use App\Shared\Application\Contracts\CurrentUserContract;
+use App\Shared\Application\Contracts\Security\CurrentUserContract;
 use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\UserRepository;

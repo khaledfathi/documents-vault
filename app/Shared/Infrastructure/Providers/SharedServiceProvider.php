@@ -2,9 +2,9 @@
 
 namespace App\Shared\Infrastructure\Providers;
 
-use App\Shared\Application\Contracts\CurrentUserContract;
-use App\Shared\Application\Contracts\PasswordHasherContract;
-use App\Shared\Application\Contracts\TokenGeneratorContract;
+use App\Shared\Application\Contracts\Security\CurrentUserContract;
+use App\Shared\Application\Contracts\Utilities\PasswordHasherContract;
+use App\Shared\Application\Contracts\Utilities\TokenGeneratorContract;
 use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\GroupRepository;
 use App\Shared\Domain\Repositories\UserRepository;

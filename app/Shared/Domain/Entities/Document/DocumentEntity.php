@@ -7,7 +7,7 @@ namespace App\Shared\Domain\Entities\Document;
 use App\Shared\Domain\Contracts\DateProviderContract;
 use App\Shared\Domain\Enums\Document\DocumentVisibilityType;
 
-class DocumentEntity
+final class DocumentEntity
 {
     /**
      * Summary of __construct

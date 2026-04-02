@@ -24,6 +24,16 @@ final class UserEntity{
         public ?\App\Shared\Domain\Entities\User\GroupEntity$group = null,
     ) { }
 
+    /**
+     * @return array{
+     * id: int,
+     * name: string,
+     * email: string.
+     * phones: array<array{ id: int, phone: string}>|null,
+     * group: array {id:int , name:string}|null,
+     * permissions: array{id: int , permission: string}|null
+     * }
+     * */
     public function toArray ():array{
         return [
             "id"=> $this->id,
@@ -41,7 +51,7 @@ final class UserEntity{
     private function getPhoneNumbers ():array {
         $phones=[];
         foreach ($this->phones as $phone) {
-            $phones[] = $phone->phone;
+            $phones[] = [ 'id' => $phone->id , 'phone'=> $phone->phone];
         }
         return $phones;
     }

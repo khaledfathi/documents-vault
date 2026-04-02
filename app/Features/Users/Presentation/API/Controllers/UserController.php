@@ -8,10 +8,14 @@ use App\Features\Users\Application\Contracts\DestroyTokenContract;
 use App\Features\Users\Application\Contracts\GenerateTokenContract;
 use App\Features\Users\Application\Contracts\ShowUserContract;
 use App\Features\Users\Application\Contracts\StoreUserContract;
+use App\Features\Users\Application\Contracts\UpdateUserContract;
+use App\Features\Users\Infrastructure\Requests\StoreUserRequest;
+use App\Features\Users\Infrastructure\Requests\UpdateUserRequest;
 use App\Features\Users\Presentation\API\Presenters\DestroyTokenPresenter;
 use App\Features\Users\Presentation\API\Presenters\GenerateTokenPresenter;
 use App\Features\Users\Presentation\API\Presenters\ShowUserPresenter;
 use App\Features\Users\Presentation\API\Presenters\StoreUserPresenter;
+use App\Features\Users\Presentation\API\Presenters\UpdateUserPresenter;
 use App\Http\Controllers\Controller;
 use App\Shared\Domain\Entities\User\PhoneEntity;
 use App\Shared\Domain\Entities\User\UserEntity;
@@ -23,6 +27,7 @@ class UserController extends Controller
     public function __construct(
         private readonly ShowUserContract  $showUserUsecase,
         private readonly StoreUserContract $storeUserUsecae,
+        private readonly UpdateUserContract $updateUserUsecase,
         private readonly GenerateTokenContract $generateTokenUsecase,
         private readonly DestroyTokenContract $destroyTokenUsecase,
     ) {}
@@ -41,6 +46,7 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
+        //send $request->perPage;
         return response()->json(['target' => __CLASS__ . ":" . __FUNCTION__]);
     }
     public function show(string $userId)
@@ -49,24 +55,19 @@ class UserController extends Controller
         $this->showUserUsecase->execute((int) $userId, $presenter);
         return $presenter->handle();
     }
-    public function create()
-    {
-        return response()->json(['target' => __CLASS__ . ":" . __FUNCTION__]);
-    }
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
         $data = $this->requestToUserEntity($request);
         $presenter =  new StoreUserPresenter();
         $this->storeUserUsecae->execute($data, $presenter);
         return $presenter->handle();
     }
-    public function edit()
+    public function update(UpdateUserRequest $request, string $userId)
     {
-        return response()->json(['target' => __CLASS__ . ":" . __FUNCTION__]);
-    }
-    public function update()
-    {
-        return response()->json(['target' => __CLASS__ . ":" . __FUNCTION__]);
+        $data = $this->requestToUserEntity($request);
+        $presenter = new UpdateUserPresenter();
+        $this->updateUserUsecase->execute($data , $presenter);
+        return $presenter->handle();
     }
     public function delete()
     {
@@ -74,18 +75,25 @@ class UserController extends Controller
     }
     private function requestToUserEntity(Request $request): UserEntity
     {
-        $phones = [];
-        foreach($request->phones ?? [] as $phone){
-            $phones[] = new PhoneEntity(
-                phone: $phone
-            );
-        }
-        return new UserEntity(
+        $userEntity = new UserEntity(
             groupId: $request->group_id ? (int)$request->group_id : null,
             name: $request->name,
             email: $request->email,
             password: $request->password,
-            phones: $phones,
         );
+        if ($userId = $request->route('user')){
+            $userEntity->id = (int)$userId;
+        }else if ($userId = $request->id){
+            $userEntity->id = (int)$userId;
+        }
+        $phones = [];
+        foreach($request->phones ?? [] as $phone){
+            $phones[] = new PhoneEntity(
+                userId: $userEntity->id,
+                phone: $phone
+            );
+        }
+        $userEntity->phones = $phones;
+        return $userEntity;
     }
 }

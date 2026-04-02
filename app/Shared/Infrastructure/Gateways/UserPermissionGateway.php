@@ -11,9 +11,9 @@ final class UserPermissionGateway implements PermissionGateway{
         private readonly UserRepository $userRepository,
     ) { }
     public function can (int $userId , PermissionType $ability):bool{
-        $user = $this->userRepository->show($userId);
-        if (!$user) return false ;
-        foreach($user->group->permissions as $permission){
+        $permissions = $this->userRepository->getPermissions($userId);
+        if (!$permissions) return false ;
+        foreach($permissions as $permission){
             if ($permission->permissionType == $ability) return true;
         }
         return false;

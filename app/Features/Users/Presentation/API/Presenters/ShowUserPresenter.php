@@ -24,12 +24,6 @@ final class ShowUserPresenter implements ShowUserOutput {
             "message"=> "User is not found" ,
         ]);
     }
-    public function onUnauthorized():void{
-        $this->response = fn()=> response()->json([
-            "success"=> false,
-            "message"=> Messages::UNAUTHORIZED,
-        ]);
-    }
     public function onFailure (string $error):void{
         $data = [
             "success"=> false,
