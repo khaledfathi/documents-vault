@@ -4,6 +4,7 @@ namespace App\Shared\Domain\Entities\User;
 
 final class UserEntity{
 
+    public const ADMIN_ID = 1;
     /**
      * Summary of __construct
      * @param ?null $id
@@ -21,7 +22,7 @@ final class UserEntity{
         public ?string $email = null,
         public ?string $password = null,
         public ?array $phones = null,
-        public ?\App\Shared\Domain\Entities\User\GroupEntity$group = null,
+        public ?GroupEntity $group = null,
     ) { }
 
     /**
@@ -35,17 +36,22 @@ final class UserEntity{
      * }
      * */
     public function toArray ():array{
-        return [
+        $data = [
             "id"=> $this->id,
             "name"=> $this->name,
             "email"=> $this->email,
-            "phones"=>$this->phones ? $this->getPhoneNumbers() : null,
+            "phones"=>$this->phones ? $this->getPhoneNumbers() : [],
             "group"=> $this->group ? [
                 "id"=> $this->group->id,
                 "name" => $this->group->name,
             ] : null,
-            "permissions"=> $this->group ? $this->permissionsAsArray() : null,
         ];
+        $permissions = $this->group ? $this->permissionsAsArray() : null;
+        if ($permissions)  $data["permissions"] = $permissions;
+        return $data;
+    }
+    public function isAdmin():bool{
+        return $this->id == self::ADMIN_ID;
     }
 
     private function getPhoneNumbers ():array {
@@ -65,4 +71,5 @@ final class UserEntity{
         }
         return $permissions;
     }
+
 }

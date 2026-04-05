@@ -1,7 +1,7 @@
 <?php
 declare (strict_types= 1);
 
-namespace App\Shared\Application\Enums;
+namespace App\Shared\Infrastructure\Constants;
 
 final class Messages {
     //errors

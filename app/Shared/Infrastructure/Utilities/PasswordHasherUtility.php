@@ -9,4 +9,7 @@ final class PasswordHasherUtility implements PasswordHasherContract {
     public function check (string $password , string $hashedPassword):bool{
         return Hash::check($password,$hashedPassword);
     }
+    public function hash($password):string{
+        return Hash::make($password);
+    }
 }

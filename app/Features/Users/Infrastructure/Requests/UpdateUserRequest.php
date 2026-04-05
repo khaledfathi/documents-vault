@@ -3,6 +3,7 @@
 namespace App\Features\Users\Infrastructure\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -22,7 +23,22 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|max:30',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->ignore((int)$this->route('user')),
+            ],
+
+            'phones.*' => [
+                Rule::unique('phones', 'phone')->ignore((int)$this->route('user'), 'user_id'),
+            ],
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'phones.*.unique' => "phone (:input) already exists",
         ];
     }
 }

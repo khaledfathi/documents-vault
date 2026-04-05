@@ -1,6 +1,6 @@
 <?php
 
-use App\Shared\Application\Enums\Messages;
+use App\Shared\Infrastructure\Constants\Messages;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', function () {

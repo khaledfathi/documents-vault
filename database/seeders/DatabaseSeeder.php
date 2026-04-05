@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
             ['permission' => "edit_document",],
             ['permission' => "delete_document",],
         ]);
-        //set all permision to admin 
+        //set all permision to admin
         GroupPermission::insert([
             ['group_id' => 1 , 'permission_id' => 1],
             ['group_id' => 1 , 'permission_id' => 2],
@@ -72,7 +72,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@mail.com',
             'password' => Hash::make('admin'),
-            'group_id' => 1 //admin
+            'group_id' => 1 //admin group
         ]);
     }
 }

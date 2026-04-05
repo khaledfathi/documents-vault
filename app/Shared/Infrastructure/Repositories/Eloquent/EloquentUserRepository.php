@@ -11,11 +11,10 @@ use App\Shared\Domain\Entities\User\UserEntity;
 use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Repositories\UserRepository;
 use App\Shared\Domain\ValuObjects\EntitiesWithPagination;
+use App\Shared\Domain\ValuObjects\Pagination;
 use App\Shared\Infrastructure\Models\Group;
-use App\Shared\Infrastructure\Models\Phone;
 use App\Shared\Infrastructure\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 final class EloquentUserRepository implements UserRepository
@@ -23,16 +22,53 @@ final class EloquentUserRepository implements UserRepository
     /**
      * @inheritdoc
      */
-    public function paginate(int $perPage): EntitiesWithPagination
+    public function paginate(int $perPage = 10): EntitiesWithPagination
     {
-        return new EntitiesWithPagination();
+        $records = User::with('phones', 'group')->paginate($perPage);
+        //entities
+        $userEntities= [];
+        foreach($records as $record){
+            //group
+            $group = new GroupEntity(
+                id : $record->group->id,
+                name : $record->group->name,
+            );
+            //phones
+            $phones= [];
+            foreach ($record->phones ?? [] as $phone){
+                $phones[] = new PhoneEntity(
+                    id:$phone->id,
+                    userId: $record->id,
+                    phone:$phone->phone,
+                );
+            }
+            //user
+            $userEntities[] = new UserEntity(
+                id:$record->id,
+                groupId:$record->group_id,
+                name:$record->name,
+                email:$record->email,
+                phones:$phones,
+                group:$group,
+            );
+        }
+        //pagination
+        $pagination = new Pagination(
+            perPage  : $perPage,
+            currentPage : $records->currentPage(),
+            path : $records->path(),
+            pageName : $records->getPageName(),
+            total : $records->total(),
+            queryParameters : [],
+        );
+        //
+        return new EntitiesWithPagination( $pagination, $userEntities,);
     }
     public function findByEmail(string $email): UserEntity|null
     {
         $record = User::with('phones', 'group', 'group.groupPermissions', 'group.groupPermissions.permission')
             ->where('email', $email)->first();
         if ($record) {
-
             $phones = $this->generatePhoneEntities($record->phones);
             $groupPermissions = $this->generatePermissionEntities($record->group->groupPermissions);
             $group =  $this->generateGroupEntity($record->group, $groupPermissions);
@@ -98,30 +134,35 @@ final class EloquentUserRepository implements UserRepository
         return $userEntity;
     }
     /**
-     * Update user record
+     * Update user record ( full replacement )
      * @param UserEntity $userEntity
      * @return bool true if update , false if record not found
      */
     public function update(UserEntity $userEntity): bool
     {
         $data = [];
-        $userEntity->id? $data['id'] = $userEntity->id: null;
         $userEntity->name ? $data['name'] = $userEntity->name : null;
         $userEntity->email? $data['email'] = $userEntity->email: null;
         $userEntity->password? $data['password'] = Hash::make($userEntity->password): null;
-        $phones = array_map(fn($phone) => [
-            'phone'   => $phone->phone,
-            'user_id' => $userEntity->id,
-        ], $userEntity->phones);
-        Phone::insert($phones);
 
         $record = User::find($userEntity->id);
         if (!$record) return false;
+        //delete old phones
+        $record->phones()->delete();
+        //replace phones
+        $record->phones()->createMany(
+            array_map(fn($phone) => [
+                'phone'   => $phone->phone,
+            ], $userEntity->phones ?? [])
+        );
+
         return $record->update($data);
     }
-    public function destroy(int $int): bool
+    public function destroy(int $id): bool
     {
-        return true;
+        $record = User::find($id);
+        if(! $record ) return false ;
+        return $record->delete();
     }
     /**
      * @param \App\Shared\Infrastructure\Models\Group $group ,

@@ -7,6 +7,7 @@ use App\Shared\Domain\Enums\User\PermissionType\PermissionEntity;
 
 final class GroupEntity
 {
+    public const ADMIN_GROUP_ID=1;
     /**
      * @param ?int $id
      * @param ?string $name

@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Shared\Application\Traits;
+namespace App\Shared\Presentation\API\Traits;
 
-use App\Shared\Application\Enums\Messages;
+use App\Shared\Infrastructure\Constants\Messages;
+use Illuminate\Http\Response;
 
 trait PresenterTrait
 {
@@ -23,7 +24,7 @@ trait PresenterTrait
         $this->response = fn() => response()->json([
             "success" => false,
             "message" => Messages::UNAUTHORIZED,
-        ]);
+        ],Response::HTTP_FORBIDDEN);
     }
     public function onFailure(string $error):void{
         $data = [
@@ -31,6 +32,13 @@ trait PresenterTrait
             "message" => Messages::SERVER_ERROR,
         ];
         $this->onDebug($data, $error);
-        $this->response = fn() => response()->json($data);
+        $this->response = fn() => response()->json($data, Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
+    public function notFoundResponse (string $message ="Record is not found"){
+        return response()->json([
+            "success"=> false,
+            "message"=> $message,
+        ],Response::HTTP_NOT_FOUND);
     }
 }

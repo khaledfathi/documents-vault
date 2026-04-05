@@ -5,29 +5,35 @@ declare(strict_types=1);
 namespace App\Features\Users\Presentation\API\Controllers;
 
 use App\Features\Users\Application\Contracts\DestroyTokenContract;
+use App\Features\Users\Application\Contracts\DestroyUserContract;
 use App\Features\Users\Application\Contracts\GenerateTokenContract;
+use App\Features\Users\Application\Contracts\PaginateUsersContract;
 use App\Features\Users\Application\Contracts\ShowUserContract;
 use App\Features\Users\Application\Contracts\StoreUserContract;
 use App\Features\Users\Application\Contracts\UpdateUserContract;
 use App\Features\Users\Infrastructure\Requests\StoreUserRequest;
 use App\Features\Users\Infrastructure\Requests\UpdateUserRequest;
 use App\Features\Users\Presentation\API\Presenters\DestroyTokenPresenter;
+use App\Features\Users\Presentation\API\Presenters\DestroyUserPresenter;
 use App\Features\Users\Presentation\API\Presenters\GenerateTokenPresenter;
+use App\Features\Users\Presentation\API\Presenters\PaginateUsersPresenter;
 use App\Features\Users\Presentation\API\Presenters\ShowUserPresenter;
 use App\Features\Users\Presentation\API\Presenters\StoreUserPresenter;
 use App\Features\Users\Presentation\API\Presenters\UpdateUserPresenter;
-use App\Http\Controllers\Controller;
 use App\Shared\Domain\Entities\User\PhoneEntity;
 use App\Shared\Domain\Entities\User\UserEntity;
+use App\Shared\Presentation\HTTP\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function __construct(
+        private readonly PaginateUsersContract $paginateUserUsecase,
         private readonly ShowUserContract  $showUserUsecase,
         private readonly StoreUserContract $storeUserUsecae,
         private readonly UpdateUserContract $updateUserUsecase,
+        private readonly DestroyUserContract $destroyUserUsecase,
         private readonly GenerateTokenContract $generateTokenUsecase,
         private readonly DestroyTokenContract $destroyTokenUsecase,
     ) {}
@@ -46,8 +52,9 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
-        //send $request->perPage;
-        return response()->json(['target' => __CLASS__ . ":" . __FUNCTION__]);
+        $presenter = new PaginateUsersPresenter();
+        $this->paginateUserUsecase->execute($presenter , (int)$request->per_page ?? 10 );
+        return $presenter->handle();
     }
     public function show(string $userId)
     {
@@ -69,9 +76,11 @@ class UserController extends Controller
         $this->updateUserUsecase->execute($data , $presenter);
         return $presenter->handle();
     }
-    public function delete()
+    public function destroy(string $userId)
     {
-        return response()->json(['target' => __CLASS__ . ":" . __FUNCTION__]);
+        $presenter = new DestroyUserPresenter();
+        $this->destroyUserUsecase->execute((int)$userId , $presenter);
+        return $presenter->handle();
     }
     private function requestToUserEntity(Request $request): UserEntity
     {

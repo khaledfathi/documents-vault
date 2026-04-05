@@ -3,10 +3,10 @@ declare (strict_types=1);
 namespace App\Features\Users\Presentation\API\Presenters;
 
 use App\Features\Users\Application\Outputs\PaginateUsersOutput;
-use App\Shared\Application\Enums\Messages;
-use App\Shared\Application\Traits\PresenterTrait;
 use App\Shared\Domain\ValuObjects\EntitiesWithPagination;
+use App\Shared\Presentation\API\Traits\PresenterTrait;
 use Closure;
+use Illuminate\Http\Response;
 
 final class PaginateUsersPresenter implements PaginateUsersOutput {
 
@@ -17,21 +17,22 @@ final class PaginateUsersPresenter implements PaginateUsersOutput {
      */
     public function onSuccess (EntitiesWithPagination $entitiesWithPagination){
         $this->response = fn() => response()->json([
-            'users' => $entitiesWithPagination->entities ,
-            // 'pagination' => $entitiesWithPagination->pagination->toJson(),
-        ]);
-    }
-    public function onFailure(string $error):void{
-        //log the error ,
-        //....
-        //action
-        $data = [
-            'message' => Messages::SERVER_ERROR,
-        ];
-        $this->onDebug($data , $error);
-        $this->response = fn() => response()->json();
+            'success'=> true,
+            'data' =>[
+                'pagination' => $entitiesWithPagination->pagination,
+                'paginationControl' => [
+                    'pageCount' => $entitiesWithPagination->pagination->getPageCounts(),
+                    'currentPageURL' => $entitiesWithPagination->pagination->getCurrentPageURL(),
+                    'nextPageURL' => $entitiesWithPagination->pagination->getNextPageURL(),
+                    'previousePageURL' => $entitiesWithPagination->pagination->getPreviousPageURL(),
+                    'links' => $entitiesWithPagination->pagination->getLinks(),
+
+                ],
+                'users' => array_map( fn($entity)=> $entity->toArray() , $entitiesWithPagination->entities)
+            ]
+        ] , Response::HTTP_OK);
     }
     public function handle (){
-        return response()->json(['target' => __CLASS__.":".__FUNCTION__]);
+        return ($this->response)();
     }
 }
