@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Features\Users\Infrastructure\Requests;
+namespace App\Features\Users\Presentation\API\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateUserRequest extends FormRequest
+class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,20 +22,12 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:30',
-            'email' => [
-                'required',
-                'email',
-                Rule::unique('users', 'email')->ignore((int)$this->route('user')),
-            ],
-
-            'phones.*' => [
-                Rule::unique('phones', 'phone')->ignore((int)$this->route('user'), 'user_id'),
-            ],
+            'name' => 'required',
+            'email' => 'required|unique:users,email',
+            'phones.*' => 'unique:phones,phone',
         ];
     }
-    public function messages()
-    {
+    public function messages(){
         return [
             'phones.*.unique' => "phone (:input) already exists",
         ];
