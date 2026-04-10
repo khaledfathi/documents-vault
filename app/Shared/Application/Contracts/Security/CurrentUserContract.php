@@ -1,11 +1,13 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace App\Shared\Application\Contracts\Security;
 
 use App\Shared\Domain\Entities\User\UserEntity;
 
-interface CurrentUserContract {
-    public function id():int;
-    public function entity():UserEntity|null;
+interface CurrentUserContract
+{
+    public function id(): int;
+    public function entity(): ?UserEntity;
 }

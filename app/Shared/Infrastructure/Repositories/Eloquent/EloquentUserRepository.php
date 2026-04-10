@@ -26,30 +26,30 @@ final class EloquentUserRepository implements UserRepository
     {
         $records = User::with('phones', 'group')->paginate($perPage);
         //entities
-        $userEntities= [];
-        foreach($records as $record){
+        $userEntities = [];
+        foreach ($records as $record) {
             //group
             $group = new GroupEntity(
                 id : $record->group->id,
                 name : $record->group->name,
             );
             //phones
-            $phones= [];
-            foreach ($record->phones ?? [] as $phone){
+            $phones = [];
+            foreach ($record->phones ?? [] as $phone) {
                 $phones[] = new PhoneEntity(
-                    id:$phone->id,
+                    id: $phone->id,
                     userId: $record->id,
-                    phone:$phone->phone,
+                    phone: $phone->phone,
                 );
             }
             //user
             $userEntities[] = new UserEntity(
-                id:$record->id,
-                groupId:$record->group_id,
-                name:$record->name,
-                email:$record->email,
-                phones:$phones,
-                group:$group,
+                id: $record->id,
+                groupId: $record->group_id,
+                name: $record->name,
+                email: $record->email,
+                phones: $phones,
+                group: $group,
             );
         }
         //pagination
@@ -62,9 +62,9 @@ final class EloquentUserRepository implements UserRepository
             queryParameters : [],
         );
         //
-        return new EntitiesWithPagination( $pagination, $userEntities,);
+        return new EntitiesWithPagination($pagination, $userEntities);
     }
-    public function findByEmail(string $email): UserEntity|null
+    public function findByEmail(string $email): ?UserEntity
     {
         $record = User::with('phones', 'group', 'group.groupPermissions', 'group.groupPermissions.permission')
             ->where('email', $email)->first();
@@ -86,7 +86,7 @@ final class EloquentUserRepository implements UserRepository
         }
         return null;
     }
-    public function show(int $id): UserEntity|null
+    public function show(int $id): ?UserEntity
     {
         $record = User::with('phones', 'group', 'group.groupPermissions', 'group.groupPermissions.permission')
             ->where('id', $id)->first();
@@ -122,8 +122,9 @@ final class EloquentUserRepository implements UserRepository
                 'phone'   => $phone->phone,
             ], $userEntity->phones)
         );
-        $userEntity->phones = $phoneModels->map(fn($phone) =>
-            new PhoneEntity(
+        $userEntity->phones = $phoneModels->map(
+            fn($phone)
+            => new PhoneEntity(
                 id: $phone->id,
                 userId: $phone->userId,
                 phone: $phone->phone
@@ -142,11 +143,13 @@ final class EloquentUserRepository implements UserRepository
     {
         $data = [];
         $userEntity->name ? $data['name'] = $userEntity->name : null;
-        $userEntity->email? $data['email'] = $userEntity->email: null;
-        $userEntity->password? $data['password'] = Hash::make($userEntity->password): null;
+        $userEntity->email ? $data['email'] = $userEntity->email : null;
+        $userEntity->password ? $data['password'] = Hash::make($userEntity->password) : null;
 
         $record = User::find($userEntity->id);
-        if (!$record) return false;
+        if (!$record) {
+            return false;
+        }
         //delete old phones
         $record->phones()->delete();
         //replace phones
@@ -161,7 +164,9 @@ final class EloquentUserRepository implements UserRepository
     public function destroy(int $id): bool
     {
         $record = User::find($id);
-        if(! $record ) return false ;
+        if (! $record) {
+            return false ;
+        }
         return $record->delete();
     }
     /**
@@ -186,7 +191,7 @@ final class EloquentUserRepository implements UserRepository
     {
         $permissions = [];
         foreach ($groupPermisssions as $groupPermission) {
-            $permissions[]= new PermissionEntity(
+            $permissions[] = new PermissionEntity(
                 id: $groupPermission->permission->id,
                 permissionType: PermissionType::from($groupPermission->permission->permission),
             );
@@ -197,20 +202,24 @@ final class EloquentUserRepository implements UserRepository
      * @param Collection $phones
      * @param array<\App\Shared\Infrastructure\Models\Phone>
      */
-    private function generatePhoneEntities (Collection $phones):array{
-            $phoneEntities = [];
-            foreach ($phones as $phone) {
-                $phoneEntities[] = new PhoneEntity(
-                    id: $phone->id,
-                    userId: $phone->user_id,
-                    phone: $phone->phone,
-                );
-            }
-            return $phoneEntities;
+    private function generatePhoneEntities(Collection $phones): array
+    {
+        $phoneEntities = [];
+        foreach ($phones as $phone) {
+            $phoneEntities[] = new PhoneEntity(
+                id: $phone->id,
+                userId: $phone->user_id,
+                phone: $phone->phone,
+            );
+        }
+        return $phoneEntities;
     }
-    public function getPermissions(int $userId):array{
+    public function getPermissions(int $userId): array
+    {
         $record = User::with(['group.groupPermissions.permission'])->where('id', $userId)->first();
-        if (! $record?->group?->groupPermissions) return [];
+        if (! $record?->group?->groupPermissions) {
+            return [];
+        }
         return $this->generatePermissionEntities($record->group->groupPermissions);
     }
 }

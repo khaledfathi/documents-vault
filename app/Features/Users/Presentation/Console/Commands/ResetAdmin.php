@@ -10,8 +10,7 @@ class ResetAdmin extends Command
 {
     public function __construct(
         private readonly ResetAdminUserContract $resetAdminUserUsecase,
-    )
-    {
+    ) {
         return parent::__construct();
     }
     /**

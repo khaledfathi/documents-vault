@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Infrastructure\Models\Group;
 use App\Shared\Infrastructure\Models\GroupPermission;
 use App\Shared\Infrastructure\Models\Permission;
@@ -32,22 +33,22 @@ class DatabaseSeeder extends Seeder
             ['name' => 'reader'],
         ]);
         Permission::insert([
-            ['permission' => "view_user",],
-            ['permission' => "create_user",],
-            ['permission' => "edit_user",],
-            ['permission' => "delete_user",],
-            ['permission' => "view_group",],
-            ['permission' => "create_group",],
-            ['permission' => "edit_group",],
-            ['permission' => "delete_group",],
-            ['permission' => "view_category",],
-            ['permission' => "create_category",],
-            ['permission' => "edit_category",],
-            ['permission' => "delete_category",],
-            ['permission' => "view_document",],
-            ['permission' => "create_document",],
-            ['permission' => "edit_document",],
-            ['permission' => "delete_document",],
+            ['permission' => PermissionType::VIEW_USER->value],
+            ['permission' => PermissionType::CREATE_USER->value],
+            ['permission' => PermissionType::EDIT_USER->value],
+            ['permission' => PermissionType::DELETE_USER->value],
+            //
+            ['permission' => PermissionType::VIEW_GROUP->value],
+            ['permission' => PermissionType::CREATE_GROUP->value],
+            ['permission' => PermissionType::EDIT_GROUP->value],
+            ['permission' => PermissionType::DELETE_GROUP->value],
+            //
+            ['permission' => PermissionType::VIEW_CATEGORY->value],
+            ['permission' => PermissionType::CREATE_CATEGORY->value],
+            ['permission' => PermissionType::EDIT_CATEGORY->value],
+            ['permission' => PermissionType::DELETE_CATEGORY->value],
+            //
+            ['permission' => PermissionType::VIEW_PERMISSION->value],
         ]);
         //set all permision to admin
         GroupPermission::insert([
@@ -64,15 +65,12 @@ class DatabaseSeeder extends Seeder
             ['group_id' => 1 , 'permission_id' => 11],
             ['group_id' => 1 , 'permission_id' => 12],
             ['group_id' => 1 , 'permission_id' => 13],
-            ['group_id' => 1 , 'permission_id' => 14],
-            ['group_id' => 1 , 'permission_id' => 15],
-            ['group_id' => 1 , 'permission_id' => 16],
         ]);
         User::create([
             'name' => 'admin',
             'email' => 'admin@mail.com',
             'password' => Hash::make('admin'),
-            'group_id' => 1 //admin group
+            'group_id' => 1 //admin
         ]);
     }
 }

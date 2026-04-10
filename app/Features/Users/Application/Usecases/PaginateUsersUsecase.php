@@ -14,13 +14,13 @@ use Exception;
 
 final class PaginateUsersUsecase implements PaginateUsersContract
 {
-
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly PermissionGateway $permissionGateway,
         private readonly CurrentUserContract $currentUser,
-    ) {}
-    public function execute( PaginateUsersOutput $presenter, int $perPage = 10)
+    ) {
+    }
+    public function execute(PaginateUsersOutput $presenter, int $perPage = 10)
     {
         try {
             if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::VIEW_USER)) {
@@ -33,4 +33,3 @@ final class PaginateUsersUsecase implements PaginateUsersContract
         }
     }
 }
-

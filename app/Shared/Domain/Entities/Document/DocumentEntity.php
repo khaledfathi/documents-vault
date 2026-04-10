@@ -32,5 +32,6 @@ final class DocumentEntity
         public ?string $description = null,
         public ?array $categories = null,
         public ?FileEntity $file = null,
-    ) {}
+    ) {
+    }
 }

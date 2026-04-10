@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Features\Users\Application\Usecases;
@@ -10,7 +11,6 @@ use Exception;
 
 final class DestroyTokenUsecase implements DestroyTokenContract
 {
-
     public function __construct(
         private TokenGeneratorContract $tokenGenerator
     ) {
@@ -18,10 +18,10 @@ final class DestroyTokenUsecase implements DestroyTokenContract
     public function execute(DestroyTokenOutput $presenter): void
     {
         try {
-           $this->tokenGenerator->destroyCurrentToken();
-           $presenter->onSuccess();
+            $this->tokenGenerator->destroyCurrentToken();
+            $presenter->onSuccess();
         } catch (Exception $e) {
-           $presenter->onFailure($e->getMessage());
+            $presenter->onFailure($e->getMessage());
         }
     }
 }

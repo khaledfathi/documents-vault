@@ -8,13 +8,14 @@ final class Pagination
 {
     private string $queires = "";
     public function __construct(
-        public readonly ?int $perPage  = null,
+        public readonly ?int $perPage = null,
         public readonly ?int $currentPage = null,
         public readonly ?string $path = null,
         public readonly ?string $pageName = null,
-        public readonly ?int  $total = null,
+        public readonly ?int $total = null,
         private array $queryParameters = [],
-    ) { }
+    ) {
+    }
 
     private function generatePageURL(int $pageQueryNumber): mixed
     {

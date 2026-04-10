@@ -14,8 +14,8 @@ final class LaravelFile implements File
         private readonly string $mimeType,
         private readonly string $tempPath,
         private readonly string $content,
-
-    ) { }
+    ) {
+    }
     public function getOriginalName(): string
     {
         return $this->originalName;

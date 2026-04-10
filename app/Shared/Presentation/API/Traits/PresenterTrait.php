@@ -1,22 +1,27 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Shared\Presentation\API\Traits;
 
 use App\Shared\Infrastructure\Constants\Messages;
+use Closure;
 use Illuminate\Http\Response;
 
 trait PresenterTrait
 {
+    protected Closure $response;
     /**
      * append the exception message to [$data]
      * @param array $data
      * @param string $error
      * @return void
      */
-    public function onDebug(array &$data , string $error):void
+    public function onDebug(array &$data, string $error): void
     {
-        if(getenv('APP_DEBUG'))  $data['error'] = $error;
+        if (getenv('APP_DEBUG')) {
+            $data['error'] = $error;
+        }
     }
 
     public function onUnauthorized(): void
@@ -24,9 +29,10 @@ trait PresenterTrait
         $this->response = fn() => response()->json([
             "success" => false,
             "message" => Messages::UNAUTHORIZED,
-        ],Response::HTTP_FORBIDDEN);
+        ], Response::HTTP_FORBIDDEN);
     }
-    public function onFailure(string $error):void{
+    public function onFailure(string $error): void
+    {
         $data = [
             "success" => false,
             "message" => Messages::SERVER_ERROR,
@@ -35,10 +41,11 @@ trait PresenterTrait
         $this->response = fn() => response()->json($data, Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
-    public function notFoundResponse (string $message ="Record is not found"){
+    public function notFoundResponse(string $message = "Record is not found")
+    {
         return response()->json([
-            "success"=> false,
-            "message"=> $message,
-        ],Response::HTTP_NOT_FOUND);
+            "success" => false,
+            "message" => $message,
+        ], Response::HTTP_NOT_FOUND);
     }
 }

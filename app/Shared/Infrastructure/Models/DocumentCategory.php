@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Infrastructure\Models; 
+namespace App\Shared\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,10 +11,12 @@ class DocumentCategory extends Model
         'category_id',
     ];
 
-    public function document (){
-        return $this->belongsTo(Document::class , 'document_id');
+    public function document()
+    {
+        return $this->belongsTo(Document::class, 'document_id');
     }
-    public function category (){
-        return $this->belongsTo(Category::class , 'category_id');
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }

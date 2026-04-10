@@ -19,7 +19,8 @@ final class DestroyUserUsecase implements DestroyUserContract
         private readonly CurrentUserContract $currentUser,
         private readonly PermissionGateway $permissionGateway,
         private readonly UserRepository $userRepository,
-    ) {}
+    ) {
+    }
     public function execute(int $userId, DestroyUserOutput $presenter): void
     {
         try {

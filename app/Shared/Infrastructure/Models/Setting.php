@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Shared\Infrastructure\Models; 
+namespace App\Shared\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
     protected $fillable = [
-        'key' , 'value' , 'user_id'
+        'key', 'value', 'user_id',
     ];
-    
-    public function user (){
+
+    public function user()
+    {
         return $this->belongsTo(User::class, 'user_id');
     }
 }
-

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace  App\Shared\Infrastructure\Utilities;
+namespace App\Shared\Infrastructure\Utilities;
 
 use App\Shared\Domain\Contracts\DateProviderContract;
 use Carbon\Carbon;
@@ -13,7 +13,7 @@ final class CarbonDateUtility implements DateProviderContract
     private int $day;
     private int $month;
     private int $year;
-    private  $carbonDate;
+    private $carbonDate;
     private function __construct(
         private ?string $date = null,
     ) {
@@ -30,8 +30,9 @@ final class CarbonDateUtility implements DateProviderContract
     {
         return new self($date);
     }
-    public static function genereateDate (int $day , int $month , int $year):DateProviderContract{
-        return new self(Carbon::create($year, $month , $day)->toDateString());
+    public static function genereateDate(int $day, int $month, int $year): DateProviderContract
+    {
+        return new self(Carbon::create($year, $month, $day)->toDateString());
     }
     public static function now(): DateProviderContract
     {
@@ -59,13 +60,13 @@ final class CarbonDateUtility implements DateProviderContract
     }
     public function monthsUnitlNow(): int
     {
-        return (int)ceil(
+        return (int) ceil(
             $this->carbonDate->diffInMonths(Carbon::now()->toDateString())
         );
     }
     public function monthsUnitl(DateProviderContract $date): int
     {
-        return (int)($this->carbonDate->diffInMonths(self::from($date->toDateString())->toDateString()));
+        return (int) ($this->carbonDate->diffInMonths(self::from($date->toDateString())->toDateString()));
     }
     public function yearsUntilNow(): int
     {
@@ -74,6 +75,6 @@ final class CarbonDateUtility implements DateProviderContract
     public function yearsUntil(DateProviderContract $date): int
     {
 
-        return (int)($this->carbonDate->diffInYears(self::from($date->toDateString())->toDateString()));
+        return (int) ($this->carbonDate->diffInYears(self::from($date->toDateString())->toDateString()));
     }
 }

@@ -15,8 +15,8 @@ interface UserRepository
      * @return EntitiesWithPagination<UserEntity>
      */
     public function paginate(int $perPage = 10): EntitiesWithPagination;
-    public function findByEmail(string $email): UserEntity|null;
-    public function show(int $id): UserEntity|null;
+    public function findByEmail(string $email): ?UserEntity;
+    public function show(int $id): ?UserEntity;
     public function store(UserEntity $userEntity): UserEntity;
     public function update(UserEntity $userEntity): bool;
     public function destroy(int $id): bool;

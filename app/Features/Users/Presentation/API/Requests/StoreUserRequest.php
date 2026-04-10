@@ -27,7 +27,8 @@ class StoreUserRequest extends FormRequest
             'phones.*' => 'unique:phones,phone',
         ];
     }
-    public function messages(){
+    public function messages()
+    {
         return [
             'phones.*.unique' => "phone (:input) already exists",
         ];
