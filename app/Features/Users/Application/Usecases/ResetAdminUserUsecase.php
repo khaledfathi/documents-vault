@@ -15,13 +15,12 @@ final class ResetAdminUserUsecase implements ResetAdminUserContract
 {
     public function __construct(
         private UserRepository $userRepository,
-    ) {
-    }
+    ) {}
     public function execute(ResetAdminUserOutput $presenter)
     {
         try {
             $this->userRepository->update(new UserEntity(
-                id: UserEntity::ADMIN_ID,
+                id: UserEntity::ROOT_USER_ID,
                 groupId: GroupEntity::ADMIN_GROUP_ID,
                 name: 'admin',
                 email: 'admin@mail.com',

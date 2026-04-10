@@ -9,6 +9,7 @@ use App\Shared\Domain\Enums\User\PermissionType\PermissionEntity;
 final class GroupEntity
 {
     public const ADMIN_GROUP_ID = 1;
+    public const READER_GROUP_ID = 2;
     /**
      * @param ?int $id
      * @param ?string $name
@@ -18,7 +19,10 @@ final class GroupEntity
         public ?int $id = null,
         public ?string $name = null,
         public ?array $permissions = null,
-    ) {
+    ) {}
+    public static function isDefaultGroup(int $groupId)
+    {
+        return ( $groupId == self::ADMIN_GROUP_ID || $groupId  == self::READER_GROUP_ID);
     }
     public function toArray()
     {
@@ -32,7 +36,7 @@ final class GroupEntity
                 $permissions[] = [
                     'id' => $permission->id,
                     'permission' => $permission->permissionType->value,
-                ] ;
+                ];
             }
             $data['permissions'] = $permissions;
         }

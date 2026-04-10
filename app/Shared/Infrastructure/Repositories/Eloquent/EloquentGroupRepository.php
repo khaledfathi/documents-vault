@@ -20,6 +20,7 @@ final class EloquentGroupRepository implements GroupRepository
     public function show(int $groupId): ?GroupEntity
     {
         $record = Group::with('groupPermissions', 'groupPermissions.permission')->find($groupId);
+        if (! $record ) return null;
         //
         $permissionEntities = [];
         foreach ($record->groupPermissions as $groupPermission) {
@@ -85,6 +86,6 @@ final class EloquentGroupRepository implements GroupRepository
     }
     public function destroy(int $groupId): bool
     {
-        return false;
+        return Group::find($groupId)?->delete() ? true : false;
     }
 }

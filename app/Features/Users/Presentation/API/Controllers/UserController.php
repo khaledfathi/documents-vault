@@ -36,8 +36,7 @@ class UserController extends Controller
         private readonly DestroyUserContract $destroyUserUsecase,
         private readonly GenerateTokenContract $generateTokenUsecase,
         private readonly DestroyTokenContract $destroyTokenUsecase,
-    ) {
-    }
+    ) {}
     public function login(Request $request)
     {
         $presenter = new GenerateTokenPresenter();
@@ -70,7 +69,7 @@ class UserController extends Controller
         $this->storeUserUsecae->execute($data, $presenter);
         return $presenter->handle();
     }
-    public function update(UpdateUserRequest $request, string $userId)
+    public function update(UpdateUserRequest $request)
     {
         $data = $this->requestToUserEntity($request);
         $presenter = new UpdateUserPresenter();

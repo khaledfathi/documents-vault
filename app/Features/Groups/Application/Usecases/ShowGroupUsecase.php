@@ -18,8 +18,7 @@ final class ShowGroupUsecase implements ShowGroupContract
         private readonly GroupRepository $groupRepository,
         private readonly CurrentUserContract $currentUser,
         private readonly PermissionGateway $permissionGateway,
-    ) {
-    }
+    ) {}
     public function execute(int $groupId, ShowGroupOutput $presenter): void
     {
         if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::VIEW_GROUP)) {

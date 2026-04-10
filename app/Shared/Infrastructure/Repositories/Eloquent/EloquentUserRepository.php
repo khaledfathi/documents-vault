@@ -163,11 +163,7 @@ final class EloquentUserRepository implements UserRepository
     }
     public function destroy(int $id): bool
     {
-        $record = User::find($id);
-        if (! $record) {
-            return false ;
-        }
-        return $record->delete();
+        return User::find($id)?->delete() ? true : false;
     }
     /**
      * @param \App\Shared\Infrastructure\Models\Group $group ,

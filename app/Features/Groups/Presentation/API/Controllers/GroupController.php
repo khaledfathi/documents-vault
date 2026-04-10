@@ -21,13 +21,12 @@ class GroupController extends Controller
         private readonly StoreGroupContract $storeGroupUsecase,
         private readonly ShowGroupContract $showGroupUsecase,
         private readonly DestroyGroupContract $destroyGroupUsecase,
-    ) {
-    }
+    ) {}
     public function index(Request $request)
     {
         return __CLASS__ . ":" . __FUNCTION__;
     }
-    public function show(Request $request, string $groupId)
+    public function show(string $groupId)
     {
         $presenter = new ShowGroupPresenter();
         $this->showGroupUsecase->execute((int) $groupId, $presenter);
@@ -43,7 +42,7 @@ class GroupController extends Controller
     {
         return __CLASS__ . ":" . __FUNCTION__;
     }
-    public function destroy(Request $request, string $groupId)
+    public function destroy( string $groupId)
     {
         $presenter = new DestroyGroupPresenter();
         $this->destroyGroupUsecase->execute((int) $groupId, $presenter);

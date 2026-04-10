@@ -17,8 +17,7 @@ final class GenerateTokenUsecase implements GenerateTokenContract
         private readonly UserRepository $userRepository,
         private readonly PasswordHasherContract $passwordHasher,
         private readonly TokenGeneratorContract $tokenGenerator
-    ) {
-    }
+    ) {}
     public function execute(
         string $email,
         string $password,

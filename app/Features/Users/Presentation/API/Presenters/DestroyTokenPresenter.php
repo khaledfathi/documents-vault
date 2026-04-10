@@ -15,8 +15,7 @@ final class DestroyTokenPresenter implements DestroyTokenOutput
 
     public function __construct(
         private readonly string $userName,
-    ) {
-    }
+    ) {}
     public function onSuccess(): void
     {
         $this->response = fn() => response()->json([

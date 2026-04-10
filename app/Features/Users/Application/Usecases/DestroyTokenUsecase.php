@@ -13,8 +13,7 @@ final class DestroyTokenUsecase implements DestroyTokenContract
 {
     public function __construct(
         private TokenGeneratorContract $tokenGenerator
-    ) {
-    }
+    ) {}
     public function execute(DestroyTokenOutput $presenter): void
     {
         try {

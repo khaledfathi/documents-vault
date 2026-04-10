@@ -19,14 +19,13 @@ final class UpdateUserUsecase implements UpdateUserContract
         private readonly UserRepository $userRepository,
         private readonly PermissionGateway $permissionGateway,
         private readonly CurrentUserContract $currentUser,
-    ) {
-    }
+    ) {}
     public function execute(UserEntity $userEntity, UpdateUserOutput $presenter)
     {
         try {
             if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::EDIT_USER)) {
                 $presenter->onUnauthorized();
-                return ;
+                return;
             }
             $status = $this->userRepository->update($userEntity);
             $status ? $presenter->onSuccess($status) : $presenter->onNotFound();

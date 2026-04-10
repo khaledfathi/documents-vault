@@ -18,13 +18,12 @@ final class ListPermissionsUsecase implements ListPermissionsContract
         private readonly CurrentUserContract $currentUser,
         private readonly PermissionGateway $permissionGateway,
         private readonly PermissionRepository $permissionRepository,
-    ) {
-    }
+    ) {}
     public function execute(ListPermissionsOutput $presenter)
     {
         if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::VIEW_PERMISSION)) {
             $presenter->onUnauthorized();
-            return ;
+            return;
         }
         try {
             $permissionEntities = $this->permissionRepository->index();

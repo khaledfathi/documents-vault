@@ -29,7 +29,6 @@ class DatabaseSeeder extends Seeder
 
         Group::insert([
             ['name' => 'admin'],
-            ['name' => 'normal'],
             ['name' => 'reader'],
         ]);
         Permission::insert([

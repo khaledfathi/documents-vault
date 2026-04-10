@@ -21,14 +21,13 @@ final class StoreUserUsecase implements StoreUserContract
         private readonly GroupRepository $groupRepository,
         private readonly PermissionGateway $permissionGateway,
         private readonly CurrentUserContract $currentUser,
-    ) {
-    }
+    ) {}
     public function execute(UserEntity $userEntity, StoreUserOutput $presenter): void
     {
         try {
             if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::CREATE_USER)) {
                 $presenter->onUnauthorized();
-                return ;
+                return;
             }
             $userRecord = $this->userRepository->store($userEntity);
             $userEntity->id = $userRecord->id;

@@ -12,8 +12,7 @@ class PermissionController extends Controller
 {
     public function __construct(
         private readonly ListPermissionsContract $listPermissionUsecase,
-    ) {
-    }
+    ) {}
     public function index()
     {
         $presenter = new ListPermissionsPresenter();

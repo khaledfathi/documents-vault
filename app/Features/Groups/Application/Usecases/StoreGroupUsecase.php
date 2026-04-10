@@ -19,13 +19,12 @@ final class StoreGroupUsecase implements StoreGroupContract
         private readonly GroupRepository $groupRepository,
         private readonly CurrentUserContract $currentUser,
         private readonly PermissionGateway $permissionGateway,
-    ) {
-    }
+    ) {}
     public function execute(GroupEntity $groupEntity, StoreGroupOutput $presenter)
     {
         if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::CREATE_GROUP)) {
             $presenter->onUnauthorized();
-            return ;
+            return;
         };
         try {
             $record = $this->groupRepository->store($groupEntity);

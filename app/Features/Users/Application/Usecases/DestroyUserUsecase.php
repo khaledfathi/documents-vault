@@ -19,8 +19,7 @@ final class DestroyUserUsecase implements DestroyUserContract
         private readonly CurrentUserContract $currentUser,
         private readonly PermissionGateway $permissionGateway,
         private readonly UserRepository $userRepository,
-    ) {
-    }
+    ) {}
     public function execute(int $userId, DestroyUserOutput $presenter): void
     {
         try {
@@ -28,9 +27,9 @@ final class DestroyUserUsecase implements DestroyUserContract
                 $presenter->onUnauthorized();
                 return;
             }
-            if ($userId == UserEntity::ADMIN_ID) {
-                $presenter->onAdminUser();
-                return ;
+            if (UserEntity::isRootUser($userId)) {
+                $presenter->onRoorUser();
+                return;
             }
             $status = $this->userRepository->destroy($userId);
             $status ? $presenter->onSuccess() : $presenter->onNotFound();
