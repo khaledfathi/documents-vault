@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Features\Groups\Presentation\API\Presenters;
 
 use App\Features\Groups\Application\Outputs\ShowGroupOutput;
-use App\Shared\Domain\Entities\User\GroupEntity;
+use App\Shared\Domain\Entities\Group\GroupEntity;
 use App\Shared\Presentation\API\Traits\PresenterTrait;
 use Illuminate\Http\Response;
 

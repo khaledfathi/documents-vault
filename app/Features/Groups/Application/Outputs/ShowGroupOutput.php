@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Features\Groups\Application\Outputs;
 
-use App\Shared\Domain\Entities\User\GroupEntity;
+use App\Shared\Domain\Entities\Group\GroupEntity;
 
 interface ShowGroupOutput
 {

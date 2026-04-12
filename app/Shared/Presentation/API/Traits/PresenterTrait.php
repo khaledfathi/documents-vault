@@ -11,18 +11,6 @@ use Illuminate\Http\Response;
 trait PresenterTrait
 {
     protected Closure $response;
-    /**
-     * append the exception message to [$data]
-     * @param array $data
-     * @param string $error
-     * @return void
-     */
-    public function onDebug(array &$data, string $error): void
-    {
-        if (getenv('APP_DEBUG')) {
-            $data['error'] = $error;
-        }
-    }
 
     public function onUnauthorized(): void
     {
@@ -40,8 +28,19 @@ trait PresenterTrait
         $this->onDebug($data, $error);
         $this->response = fn() => response()->json($data, Response::HTTP_INTERNAL_SERVER_ERROR);
     }
-
-    public function notFoundResponse(string $message = "Record is not found")
+    /**
+     * append the exception message to [$data]
+     * @param array $data
+     * @param string $error
+     * @return void
+     */
+    public final function onDebug(array &$data, string $error): void
+    {
+        if (getenv('APP_DEBUG')) {
+            $data['error'] = $error;
+        }
+    }
+    public final function notFoundResponse(string $message = "Record is not found")
     {
         return response()->json([
             "success" => false,

@@ -29,13 +29,13 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     public function __construct(
+        private readonly GenerateTokenContract $generateTokenUsecase,
+        private readonly DestroyTokenContract $destroyTokenUsecase,
         private readonly PaginateUsersContract $paginateUserUsecase,
         private readonly ShowUserContract $showUserUsecase,
         private readonly StoreUserContract $storeUserUsecae,
         private readonly UpdateUserContract $updateUserUsecase,
         private readonly DestroyUserContract $destroyUserUsecase,
-        private readonly GenerateTokenContract $generateTokenUsecase,
-        private readonly DestroyTokenContract $destroyTokenUsecase,
     ) {}
     public function login(Request $request)
     {

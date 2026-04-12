@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Entities\User;
 
+use App\Shared\Domain\Entities\Group\GroupEntity;
+
 final class UserEntity
 {
     public const ROOT_USER_ID = 1;
@@ -15,7 +17,7 @@ final class UserEntity
      * @param  ?string $email
      * @param  ?string $password
      * @param  ?array<?\App\Shared\Domain\Entities\User\PhoneEntity> $phones,
-     * @param  ?\App\Shared\Domain\Entities\User\GroupEntity $group
+     * @param  ?\App\Shared\Domain\Entities\Group\GroupEntity $group
      */
     public function __construct(
         public ?int $id = null,

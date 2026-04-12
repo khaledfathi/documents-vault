@@ -7,7 +7,7 @@ namespace App\Features\Groups\Application\Usecases;
 use App\Features\Groups\Application\Contracts\StoreGroupContract;
 use App\Features\Groups\Application\Outputs\StoreGroupOutput;
 use App\Shared\Application\Contracts\Security\CurrentUserContract;
-use App\Shared\Domain\Entities\User\GroupEntity;
+use App\Shared\Domain\Entities\Group\GroupEntity;
 use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\GroupRepository;

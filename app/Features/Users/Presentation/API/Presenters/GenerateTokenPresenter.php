@@ -34,16 +34,6 @@ final class GenerateTokenPresenter implements GenerateTokenOutput
             "message" => "Faild to authinticat , invalid email or password",
         ], Response::HTTP_UNAUTHORIZED);
     }
-    public function onFailure(string $error): void
-    {
-        $data = [
-            "success" => false,
-            "message" => Messages::SERVER_ERROR,
-        ];
-        $this->onDebug($data, $error);
-        $this->response = fn() => response()->json($data, Response::HTTP_INTERNAL_SERVER_ERROR);
-        //Log the error
-    }
     public function handle()
     {
         return ($this->response)();

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Repositories;
 
-use App\Shared\Domain\Entities\User\GroupEntity;
+use App\Shared\Domain\Entities\Group\GroupEntity;
 use App\Shared\Domain\ValuObjects\EntitiesWithPagination;
-use App\Shared\Domain\Entities\User\PermissionEntity;
+use App\Shared\Domain\Entities\Group\PermissionEntity;;
 
 interface GroupRepository
 {

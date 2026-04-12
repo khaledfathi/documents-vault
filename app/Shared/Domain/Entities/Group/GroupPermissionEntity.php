@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Domain\Entities\User;
+namespace App\Shared\Domain\Entities\Group;
 
 final class GroupPermissionEntity
 {

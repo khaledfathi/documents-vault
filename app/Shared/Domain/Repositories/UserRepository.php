@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Shared\Domain\Repositories;
 
 use App\Shared\Domain\Entities\User\UserEntity;
-use App\Shared\Domain\Entities\User\PermissionEntity;
+use App\Shared\Domain\Entities\Group\PermissionEntity;;
 use App\Shared\Domain\ValuObjects\EntitiesWithPagination;
 
 interface UserRepository

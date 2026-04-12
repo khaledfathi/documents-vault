@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Shared\Infrastructure\Repositories\Eloquent;
 
-use App\Shared\Domain\Entities\User\GroupEntity;
-use App\Shared\Domain\Entities\User\PermissionEntity;
+use App\Shared\Domain\Entities\Group\GroupEntity;
+use App\Shared\Domain\Entities\Group\PermissionEntity;;
 use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Repositories\GroupRepository;
 use App\Shared\Domain\ValuObjects\EntitiesWithPagination;

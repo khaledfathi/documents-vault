@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Shared\Infrastructure\Repositories\Eloquent;
 
-use App\Shared\Domain\Entities\User\GroupEntity;
-use App\Shared\Domain\Entities\User\PermissionEntity;
+use App\Shared\Domain\Entities\Group\GroupEntity;
+use App\Shared\Domain\Entities\Group\PermissionEntity;;
 use App\Shared\Domain\Entities\User\PhoneEntity;
 use App\Shared\Domain\Entities\User\UserEntity;
 use App\Shared\Domain\Enums\User\PermissionType;
@@ -167,7 +167,7 @@ final class EloquentUserRepository implements UserRepository
     }
     /**
      * @param \App\Shared\Infrastructure\Models\Group $group ,
-     * @param array<\App\Shared\Domain\Entities\User\PermissionEntity> $permissions
+     * @param array<\App\Shared\Domain\Entities\Group\PermissionEntity;> $permissions
      * @return GroupEntity
      */
     private function generateGroupEntity(Group $group, array $permissions = []): GroupEntity
@@ -181,7 +181,7 @@ final class EloquentUserRepository implements UserRepository
 
     /**
      * @param Collection $groupPermission
-     * @return array <\App\Shared\Domain\Entities\User\PermissionEntity>
+     * @return array <\App\Shared\Domain\Entities\Group\PermissionEntity;>
      */
     private function generatePermissionEntities(Collection $groupPermisssions): array
     {

@@ -7,7 +7,7 @@ namespace App\Features\Users\Application\Usecases;
 use App\Features\Users\Application\Contracts\ResetAdminUserContract;
 use App\Features\Users\Application\Outputs\ResetAdminUserOutput;
 use App\Shared\Domain\Entities\User\UserEntity;
-use App\Shared\Domain\Entities\User\GroupEntity;
+use App\Shared\Domain\Entities\Group\GroupEntity;
 use App\Shared\Domain\Repositories\UserRepository;
 use Exception;
 
