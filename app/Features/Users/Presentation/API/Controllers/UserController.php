@@ -53,7 +53,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $presenter = new PaginateUsersPresenter();
-        $this->paginateUserUsecase->execute($presenter, (int) $request->per_page ?? 10);
+        $this->paginateUserUsecase->execute($presenter, (int)$request->per_page ?? 10);
         return $presenter->handle();
     }
     public function show(string $userId)

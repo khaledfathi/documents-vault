@@ -8,13 +8,17 @@ use App\Features\Groups\Application\Contracts\DestroyGroupContract;
 use App\Features\Groups\Application\Contracts\PaginateGroupContract;
 use App\Features\Groups\Application\Contracts\ShowGroupContract;
 use App\Features\Groups\Application\Contracts\StoreGroupContract;
+use App\Features\Groups\Application\Contracts\UpdateGroupContract;
 use App\Features\Groups\Presentation\API\Presenters\DestroyGroupPresenter;
 use App\Features\Groups\Presentation\API\Presenters\PaginateGroupPresenter;
 use App\Features\Groups\Presentation\API\Presenters\ShowGroupPresenter;
 use App\Features\Groups\Presentation\API\Presenters\StoreGroupPresenter;
+use App\Features\Groups\Presentation\API\Presenters\UpdateGroupPresenter;
 use App\Features\Groups\Presentation\API\Requests\StoreGroupRequest;
+use App\Features\Groups\Presentation\API\Requests\UpdateGroupRequest;
 use App\Shared\Domain\Entities\Group\GroupEntity;
 use App\Shared\Domain\Entities\Group\PermissionEntity;;
+
 use App\Shared\Presentation\HTTP\Controller;
 use Illuminate\Http\Request;
 
@@ -25,11 +29,12 @@ class GroupController extends Controller
         private readonly ShowGroupContract $showGroupUsecase,
         private readonly StoreGroupContract $storeGroupUsecase,
         private readonly DestroyGroupContract $destroyGroupUsecase,
+        private readonly UpdateGroupContract $UpdateGroupUsecase,
     ) {}
     public function index(Request $request)
     {
         $presenter = new PaginateGroupPresenter();
-        $this->paginateGroupUsecase->execute($presenter, (int) $request->per_page ?? 10);
+        $this->paginateGroupUsecase->execute($presenter, (int)$request->per_page ?? 10);
         return $presenter->handle();
     }
     public function show(string $groupId)
@@ -44,11 +49,13 @@ class GroupController extends Controller
         $this->storeGroupUsecase->execute($this->requestToGroupEntity($request), $presenter);
         return $presenter->handle();
     }
-    public function update(Request $request, string $groupId)
+    public function update(UpdateGroupRequest $request, string $groupId)
     {
-        return __CLASS__ . ":" . __FUNCTION__;
+        $presenter = new UpdateGroupPresenter();
+        $this->UpdateGroupUsecase->execute($this->requestToGroupEntity($request), $presenter);
+        return $presenter->handle();
     }
-    public function destroy( string $groupId)
+    public function destroy(string $groupId)
     {
         $presenter = new DestroyGroupPresenter();
         $this->destroyGroupUsecase->execute((int) $groupId, $presenter);
@@ -62,10 +69,12 @@ class GroupController extends Controller
                 id: $permission_id,
             );
         }
-        return new GroupEntity(
-            id: $request->id,
+        $groupEntity = new GroupEntity(
             name: $request->name,
             permissions: $permissions,
         );
+        $groupId = $request->id ?? $request->route('group');
+        $groupEntity->id = $groupId ? (int)$groupId : null ;
+        return $groupEntity;
     }
 }

@@ -8,22 +8,27 @@ use App\Shared\Domain\Enums\User\PermissionType\PermissionEntity;
 
 final class GroupEntity
 {
+    /**
+     * @var ADMIN_GROUP_ID the id of first group stored in the database
+     */
     public const ADMIN_GROUP_ID = 1;
-    public const READER_GROUP_ID = 2;
+    /**
+     * @var DEFAULT_GROUP_ID the id of first group stored in the database
+     */
+    public const DEFAULT_GROUP_ID= 2;
     /**
      * @param ?int $id
      * @param ?string $name
      * @param ?array<PermissionEntity> $permissions
+     * @param bool $isDefault is this group has id [DEFAULT_GROUP_ID]
+     * @param bool $isAdmin is this group has id [ADMIN_GROUP_ID]
      */
     public function __construct(
         public ?int $id = null,
         public ?string $name = null,
         public ?array $permissions = null,
+        public  bool $isProtected= false,
     ) {}
-    public static function isDefaultGroup(int $groupId)
-    {
-        return ( $groupId == self::ADMIN_GROUP_ID || $groupId  == self::READER_GROUP_ID);
-    }
     public function toArray()
     {
         $data = [

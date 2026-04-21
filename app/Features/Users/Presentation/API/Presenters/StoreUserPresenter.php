@@ -18,8 +18,8 @@ final class StoreUserPresenter implements StoreUserOutput
         $this->response = fn() => response()->json([
             'success' => true,
             'message' => 'user has been created successfully',
-            'data' => $userEntity->toArray(), Response::HTTP_CREATED,
-        ]);
+            'data' => $userEntity->toArray(),
+        ], Response::HTTP_CREATED);
     }
     public function handle()
     {

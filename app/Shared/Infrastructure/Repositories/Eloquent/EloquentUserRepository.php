@@ -11,14 +11,20 @@ use App\Shared\Domain\Entities\User\UserEntity;
 use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Repositories\UserRepository;
 use App\Shared\Domain\ValuObjects\EntitiesWithPagination;
-use App\Shared\Domain\ValuObjects\Pagination;
 use App\Shared\Infrastructure\Models\Group;
 use App\Shared\Infrastructure\Models\User;
+use App\Shared\Infrastructure\Repositories\Eloquent\Traits\PaginatorTrait;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
 
 final class EloquentUserRepository implements UserRepository
 {
+    use PaginatorTrait;
+
+    /**
+     * @var ROOT_USER_ID the id of first user created in the system
+     */
+    private const ROOT_USER_ID = 1;
     /**
      * @inheritdoc
      */
@@ -30,8 +36,8 @@ final class EloquentUserRepository implements UserRepository
         foreach ($records as $record) {
             //group
             $group = new GroupEntity(
-                id : $record->group->id,
-                name : $record->group->name,
+                id: $record->group->id,
+                name: $record->group->name,
             );
             //phones
             $phones = [];
@@ -50,17 +56,11 @@ final class EloquentUserRepository implements UserRepository
                 email: $record->email,
                 phones: $phones,
                 group: $group,
+                isRoot: $record->id == self::ROOT_USER_ID ? true : false,
             );
         }
         //pagination
-        $pagination = new Pagination(
-            perPage  : $perPage,
-            currentPage : $records->currentPage(),
-            path : $records->path(),
-            pageName : $records->getPageName(),
-            total : $records->total(),
-            queryParameters : [],
-        );
+        $pagination = $this->mapPaginator($records, $perPage);
         //
         return new EntitiesWithPagination($pagination, $userEntities);
     }
@@ -81,6 +81,7 @@ final class EloquentUserRepository implements UserRepository
                 password: $record->password,
                 phones: $phones,
                 group: $group,
+                isRoot: $record->id == self::ROOT_USER_ID ? true : false,
             );
             return new UserEntity();
         }
@@ -103,6 +104,7 @@ final class EloquentUserRepository implements UserRepository
                 password: $record->password,
                 phones: $phones,
                 group: $group,
+                isRoot: $record->id == self::ROOT_USER_ID ? true : false,
             );
             return $userEntity;
         }
@@ -132,6 +134,7 @@ final class EloquentUserRepository implements UserRepository
         )->toArray();
         //
         $userEntity->id = $record->id;
+        $userEntity->isRoot =  $record->id == self::ROOT_USER_ID ? true : false;
         return $userEntity;
     }
     /**
@@ -217,5 +220,8 @@ final class EloquentUserRepository implements UserRepository
             return [];
         }
         return $this->generatePermissionEntities($record->group->groupPermissions);
+    }
+    public function getRootUserId(): int{
+        return (int) self::ROOT_USER_ID;
     }
 }

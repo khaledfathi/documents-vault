@@ -8,7 +8,6 @@ use App\Shared\Domain\Entities\Group\GroupEntity;
 
 final class UserEntity
 {
-    public const ROOT_USER_ID = 1;
     /**
      * Summary of __construct
      * @param ?null $id
@@ -27,11 +26,8 @@ final class UserEntity
         public ?string $password = null,
         public ?array $phones = null,
         public ?GroupEntity $group = null,
+        public bool $isRoot = false,
     ) {}
-    public static function isRootUser(int $userId)
-    {
-        return $userId == self::ROOT_USER_ID;
-    }
     /**
      * @return array{
      * id: int,
@@ -60,11 +56,6 @@ final class UserEntity
         }
         return $data;
     }
-    public function isRoorUser(): bool
-    {
-        return $this->id == self::ROOT_USER_ID;
-    }
-
     private function getPhoneNumbers(): array
     {
         $phones = [];

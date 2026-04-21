@@ -25,4 +25,5 @@ interface UserRepository
      * @return array<PermissionEntity>;
      */
     public function getPermissions(int $userId): array;
+    public function getRootUserId(): int;
 }

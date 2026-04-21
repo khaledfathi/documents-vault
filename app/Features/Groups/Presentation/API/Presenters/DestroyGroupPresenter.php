@@ -23,11 +23,11 @@ final class DestroyGroupPresenter implements DestroyGroupOutput
     {
         $this->response = fn() => $this->notFoundResponse("group is not found");
     }
-    public function onDefaultGroups(): void
+    public function onProtectedGroup(): void
     {
         $this->response = fn() => response()->json([
             'success' => false,
-            'message' => 'can not delete the default groups (admin , reader)',
+            'message' => 'can not delete the default groups (admin , default)',
         ]);
     }
     public function handle()

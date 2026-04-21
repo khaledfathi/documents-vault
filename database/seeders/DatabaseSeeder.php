@@ -7,69 +7,76 @@ use App\Shared\Infrastructure\Models\Group;
 use App\Shared\Infrastructure\Models\GroupPermission;
 use App\Shared\Infrastructure\Models\Permission;
 use App\Shared\Infrastructure\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
+    private $now;
+    private $adminGroup;
+    private $defaultGroup;
+    public function __construct()
+    {
+        $this->now = Carbon::now();
+    }
+
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        DB::transaction(function (){
+            $this->createDefaultGroups();
+            $this->createPermissions();
+            $this->setPermissionsForAdminGroup();
+            $this->createRootUser();
+        });
+    }
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        Group::insert([
-            ['name' => 'admin'],
-            ['name' => 'reader'],
+    private function createDefaultGroups()
+    {
+        $this->adminGroup = Group::updateOrCreate([
+            'name' => 'admin', "created_at" => $this->now, "updated_at" => $this->now
         ]);
-        Permission::insert([
-            ['permission' => PermissionType::VIEW_USER->value],
-            ['permission' => PermissionType::CREATE_USER->value],
-            ['permission' => PermissionType::EDIT_USER->value],
-            ['permission' => PermissionType::DELETE_USER->value],
-            //
-            ['permission' => PermissionType::VIEW_GROUP->value],
-            ['permission' => PermissionType::CREATE_GROUP->value],
-            ['permission' => PermissionType::EDIT_GROUP->value],
-            ['permission' => PermissionType::DELETE_GROUP->value],
-            //
-            ['permission' => PermissionType::VIEW_CATEGORY->value],
-            ['permission' => PermissionType::CREATE_CATEGORY->value],
-            ['permission' => PermissionType::EDIT_CATEGORY->value],
-            ['permission' => PermissionType::DELETE_CATEGORY->value],
-            //
-            ['permission' => PermissionType::VIEW_PERMISSION->value],
+        $this->defaultGroup= Group::updateOrCreate([
+            'name' => 'default', "created_at" => $this->now, "updated_at" => $this->now
         ]);
-        //set all permision to admin
-        GroupPermission::insert([
-            ['group_id' => 1 , 'permission_id' => 1],
-            ['group_id' => 1 , 'permission_id' => 2],
-            ['group_id' => 1 , 'permission_id' => 3],
-            ['group_id' => 1 , 'permission_id' => 4],
-            ['group_id' => 1 , 'permission_id' => 5],
-            ['group_id' => 1 , 'permission_id' => 6],
-            ['group_id' => 1 , 'permission_id' => 7],
-            ['group_id' => 1 , 'permission_id' => 8],
-            ['group_id' => 1 , 'permission_id' => 9],
-            ['group_id' => 1 , 'permission_id' => 10],
-            ['group_id' => 1 , 'permission_id' => 11],
-            ['group_id' => 1 , 'permission_id' => 12],
-            ['group_id' => 1 , 'permission_id' => 13],
-        ]);
+    }
+    private function createPermissions()
+    {
+        $permissions = array_map(fn($permission) => [
+            "permission" => $permission->value,
+            "created_at" => $this->now,
+            "updated_at" => $this->now
+        ], PermissionType::cases());
+        Permission::insert($permissions);
+    }
+    public function setPermissionsForAdminGroup()
+    {
+        $groupPermissions = [];
+        $allPermissionIds = Permission::pluck('id');
+        foreach ($allPermissionIds as $permissionId) {
+            $groupPermissions[] = [
+                'group_id' => $this->adminGroup->id,
+                'permission_id' => $permissionId,
+                'created_at' => $this->now,
+                'updated_at' => $this->now
+            ];
+        }
+        GroupPermission::insert($groupPermissions);
+    }
+    public function createRootUser()
+    {
         User::create([
             'name' => 'admin',
             'email' => 'admin@mail.com',
             'password' => Hash::make('admin'),
-            'group_id' => 1 //admin
+            'group_id' => $this->adminGroup->id,
         ]);
     }
 }

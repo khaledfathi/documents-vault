@@ -13,10 +13,12 @@ interface GroupRepository
     /**
      * @return EntitiesWithPagination<GroupEntity>
      */
-    public function index(): EntitiesWithPagination;
+    public function paginate(int $perPage): EntitiesWithPagination;
     public function show(int $groupId): ?GroupEntity;
     public function showByUserId(int $userId): ?GroupEntity;
     public function store(GroupEntity $groupEntity): GroupEntity;
     public function update(GroupEntity $groupEntity): bool;
     public function destroy(int $groupId): bool;
+    public function getAdminGroupId(): int;
+    public function getDefaultGroupId(): int;
 }

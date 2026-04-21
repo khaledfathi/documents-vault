@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Features\Permissions\Presentation\API\Presenter;
+namespace App\Features\Permissions\Presentation\API\Presenters;
 
 use App\Features\Permissions\Application\Outputs\ListPermissionsOutput;
 use App\Shared\Presentation\API\Traits\PresenterTrait;

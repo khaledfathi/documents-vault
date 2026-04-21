@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Features\Permissions\Presentation\API\Controllers;
 
 use App\Features\Permissions\Application\Contracts\ListPermissionsContract;
-use App\Features\Permissions\Presentation\API\Presenter\ListPermissionsPresenter;
+use App\Features\Permissions\Presentation\API\Presenters\ListPermissionsPresenter;
 use App\Shared\Presentation\HTTP\Controller;
 
 class PermissionController extends Controller
