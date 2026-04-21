@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features\Users\Infrastructure\Requests;
+namespace App\Features\Users\Presentation\API\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -27,11 +27,11 @@ class UpdateUserRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
-                Rule::unique('users', 'email')->ignore((int)$this->route('user')),
+                Rule::unique('users', 'email')->ignore((int) $this->route('user')),
             ],
 
             'phones.*' => [
-                Rule::unique('phones', 'phone')->ignore((int)$this->route('user'), 'user_id'),
+                Rule::unique('phones', 'phone')->ignore((int) $this->route('user'), 'user_id'),
             ],
         ];
     }

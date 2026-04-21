@@ -1,5 +1,6 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace App\Features\Users\Application\Usecases;
 
@@ -13,26 +14,29 @@ use App\Shared\Domain\Repositories\GroupRepository;
 use App\Shared\Domain\Repositories\UserRepository;
 use Exception;
 
-final class StoreUserUsecase implements StoreUserContract {
+final class StoreUserUsecase implements StoreUserContract
+{
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly GroupRepository $groupRepository,
         private readonly PermissionGateway $permissionGateway,
         private readonly CurrentUserContract $currentUser,
-    ) { }
-    public function execute ( UserEntity $userEntity, StoreUserOutput $presenter):void{ try {
-            if( ! $this->permissionGateway->can($this->currentUser->id(), PermissionType::CREATE_USER)){
+    ) {}
+    public function execute(UserEntity $userEntity, StoreUserOutput $presenter): void
+    {
+        try {
+            if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::CREATE_USER)) {
                 $presenter->onUnauthorized();
-                return ;
+                return;
             }
             $userRecord = $this->userRepository->store($userEntity);
-            $userEntity->id= $userRecord->id;
+            $userEntity->id = $userRecord->id;
 
             $groupRecord = $this->groupRepository->showByUserId($userEntity->id ?? 0);
             $userEntity->group = $groupRecord;
 
             $presenter->onSuccess($userEntity);
-        }catch (Exception $e){
+        } catch (Exception $e) {
             $presenter->onFailure($e->getMessage());
         }
     }

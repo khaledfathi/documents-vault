@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Features\Users\Infrastructure\Requests;
+namespace App\Features\Groups\Presentation\API\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUserRequest extends FormRequest
+class UpdateGroupRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +22,9 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'email' => 'required|unique:users,email',
-            'phones.*' => 'unique:phones,phone',
-        ];
-    }
-    public function messages(){
-        return [
-            'phones.*.unique' => "phone (:input) already exists",
+            'name' => 'required|unique:groups,name,'.$this->route('group'),
+            'permission_ids' => 'required|array',
+            'permission_ids.*' => 'exists:permissions,id',
         ];
     }
 }

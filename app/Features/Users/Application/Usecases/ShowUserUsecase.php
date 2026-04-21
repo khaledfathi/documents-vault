@@ -1,5 +1,6 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace App\Features\Users\Application\Usecases;
 
@@ -11,27 +12,28 @@ use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\UserRepository;
 use Exception;
 
-final class ShowUserUsecase implements ShowUserContract {
-
+final class ShowUserUsecase implements ShowUserContract
+{
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly PermissionGateway $permissionGateway,
         private readonly CurrentUserContract $currentUser,
-    ) { }
-    public function execute ( int $userId , ShowUserOutput $presenter){
+    ) {}
+    public function execute(int $userId, ShowUserOutput $presenter)
+    {
         try {
-            if ( ! $this->permissionGateway->can($this->currentUser->id(), PermissionType::VIEW_USER ) ){
+            if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::VIEW_USER)) {
                 $presenter->onUnauthorized();
-                return ;
+                return;
             }
             $this->userRepository->getPermissions($userId);
             $userEntity = $this->userRepository->show($userId);
-            if(! $userEntity) {
+            if (! $userEntity) {
                 $presenter->onNotFound();
-                return ;
+                return;
             }
             $presenter->onSuccess($userEntity);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             $presenter->onFailure($e->getMessage());
         }
     }

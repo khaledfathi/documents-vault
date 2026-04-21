@@ -11,8 +11,6 @@ use App\Features\Users\Application\Contracts\PaginateUsersContract;
 use App\Features\Users\Application\Contracts\ShowUserContract;
 use App\Features\Users\Application\Contracts\StoreUserContract;
 use App\Features\Users\Application\Contracts\UpdateUserContract;
-use App\Features\Users\Infrastructure\Requests\StoreUserRequest;
-use App\Features\Users\Infrastructure\Requests\UpdateUserRequest;
 use App\Features\Users\Presentation\API\Presenters\DestroyTokenPresenter;
 use App\Features\Users\Presentation\API\Presenters\DestroyUserPresenter;
 use App\Features\Users\Presentation\API\Presenters\GenerateTokenPresenter;
@@ -20,6 +18,8 @@ use App\Features\Users\Presentation\API\Presenters\PaginateUsersPresenter;
 use App\Features\Users\Presentation\API\Presenters\ShowUserPresenter;
 use App\Features\Users\Presentation\API\Presenters\StoreUserPresenter;
 use App\Features\Users\Presentation\API\Presenters\UpdateUserPresenter;
+use App\Features\Users\Presentation\API\Requests\StoreUserRequest;
+use App\Features\Users\Presentation\API\Requests\UpdateUserRequest;
 use App\Shared\Domain\Entities\User\PhoneEntity;
 use App\Shared\Domain\Entities\User\UserEntity;
 use App\Shared\Presentation\HTTP\Controller;
@@ -29,13 +29,13 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     public function __construct(
+        private readonly GenerateTokenContract $generateTokenUsecase,
+        private readonly DestroyTokenContract $destroyTokenUsecase,
         private readonly PaginateUsersContract $paginateUserUsecase,
-        private readonly ShowUserContract  $showUserUsecase,
+        private readonly ShowUserContract $showUserUsecase,
         private readonly StoreUserContract $storeUserUsecae,
         private readonly UpdateUserContract $updateUserUsecase,
         private readonly DestroyUserContract $destroyUserUsecase,
-        private readonly GenerateTokenContract $generateTokenUsecase,
-        private readonly DestroyTokenContract $destroyTokenUsecase,
     ) {}
     public function login(Request $request)
     {
@@ -53,7 +53,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $presenter = new PaginateUsersPresenter();
-        $this->paginateUserUsecase->execute($presenter , (int)$request->per_page ?? 10 );
+        $this->paginateUserUsecase->execute($presenter, (int)$request->per_page ?? 10);
         return $presenter->handle();
     }
     public function show(string $userId)
@@ -69,34 +69,34 @@ class UserController extends Controller
         $this->storeUserUsecae->execute($data, $presenter);
         return $presenter->handle();
     }
-    public function update(UpdateUserRequest $request, string $userId)
+    public function update(UpdateUserRequest $request)
     {
         $data = $this->requestToUserEntity($request);
         $presenter = new UpdateUserPresenter();
-        $this->updateUserUsecase->execute($data , $presenter);
+        $this->updateUserUsecase->execute($data, $presenter);
         return $presenter->handle();
     }
     public function destroy(string $userId)
     {
         $presenter = new DestroyUserPresenter();
-        $this->destroyUserUsecase->execute((int)$userId , $presenter);
+        $this->destroyUserUsecase->execute((int) $userId, $presenter);
         return $presenter->handle();
     }
     private function requestToUserEntity(Request $request): UserEntity
     {
         $userEntity = new UserEntity(
-            groupId: $request->group_id ? (int)$request->group_id : null,
+            groupId: $request->group_id ? (int) $request->group_id : null,
             name: $request->name,
             email: $request->email,
             password: $request->password,
         );
-        if ($userId = $request->route('user')){
-            $userEntity->id = (int)$userId;
-        }else if ($userId = $request->id){
-            $userEntity->id = (int)$userId;
+        if ($userId = $request->route('user')) {
+            $userEntity->id = (int) $userId;
+        } elseif ($userId = $request->id) {
+            $userEntity->id = (int) $userId;
         }
         $phones = [];
-        foreach($request->phones ?? [] as $phone){
+        foreach ($request->phones ?? [] as $phone) {
             $phones[] = new PhoneEntity(
                 userId: $userEntity->id,
                 phone: $phone

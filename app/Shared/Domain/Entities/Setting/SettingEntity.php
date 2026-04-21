@@ -1,12 +1,16 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
+
 namespace App\Shared\Domain\Entities\Setting;
 
-final class SettingEntity {
+final class SettingEntity
+{
     public function __construct(
-        public ?int $id = null ,
-        public ?int $userId = null ,
-        public ?string $key = null ,
+        public ?int $id = null,
+        public ?int $userId = null,
+        public ?string $key = null,
         public ?string $value = null,
-    ) { }
+    ) {
+    }
 }

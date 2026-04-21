@@ -10,5 +10,6 @@ final class FileEntity
         public ?int $id = null,
         public ?int $documentId = null,
         public ?string $file = null,
-    ) {}
+    ) {
+    }
 }

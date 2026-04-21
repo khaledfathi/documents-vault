@@ -1,12 +1,14 @@
 <?php
-declare (strict_types= 1);
-namespace App\Shared\Domain\ValuObjects;
 
+declare(strict_types=1);
+
+namespace App\Shared\Domain\ValuObjects;
 
 /**
  * @template T
  */
-final class EntitiesWithPagination{
+final class EntitiesWithPagination
+{
     /**
      *
      * @param ?{agination $pagination
@@ -15,5 +17,6 @@ final class EntitiesWithPagination{
     public function __construct(
         public ?Pagination $pagination = null,
         public ?array $entities = null
-    ) {}
+    ) {
+    }
 }

@@ -1,10 +1,13 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
+
 namespace App\Shared\Domain\Entities\User;
 
-final class UserEntity{
+use App\Shared\Domain\Entities\Group\GroupEntity;
 
-    public const ADMIN_ID = 1;
+final class UserEntity
+{
     /**
      * Summary of __construct
      * @param ?null $id
@@ -13,7 +16,7 @@ final class UserEntity{
      * @param  ?string $email
      * @param  ?string $password
      * @param  ?array<?\App\Shared\Domain\Entities\User\PhoneEntity> $phones,
-     * @param  ?\App\Shared\Domain\Entities\User\GroupEntity $group
+     * @param  ?\App\Shared\Domain\Entities\Group\GroupEntity $group
      */
     public function __construct(
         public ?int $id = null,
@@ -23,8 +26,8 @@ final class UserEntity{
         public ?string $password = null,
         public ?array $phones = null,
         public ?GroupEntity $group = null,
-    ) { }
-
+        public bool $isRoot = false,
+    ) {}
     /**
      * @return array{
      * id: int,
@@ -35,41 +38,41 @@ final class UserEntity{
      * permissions: array{id: int , permission: string}|null
      * }
      * */
-    public function toArray ():array{
+    public function toArray(): array
+    {
         $data = [
-            "id"=> $this->id,
-            "name"=> $this->name,
-            "email"=> $this->email,
-            "phones"=>$this->phones ? $this->getPhoneNumbers() : [],
-            "group"=> $this->group ? [
-                "id"=> $this->group->id,
+            "id" => $this->id,
+            "name" => $this->name,
+            "email" => $this->email,
+            "phones" => $this->phones ? $this->getPhoneNumbers() : [],
+            "group" => $this->group ? [
+                "id" => $this->group->id,
                 "name" => $this->group->name,
             ] : null,
         ];
         $permissions = $this->group ? $this->permissionsAsArray() : null;
-        if ($permissions)  $data["permissions"] = $permissions;
+        if ($permissions) {
+            $data["permissions"] = $permissions;
+        }
         return $data;
     }
-    public function isAdmin():bool{
-        return $this->id == self::ADMIN_ID;
-    }
-
-    private function getPhoneNumbers ():array {
-        $phones=[];
+    private function getPhoneNumbers(): array
+    {
+        $phones = [];
         foreach ($this->phones as $phone) {
-            $phones[] = [ 'id' => $phone->id , 'phone'=> $phone->phone];
+            $phones[] = ['id' => $phone->id, 'phone' => $phone->phone];
         }
         return $phones;
     }
-    private function permissionsAsArray ():array{
+    private function permissionsAsArray(): array
+    {
         $permissions = [];
         foreach ($this->group?->permissions ?? [] as $permission) {
             $permissions[] = [
-                "id"=> $permission->id,
-                "permission"=> $permission->permissionType->value
+                "id" => $permission->id,
+                "permission" => $permission->permissionType->value,
             ];
         }
         return $permissions;
     }
-
 }

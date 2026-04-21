@@ -1,11 +1,14 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
+
 namespace App\Features\Users\Application\Outputs;
 
 use App\Shared\Domain\Entities\User\UserEntity;
 
-interface StoreUserOutput {
-    public function onSuccess(UserEntity $userEntity):void;
-    public function onUnauthorized():void;
-    public function onFailure(string $error):void;
+interface StoreUserOutput
+{
+    public function onSuccess(UserEntity $userEntity): void;
+    public function onUnauthorized(): void;
+    public function onFailure(string $error): void;
 }

@@ -28,15 +28,15 @@ class UserServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(PaginateUsersContract::class , PaginateUsersUsecase::class);
-        $this->app->bind(StoreUserContract::class , StoreUserUsecase::class);
+        $this->app->bind(PaginateUsersContract::class, PaginateUsersUsecase::class);
+        $this->app->bind(StoreUserContract::class, StoreUserUsecase::class);
         $this->app->bind(ShowUserContract::class, ShowUserUsecase::class);
-        $this->app->bind(UpdateUserContract::class , UpdateUserUsecase::class);
-        $this->app->bind(DestroyUserContract::class , DestroyUserUsecase::class);
-        $this->app->bind(ResetAdminUserContract::class , ResetAdminUserUsecase::class);
+        $this->app->bind(UpdateUserContract::class, UpdateUserUsecase::class);
+        $this->app->bind(DestroyUserContract::class, DestroyUserUsecase::class);
+        $this->app->bind(ResetAdminUserContract::class, ResetAdminUserUsecase::class);
         //api tokens
-        $this->app->bind(GenerateTokenContract::class , GenerateTokenUsecase::class);
-        $this->app->bind(DestroyTokenContract::class , DestroyTokenUsecase::class);
+        $this->app->bind(GenerateTokenContract::class, GenerateTokenUsecase::class);
+        $this->app->bind(DestroyTokenContract::class, DestroyTokenUsecase::class);
     }
 
     /**
@@ -44,7 +44,7 @@ class UserServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if($this->app->runningInConsole()){
+        if ($this->app->runningInConsole()) {
             $this->commands([
                 ResetAdmin::class,
             ]);

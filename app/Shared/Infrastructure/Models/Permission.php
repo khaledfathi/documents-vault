@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Shared\Infrastructure\Models; 
+namespace App\Shared\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Permission extends Model
 {
     protected $fillable = [
-        'permission'
+        'permission',
     ];
 
-    public function groupPermissions(){
+    public function groupPermissions()
+    {
         return $this->hasMany(Permission::class, 'permission_id');
     }
 }

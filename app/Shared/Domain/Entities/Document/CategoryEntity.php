@@ -1,9 +1,11 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace App\Shared\Domain\Entities\Document;
 
-final class CategoryEntity {
+final class CategoryEntity
+{
     /**
      * Summary of __construct
      * @param  int $id
@@ -16,5 +18,6 @@ final class CategoryEntity {
         public ?string $name = null,
         public ?string $description = null,
         public ?array $documents = null,
-    ) { }
+    ) {
+    }
 }

@@ -7,9 +7,11 @@ use App\Shared\Application\Contracts\Utilities\PasswordHasherContract;
 use App\Shared\Application\Contracts\Utilities\TokenGeneratorContract;
 use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\GroupRepository;
+use App\Shared\Domain\Repositories\PermissionRepository;
 use App\Shared\Domain\Repositories\UserRepository;
 use App\Shared\Infrastructure\Gateways\UserPermissionGateway;
 use App\Shared\Infrastructure\Repositories\Eloquent\EloquentGroupRepository;
+use App\Shared\Infrastructure\Repositories\Eloquent\EloquentPermissionRepository;
 use App\Shared\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
 use App\Shared\Infrastructure\Security\LaravelCurrentUser;
 use App\Shared\Infrastructure\Utilities\PasswordHasherUtility;
@@ -24,18 +26,19 @@ class SharedServiceProvider extends ServiceProvider
     public function register(): void
     {
         //Repositories
-        $this->app->bind(UserRepository::class , EloquentUserRepository::class);
+        $this->app->bind(UserRepository::class, EloquentUserRepository::class);
         $this->app->bind(GroupRepository::class, EloquentGroupRepository::class);
+        $this->app->bind(PermissionRepository::class, EloquentPermissionRepository::class);
 
         //gateways
-        $this->app->bind(PermissionGateway::class , UserPermissionGateway::class);
+        $this->app->bind(PermissionGateway::class, UserPermissionGateway::class);
 
         //utilities
-        $this->app->bind(TokenGeneratorContract::class , TokenGeneratorUtility::class);
-        $this->app->bind(PasswordHasherContract::class , PasswordHasherUtility::class);
+        $this->app->bind(TokenGeneratorContract::class, TokenGeneratorUtility::class);
+        $this->app->bind(PasswordHasherContract::class, PasswordHasherUtility::class);
 
         //Security
-        $this->app->bind(CurrentUserContract::class , LaravelCurrentUser::class);
+        $this->app->bind(CurrentUserContract::class, LaravelCurrentUser::class);
     }
 
     /**

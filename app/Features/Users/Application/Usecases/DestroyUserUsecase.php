@@ -27,12 +27,18 @@ final class DestroyUserUsecase implements DestroyUserContract
                 $presenter->onUnauthorized();
                 return;
             }
-            if ($userId == UserEntity::ADMIN_ID) {
-                $presenter->onAdminUser();
+            $record = $this->userRepository->show($userId);
+            if(! $record){
+                $presenter->onNotFound();
                 return ;
             }
-            $status = $this->userRepository->destroy($userId);
-            $status ? $presenter->onSuccess() : $presenter->onNotFound();
+            //prevent destroy root user
+            if ($record->isRoot) {
+                $presenter->onRoorUser();
+                return;
+            }
+            $this->userRepository->destroy($userId);
+            $presenter->onSuccess();
         } catch (Exception $e) {
             $presenter->onFailure($e->getMessage());
         }

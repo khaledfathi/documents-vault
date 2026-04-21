@@ -1,13 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
-namespace App\Shared\Domain\Entities\User;
+namespace App\Shared\Domain\Entities\Group;
 
 use App\Shared\Domain\Enums\User\PermissionType;
 
-final class PermissionEntity {
+final class PermissionEntity
+{
     public function __construct(
         public ?int $id = null,
         public ?PermissionType $permissionType = null,
-    ) { }
+    ) {
+    }
 }

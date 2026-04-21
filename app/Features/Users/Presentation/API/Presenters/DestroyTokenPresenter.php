@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Features\Users\Presentation\API\Presenters;
@@ -6,13 +7,12 @@ namespace App\Features\Users\Presentation\API\Presenters;
 use App\Features\Users\Application\Outputs\DestroyTokenOutput;
 use App\Shared\Infrastructure\Constants\Messages;
 use App\Shared\Presentation\API\Traits\PresenterTrait;
-use Closure;
 use Illuminate\Http\Response;
 
 final class DestroyTokenPresenter implements DestroyTokenOutput
 {
     use PresenterTrait;
-    private Closure $response;
+
     public function __construct(
         private readonly string $userName,
     ) {}
@@ -20,7 +20,7 @@ final class DestroyTokenPresenter implements DestroyTokenOutput
     {
         $this->response = fn() => response()->json([
             'success' => true,
-            'message' => "User '$this->userName' is loged out"
+            'message' => "User '$this->userName' is loged out",
         ], Response::HTTP_OK);
     }
     public function onFailure(string $error): void
@@ -34,4 +34,3 @@ final class DestroyTokenPresenter implements DestroyTokenOutput
         return ($this->response)();
     }
 }
-

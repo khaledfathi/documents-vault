@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Infrastructure\Models; 
+namespace App\Shared\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,8 +10,9 @@ class Category extends Model
         'name',
         'description',
     ];
-    
-    public function documentCategories (){
-        return $this->hasMany(DocumentCategory::class , 'document_id');
+
+    public function documentCategories()
+    {
+        return $this->hasMany(DocumentCategory::class, 'document_id');
     }
 }

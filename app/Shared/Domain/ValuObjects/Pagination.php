@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\ValuObjects;
 
+use Throwable;
+
 final class Pagination
 {
     private string $queires = "";
+    public readonly ?int $perPage;
     public function __construct(
-        public readonly ?int $perPage  = null,
+        ?int $perPage = null,
         public readonly ?int $currentPage = null,
         public readonly ?string $path = null,
         public readonly ?string $pageName = null,
-        public readonly ?int  $total = null,
-        private array $queryParameters = [],
-    ) { }
+        public readonly ?int $total = null,
+    ) {
+        //prevent zero and negtaive value
+        if ($perPage <= 0) $this->perPage = 10;
+    }
 
     private function generatePageURL(int $pageQueryNumber): mixed
     {
@@ -46,13 +51,5 @@ final class Pagination
     {
         $pageNumber = $this->currentPage > 1 ? $this->currentPage - 1 : $this->currentPage;
         return $this->generatePageURL($pageNumber) . $this->queires;
-    }
-    public function withQueryParameters(array $parameters): self
-    {
-        $this->queryParameters = $parameters;
-        foreach ($parameters as $key => $value) {
-            $this->queires .= "&$key=$value";
-        }
-        return $this;
     }
 }
