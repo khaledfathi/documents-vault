@@ -18,7 +18,7 @@ final class Pagination
         public readonly ?int $total = null,
     ) {
         //prevent zero and negtaive value
-        if ($perPage <= 0) $this->perPage = 10;
+        $this->perPage = $perPage <= 0 ? $this->perPage = 10 : $perPage;
     }
 
     private function generatePageURL(int $pageQueryNumber): mixed
