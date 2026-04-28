@@ -18,6 +18,14 @@ final class CategoryEntity
         public ?string $name = null,
         public ?string $description = null,
         public ?array $documents = null,
-    ) {
+    ) {}
+    public function toArray()
+    {
+        $data = [
+            "id" => $this->id,
+            "name" => $this->name,
+            "description" => $this->description,
+        ];
+        return $data;
     }
 }

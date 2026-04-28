@@ -6,7 +6,6 @@ namespace App\Shared\Domain\Repositories;
 
 use App\Shared\Domain\Entities\Group\GroupEntity;
 use App\Shared\Domain\ValuObjects\EntitiesWithPagination;
-use App\Shared\Domain\Entities\Group\PermissionEntity;;
 
 interface GroupRepository
 {

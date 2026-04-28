@@ -6,10 +6,12 @@ use App\Shared\Application\Contracts\Security\CurrentUserContract;
 use App\Shared\Application\Contracts\Utilities\PasswordHasherContract;
 use App\Shared\Application\Contracts\Utilities\TokenGeneratorContract;
 use App\Shared\Domain\Gateways\PermissionGateway;
+use App\Shared\Domain\Repositories\CategoryRepository;
 use App\Shared\Domain\Repositories\GroupRepository;
 use App\Shared\Domain\Repositories\PermissionRepository;
 use App\Shared\Domain\Repositories\UserRepository;
 use App\Shared\Infrastructure\Gateways\UserPermissionGateway;
+use App\Shared\Infrastructure\Repositories\Eloquent\EloquentCategoryRepository;
 use App\Shared\Infrastructure\Repositories\Eloquent\EloquentGroupRepository;
 use App\Shared\Infrastructure\Repositories\Eloquent\EloquentPermissionRepository;
 use App\Shared\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
@@ -29,6 +31,7 @@ class SharedServiceProvider extends ServiceProvider
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
         $this->app->bind(GroupRepository::class, EloquentGroupRepository::class);
         $this->app->bind(PermissionRepository::class, EloquentPermissionRepository::class);
+        $this->app->bind(CategoryRepository::class , EloquentCategoryRepository::class);
 
         //gateways
         $this->app->bind(PermissionGateway::class, UserPermissionGateway::class);
