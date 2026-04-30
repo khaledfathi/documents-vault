@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Application\Contracts\Storage;
 
-interface File
+interface FileContract
 {
     public function getOriginalName(): string;
     public function getOriginalExtension(): string;

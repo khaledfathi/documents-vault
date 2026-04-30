@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Shared\Application\Contracts\Storage;
 
-interface StorageDir
+interface StorageDirContract
 {
-    public function privatePath(): StorageDir;
-    public function publicPath(): StorageDir;
+    public function privatePath(): StorageDirContract;
+    public function publicPath(): StorageDirContract;
     public function documents(int $documentId): string;
 }

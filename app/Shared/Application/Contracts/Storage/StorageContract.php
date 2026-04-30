@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Shared\Application\Contracts\Storage;
 
-use App\Shared\Application\Contracts\File;
 
-interface Storage
+interface StorageContract
 {
-    public function store(string $dir, File $file): string;
+    public function store(string $dir, FileContract $file): string;
     public function remove(string $filePath): bool;
 }

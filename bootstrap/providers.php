@@ -7,4 +7,5 @@ return [
     App\Features\Permissions\Infrastructure\Providers\PermissionServiceProvider::class,
     App\Features\Groups\Infrastructure\Providers\GroupServiceProvider::class,
     App\Features\Categories\Infrastructure\Providers\CategoryServiceProvider::class,
+    App\Features\Documents\Infrastructure\Providers\DocumentServiceProvider::class,
 ];

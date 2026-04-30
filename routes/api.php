@@ -1,6 +1,7 @@
 <?php
 
 use app\Features\Categories\Presentation\API\Controllers\CategoryController;
+use app\Features\Documents\Presentation\API\Controllers\DocumentContoller;
 use App\Features\Groups\Presentation\API\Controllers\GroupController;
 use App\Features\Permissions\Presentation\API\Controllers\PermissionController;
 use App\Features\Users\Presentation\API\Controllers\UserController;
@@ -19,6 +20,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::resource('/groups', GroupController::class)->except(['create','edit']);
     //
     Route::resource('/categories', CategoryController::class)->except(['create','edit']);
+    //
+    Route::resource('/documents', DocumentContoller::class)->except(['create','edit']);
     //
     Route::get('/logout' , [UserController::class , 'logout'])->name('user.logout');
 });

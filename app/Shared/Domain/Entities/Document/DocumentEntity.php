@@ -20,6 +20,7 @@ final class DocumentEntity
      * @param ?DocumentVisibilityType $visibility
      * @param ?int $description
      * @param ?array<CategoryEntity> $categories
+     * @param ?array<FileEntity> $files
      */
     public function __construct(
         public ?int $id = null,
@@ -31,7 +32,12 @@ final class DocumentEntity
         public ?DocumentVisibilityType $visibility = null,
         public ?string $description = null,
         public ?array $categories = null,
-        public ?FileEntity $file = null,
+        public ?array $files = null,
     ) {
+    }
+    public function toArray (){
+        return [
+            'NO_PERPARE' => "GO TO SETUP"
+        ] ;
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Shared\Infrastructure\Storage;
 
-use App\Shared\Application\Contracts\File;
+use App\Shared\Application\Contracts\Storage\FileContract;
 
-final class LaravelFile implements File
+final class LaravelFile implements FileContract
 {
     public function __construct(
         private readonly string $originalName,
