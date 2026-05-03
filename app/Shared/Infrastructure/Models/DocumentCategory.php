@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DocumentCategory extends Model
 {
+    protected $table = 'document_category';
     protected $fillable = [
         'document_id',
         'category_id',

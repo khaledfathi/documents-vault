@@ -6,6 +6,7 @@ namespace app\Features\Documents\Presentation\API\Controllers;
 
 use App\Features\Documents\Application\Contracts\StoreDocumentContract;
 use App\Features\Documents\Presentation\API\Presenters\StoreDocumentPresenter;
+use App\Shared\Domain\Entities\Document\CategoryEntity;
 use App\Shared\Domain\Entities\Document\DocumentEntity;
 use App\Shared\Domain\Entities\Document\FileEntity;
 use App\Shared\Domain\Enums\Document\DocumentVisibilityType;
@@ -29,10 +30,8 @@ class DocumentContoller extends Controller
     }
     public function store(Request $request)
     {
-        //test
         $documentEntitiy = $this->requestToDocumentEntity($request);
         $files = $this->requestToLaravelFile($request);
-        //----
         $presenter = new StoreDocumentPresenter();
         $this->storeDocumentUsecase->execute($documentEntitiy, $files,  $presenter);
         return $presenter->handle();
@@ -47,6 +46,12 @@ class DocumentContoller extends Controller
     }
     private function requestToDocumentEntity(Request $request): DocumentEntity
     {
+        $categories =[];
+        foreach($request->categories as $categoryId){
+            $categories[] = new CategoryEntity(
+                id:(int)$categoryId,
+            );
+        }
         $entitiy = new DocumentEntity(
             id: null,
             userId: (int)$request->user_id,
@@ -56,14 +61,15 @@ class DocumentContoller extends Controller
             docExpireDate: CarbonDateUtility::from($request->doc_expire_date),
             visibility: DocumentVisibilityType::from($request->visibility),
             description: $request->description,
-            categories: $request->categories,
+            categories: $categories,
         );
         return $entitiy;
     }
     private function requestToLaravelFile(Request $request, string $requestFileName = 'files'): array
     {
         $files = [];
-        if ($requestFiles = $request->file($requestFileName)) {
+        $requestFiles = $request->file($requestFileName);
+        if ($requestFiles) {
             foreach ($requestFiles as $file) {
                 $files[] = new LaravelFile(
                     originalName: $file->getClientOriginalName(),

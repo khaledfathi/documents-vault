@@ -9,4 +9,5 @@ interface StorageContract
 {
     public function store(string $dir, FileContract $file): string;
     public function remove(string $filePath): bool;
+    public function removeDirectory (string $dir): bool;
 }

@@ -14,6 +14,7 @@ use App\Shared\Domain\Entities\Document\DocumentEntity;
 use App\Shared\Domain\Entities\Document\FileEntity;
 use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Gateways\PermissionGateway;
+use App\Shared\Domain\Repositories\DocumentCategoryRepository;
 use App\Shared\Domain\Repositories\DocumentRepository;
 use App\Shared\Domain\Repositories\FileRepository;
 use Exception;
@@ -24,47 +25,71 @@ final class StoreDocumentUsecase implements StoreDocumentContract
         private readonly PermissionGateway $permissionGateway,
         private readonly CurrentUserContract $currentUser,
         private readonly DocumentRepository $documentRepository,
+        private readonly DocumentCategoryRepository $documentCategoryRepository,
         private readonly FileRepository $fileRepository,
         private readonly StorageContract $storage,
         private readonly StorageDirContract $storageDir,
     ) {}
-    public function execute(DocumentEntity $documentEntity, array $files ,  StoreDocumentOutput $presenter): void
+    public function execute(DocumentEntity $documentEntity, array $files,  StoreDocumentOutput $presenter): void
     {
+        $record = null;
+        $categoryEntities = null;
+        $fileEntities = null;
         try {
             if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::CREATE_DOCUMENT)) {
                 $presenter->onUnauthorized();
                 return;
             }
-            // ----------------------
-            //1- store document
-            $documentEntity = $this->documentRepository->store($documentEntity);
-            //2- store files releated to this document ( in database and private place);
-            $fileEntities = $this->storeFiles($files , $documentEntity->id);
-            //3-  add files eneities to document entitiy ;
+            // store document data (Record)
+            $record = $this->documentRepository->store($documentEntity);
+            // add document to categories (Record)
+            $documentCategoryEntity = $record->createDocumentCategoryEntities();
+            $this->documentCategoryRepository->storeMany($documentCategoryEntity);
+            //get categories details
+            $categoryEntities = $this->documentCategoryRepository->showByDocumentId($record->id);
+            // store document files
+            $fileEntities = $this->storeFiles($files, $record->id);
+            // add files and categories to document eneities
             $documentEntity->files = $fileEntities;
-            $presenter->onSuccess($documentEntity);
+            $documentEntity->categories = $categoryEntities;
+            // presenter
+            $presenter->onSuccess($record);
         } catch (Exception $e) {
+            //remove records
+            if ($record) {
+                $this->fileRepository->destroy($record->id);
+                //remove files
+                if ($fileEntities) $this->removeFiles($record->id);
+            }
+            //-----
             $presenter->onFailure($e->getMessage());
         }
     }
     /**
-    * @param $files array<FileContract>
-    */
-    private function storeFiles (array $files , $documentId):array{
-        $dir = $this->storageDir->documents($documentId);
+     * @param $files array<FileEntity>
+     */
+    private function storeFiles(array $files, int $documentId): array
+    {
         $entities = [];
-        foreach($files as $file){
+        foreach ($files as $file) {
             //copy file to private storage
-            $fileName = $this->storage->store($dir , $file);
+            $fileName = $this->storage->store($this->storageDir->documents($documentId), $file);
             //store file in database
             $fileEntitiy = $this->fileRepository->store(
                 new FileEntity(
-                    documentId : $documentId,
-                    file : $fileName,
+                    documentId: $documentId,
+                    file: $fileName,
                 )
             );
-            $entities[] = $fileEntitiy ;
+            $entities[] = $fileEntitiy;
         }
         return $entities;
+    }
+    /**
+     * @param $files array<FileContract>
+     */
+    private function removeFiles(int $documentId): void
+    {
+        $this->storage->removeDirectory($this->storageDir->documents($documentId));
     }
 }

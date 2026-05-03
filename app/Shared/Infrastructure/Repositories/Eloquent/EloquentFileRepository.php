@@ -17,7 +17,7 @@ final class EloquentFileRepository implements FileRepository
             'file' => $fileEntity->file,
         ]);
         $fileEntity->id = $record->id;
-        return new FileEntity();
+        return $fileEntity;
     }
     public function show(int $fileId): FileEntity
     {
@@ -29,6 +29,9 @@ final class EloquentFileRepository implements FileRepository
     }
     public function destroy(int $fileId): bool
     {
-        return false;
+        $record = File::find($fileId);
+        if (!$record) return false ;
+        $record->delete();
+        return true ;
     }
 }

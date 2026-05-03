@@ -22,6 +22,6 @@ final class UtilityStorageDir implements StorageDirContract
     }
     public function documents(int $documentId): string
     {
-        return  $this->prefix . "documents/$documentId/documents/";
+        return  $this->prefix . "documents/$documentId/";
     }
 }
