@@ -7,6 +7,7 @@ namespace App\Shared\Domain\Entities\Document;
 use App\Shared\Domain\Contracts\DateProviderContract;
 use App\Shared\Domain\Enums\Document\DocumentVisibilityType;
 use App\Shared\Domain\Entities\Document\DocumentCategoryEntity;
+use App\Shared\Domain\Entities\User\UserEntity;
 
 final class DocumentEntity
 {
@@ -34,6 +35,7 @@ final class DocumentEntity
         public ?string $description = null,
         public ?array $categories = null,
         public ?array $files = null,
+        public ?UserEntity $userEntity = null,
     ) {}
     /**
      * @param $categoryIds array<int>
@@ -76,13 +78,16 @@ final class DocumentEntity
         //
         $data = [
             'id' => $this->id,
+            'userId' => $this->userId,
             'name' => $this->name,
             'docNumber' => $this->docNumber,
-            'docDate' => $this->docDate->toDateString(),
-            'docExpireDate' => $this->docExpireDate->toDateString(),
+            'docDate' => $this->docDate?->toDateString(),
+            'docExpireDate' => $this->docExpireDate?->toDateString(),
             'visibility' => $this->visibility,
             'description' => $this->description,
         ];
+
+        if ($this->userEntity) $data['user'] = array_diff_key($this->userEntity->toArray(), array_flip(['phones', 'group']));
         if ($categories) $data['categories'] = $categories;
         if ($files) $data['files'] = $files;
         return $data;

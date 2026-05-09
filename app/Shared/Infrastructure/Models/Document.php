@@ -26,6 +26,6 @@ class Document extends Model
     }
     public function documentCategories()
     {
-        return $this->hasMany(DocumentCategory::class, 'category_id');
+        return $this->hasMany(DocumentCategory::class, 'document_id');
     }
 }

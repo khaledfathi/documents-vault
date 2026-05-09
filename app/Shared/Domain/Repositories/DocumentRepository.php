@@ -14,7 +14,8 @@ interface DocumentRepository
      */
     public function paginate(int $perPage = 10): EntitiesWithPagination;
     public function show(int $documentId): ?DocumentEntity;
+    public function showWithRelation(int $documentId): ?DocumentEntity;
     public function store(DocumentEntity $documentEntity): DocumentEntity;
     public function update(DocumentEntity $documentEntity): bool;
-    public function destroy(int $categoryId): bool;
+    public function destroy(int $documentId): bool;
 }

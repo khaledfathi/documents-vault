@@ -4,11 +4,19 @@ declare(strict_types=1);
 
 namespace app\Features\Documents\Presentation\API\Controllers;
 
+use App\Features\Documents\Application\Contracts\DestroyDocumentContract;
+use App\Features\Documents\Application\Contracts\ShowDocumentContract;
+use App\Features\Documents\Application\Contracts\ShowDocumentFileContract;
 use App\Features\Documents\Application\Contracts\StoreDocumentContract;
+use App\Features\Documents\Presentation\API\Presenters\DestroyDocumentPresenter;
+use App\Features\Documents\Presentation\API\Presenters\DownloadDocumnetFilePresenter;
+use App\Features\Documents\Presentation\API\Presenters\ShowDocumentPresenter;
 use App\Features\Documents\Presentation\API\Presenters\StoreDocumentPresenter;
+use App\Features\Documents\Presentation\API\Presenters\ViewDocumentFilePresenter;
+use App\Shared\Application\Contracts\Storage\StorageContract;
+use App\Shared\Application\Contracts\Storage\StorageDirContract;
 use App\Shared\Domain\Entities\Document\CategoryEntity;
 use App\Shared\Domain\Entities\Document\DocumentEntity;
-use App\Shared\Domain\Entities\Document\FileEntity;
 use App\Shared\Domain\Enums\Document\DocumentVisibilityType;
 use App\Shared\Infrastructure\Storage\LaravelFile;
 use App\Shared\Infrastructure\Utilities\CarbonDateUtility;
@@ -18,15 +26,22 @@ use Illuminate\Http\Request;
 class DocumentContoller extends Controller
 {
     public function __construct(
+        private readonly StorageDirContract $storageDir,
+        private readonly StorageContract $storage,
         private readonly StoreDocumentContract $storeDocumentUsecase,
+        private readonly DestroyDocumentContract $destroyDocumentUsecase,
+        private readonly ShowDocumentContract $showDocumentUsecase,
+        private readonly ShowDocumentFileContract $showDocumentFileUsecase,
     ) {}
     public function index()
     {
         return __CLASS__ . "::" . __FUNCTION__;
     }
-    public function show()
+    public function show(string $documentId)
     {
-        return __CLASS__ . "::" . __FUNCTION__;
+        $presenter = new ShowDocumentPresenter();
+        $this->showDocumentUsecase->execute((int)$documentId, $presenter);
+        return $presenter->handle();
     }
     public function store(Request $request)
     {
@@ -40,16 +55,30 @@ class DocumentContoller extends Controller
     {
         return __CLASS__ . "::" . __FUNCTION__;
     }
-    public function destroy()
+    public function destroy(string $documentId)
     {
-        return __CLASS__ . "::" . __FUNCTION__;
+        $presenter = new DestroyDocumentPresenter();
+        $this->destroyDocumentUsecase->execute((int)$documentId, $presenter);
+        return $presenter->handle();
+    }
+    public function viewFile(string $documentId, string $fileId)
+    {
+        $presenter = new ViewDocumentFilePresenter($this->storageDir, $this->storage,);
+        $this->showDocumentFileUsecase->execute((int)$documentId, (int)$fileId, $presenter);
+        return $presenter->handle();
+    }
+    public function downloadFile(string $documentId, string $fileId)
+    {
+        $presenter = new DownloadDocumnetFilePresenter($this->storageDir, $this->storage,);
+        $this->showDocumentFileUsecase->execute((int)$documentId, (int)$fileId, $presenter);
+        return $presenter->handle();
     }
     private function requestToDocumentEntity(Request $request): DocumentEntity
     {
-        $categories =[];
-        foreach($request->categories as $categoryId){
+        $categories = [];
+        foreach ($request->categories as $categoryId) {
             $categories[] = new CategoryEntity(
-                id:(int)$categoryId,
+                id: (int)$categoryId,
             );
         }
         $entitiy = new DocumentEntity(

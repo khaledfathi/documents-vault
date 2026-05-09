@@ -17,7 +17,7 @@ final class ShowUserPresenter implements ShowUserOutput
     {
         $this->response = fn() => response()->json([
             "success" => true,
-            "message" => "",
+            "message" => "Ok",
             'data' => $userEntity->toArray(),
         ], Response::HTTP_OK);
     }

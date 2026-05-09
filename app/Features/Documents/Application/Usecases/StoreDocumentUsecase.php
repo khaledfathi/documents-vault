@@ -33,7 +33,6 @@ final class StoreDocumentUsecase implements StoreDocumentContract
     public function execute(DocumentEntity $documentEntity, array $files,  StoreDocumentOutput $presenter): void
     {
         $record = null;
-        $categoryEntities = null;
         $fileEntities = null;
         try {
             if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::CREATE_DOCUMENT)) {
@@ -57,7 +56,7 @@ final class StoreDocumentUsecase implements StoreDocumentContract
         } catch (Exception $e) {
             //remove records
             if ($record) {
-                $this->fileRepository->destroy($record->id);
+                $this->documentRepository->destroy($record->id);
                 //remove files
                 if ($fileEntities) $this->removeFiles($record->id);
             }
