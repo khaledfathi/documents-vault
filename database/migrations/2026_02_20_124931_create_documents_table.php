@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('description');
             //FK
             $table->foreignId('user_id')->references('id')->on('users')->nullOnDelete()->nullOnUpdate();
-            //constraints 
+            //constraints
             $table->unique(['user_id', 'doc_number']);
         });
     }

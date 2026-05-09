@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Shared\Application\Utilities;
 
-use App\Shared\Application\Contracts\Storage\StorageDir;
+use App\Shared\Application\Contracts\Storage\StorageDirContract;
 
-final class UtilityStorageDir implements StorageDir
+final class UtilityStorageDir implements StorageDirContract
 {
     private string $prefix = '';
 
-    public function privatePath(): StorageDir
+    public function privatePath(): StorageDirContract
     {
         $this->prefix = storage_path('app/private/');
         return $this;
     }
-    public function publicPath(): StorageDir
+    public function publicPath(): StorageDirContract
     {
         $this->prefix = storage_path('app/public/');
         return $this;

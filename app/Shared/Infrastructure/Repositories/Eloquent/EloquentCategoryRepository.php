@@ -13,16 +13,16 @@ use App\Shared\Infrastructure\Repositories\Eloquent\Traits\PaginatorTrait;
 final class EloquentCategoryRepository implements CategoryRepository
 {
     use PaginatorTrait;
-    public function paginate(int $perPage=10): EntitiesWithPagination
+    public function paginate(int $perPage = 10): EntitiesWithPagination
     {
         $records = Category::paginate($perPage);
         //entities
         $categoryEntities = [];
         foreach ($records as $record) {
             $categoryEntities[] = new CategoryEntity(
-                id:$record->id,
-                name:$record->name,
-                description:$record->description,
+                id: $record->id,
+                name: $record->name,
+                description: $record->description,
             );
         }
         //pagination
