@@ -7,5 +7,5 @@ namespace App\Shared\Domain\Enums\Document;
 enum DocumentVisibilityType: string
 {
     case PUBLIC =  "public";
-    case private = "private";
+    case PRIVATE = "private";
 }

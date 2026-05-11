@@ -36,10 +36,8 @@ final class ShowDocumentPresenter implements ShowDocumentOutput
     {
         return array_merge($file, [
             'links' => [
-                'view' => "view url",
-                'download' => "download url",
-                //'view' => route('files.access', ['id' => $file['id'], 'action' => 'view']),
-                //'download' => route('files.access', ['id' => $file['id'], 'action' => 'download']),
+                'view' => route('documents.files.view', ['document' => $file['documentId'], 'file' => $file['id']]),
+                'download' => route('documents.files.download', ['document' => $file['documentId'], 'file' => $file['id']]),
             ]
         ]);
     }

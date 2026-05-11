@@ -12,7 +12,6 @@ final class FileEntity
         public ?string $file = null,
         public ?DocumentEntity $documentEntity = null,
     ) {}
-
     /**
      * @return array{
      * id: int,
@@ -24,11 +23,12 @@ final class FileEntity
      * }
      * */
     public function toArray():array {
-        return [
+        $array =  [
             'id' => $this->id,
             'documentId' => $this->documentId,
             'file' => $this->file,
-            'documentEntity' => $this->documentEntity->toArray(),
         ];
+        if ($this->documentEntity)  $array['documentEntity'] = $this->documentEntity->toArray();
+        return $array;
     }
 }

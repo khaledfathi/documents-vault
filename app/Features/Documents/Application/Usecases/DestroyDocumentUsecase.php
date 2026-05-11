@@ -12,7 +12,6 @@ use App\Shared\Application\Contracts\Storage\StorageDirContract;
 use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\DocumentRepository;
-use App\Shared\Domain\Repositories\FileRepository;
 use Exception;
 
 final class DestroyDocumentUsecase implements DestroyDocumentContract

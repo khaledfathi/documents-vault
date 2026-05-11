@@ -46,6 +46,7 @@ final class EloquentGroupRepository implements GroupRepository
                 name: $record->name,
                 permissions: $permissions,
                 isProtected:$this->isProtected($record->id),
+                isAdmin: $record->id == self::ADMIN_GROUP_ID,
             );
         }
         //pagination
@@ -74,6 +75,7 @@ final class EloquentGroupRepository implements GroupRepository
             name: $record->name,
             permissions: $permissionEntities,
             isProtected:$this->isProtected($record->id),
+            isAdmin: $record->id == self::ADMIN_GROUP_ID,
         );
     }
     public function showByUserId(int $userId): ?GroupEntity
@@ -93,6 +95,7 @@ final class EloquentGroupRepository implements GroupRepository
                 name: $record->name,
                 permissions: $permissionEntities,
                 isProtected:$this->isProtected($record->id),
+                isAdmin: $record->id == self::ADMIN_GROUP_ID,
             );
         }
         return null;
@@ -159,7 +162,6 @@ final class EloquentGroupRepository implements GroupRepository
     public function getDefaultGroupId(): int{
         return (int) self::DEFAULT_GROUP_ID;
     }
-
     /**
     * check if the 'id' is [ADMIN_GROUP_ID] or [DEFAULT_GROUP_ID]
     */
