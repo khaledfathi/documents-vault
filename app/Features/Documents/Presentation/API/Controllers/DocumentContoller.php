@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace app\Features\Documents\Presentation\API\Controllers;
 
 use App\Features\Documents\Application\Contracts\DestroyDocumentContract;
+use App\Features\Documents\Application\Contracts\PaginateDocumentContract;
 use App\Features\Documents\Application\Contracts\ShowDocumentContract;
 use App\Features\Documents\Application\Contracts\ShowDocumentFileContract;
 use App\Features\Documents\Application\Contracts\StoreDocumentContract;
 use App\Features\Documents\Presentation\API\Presenters\DestroyDocumentPresenter;
 use App\Features\Documents\Presentation\API\Presenters\DownloadDocumnetFilePresenter;
+use App\Features\Documents\Presentation\API\Presenters\PaginateDocumentPresenter;
 use App\Features\Documents\Presentation\API\Presenters\ShowDocumentPresenter;
 use App\Features\Documents\Presentation\API\Presenters\StoreDocumentPresenter;
 use App\Features\Documents\Presentation\API\Presenters\ViewDocumentFilePresenter;
@@ -32,10 +34,13 @@ class DocumentContoller extends Controller
         private readonly DestroyDocumentContract $destroyDocumentUsecase,
         private readonly ShowDocumentContract $showDocumentUsecase,
         private readonly ShowDocumentFileContract $showDocumentFileUsecase,
+        private readonly PaginateDocumentContract $paginateDocumentUsecase,
     ) {}
-    public function index()
+    public function index(request $request)
     {
-        return __CLASS__ . "::" . __FUNCTION__;
+        $presenter = new PaginateDocumentPresenter();
+        $this->paginateDocumentUsecase->execute($presenter, (int)($request->per_page ?? 10));
+        return $presenter->handle();
     }
     public function show(string $documentId)
     {
@@ -51,9 +56,9 @@ class DocumentContoller extends Controller
         $this->storeDocumentUsecase->execute($documentEntitiy, $files,  $presenter);
         return $presenter->handle();
     }
-    public function update()
+    public function update(Request $request)
     {
-        return __CLASS__ . "::" . __FUNCTION__;
+        return "UPDATE";
     }
     public function destroy(string $documentId)
     {

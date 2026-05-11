@@ -57,22 +57,14 @@ final class DocumentEntity
         $categories = [];
         if ($this->categories) {
             foreach ($this->categories as $category) {
-                $categories[] = [
-                    'id' => $category->id,
-                    'name' => $category->name,
-                    'description' => $category->description,
-                ];
+                $categories[] = $category->toArray();
             }
         }
         //
         $files = [];
         if ($this->files) {
             foreach ($this->files as $file) {
-                $files[] = [
-                    'id' => $file->id,
-                    'file' => $file->file,
-                    'documentId' => $file->documentId,
-                ];
+                $files[] = $file->toArray();
             }
         }
         //
@@ -85,11 +77,11 @@ final class DocumentEntity
             'docExpireDate' => $this->docExpireDate?->toDateString(),
             'visibility' => $this->visibility,
             'description' => $this->description,
+            'categories' => $categories,
+            'files' => $files,
         ];
 
         if ($this->userEntity) $data['user'] = array_diff_key($this->userEntity->toArray(), array_flip(['phones', 'group']));
-        if ($categories) $data['categories'] = $categories;
-        if ($files) $data['files'] = $files;
         return $data;
     }
 }

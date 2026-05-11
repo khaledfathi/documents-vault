@@ -12,12 +12,121 @@ use App\Shared\Domain\Enums\Document\DocumentVisibilityType;
 use App\Shared\Domain\Repositories\DocumentRepository;
 use App\Shared\Domain\ValuObjects\EntitiesWithPagination;
 use App\Shared\Infrastructure\Models\Document;
+use App\Shared\Infrastructure\Repositories\Eloquent\Traits\PaginatorTrait;
 use App\Shared\Infrastructure\Utilities\CarbonDateUtility;
 
 final class EloquentDocumentRepository implements DocumentRepository
 {
+    use PaginatorTrait;
+
     public function paginate(int $perPage = 10): EntitiesWithPagination
     {
+        $records = Document::with('documentCategories', 'user',  'files', 'documentCategories.category')->paginate($perPage);
+        //entities
+        $documentEntities = [];
+        foreach ($records as $record) {
+            //user
+            $userRecord = $record->user;
+            $userEntity = new UserEntity(
+                id: $userRecord->id,
+                groupId: $userRecord->group_id,
+                name: $userRecord->name,
+                email: $userRecord->email,
+                isRoot: EloquentUserRepository::isRoot($record->id),
+            );
+            //categories
+            $categories = [];
+            $documentCategoryRecords = $record->documentCategories;
+            foreach ($documentCategoryRecords as $documentCategory) {
+                $categories[] = new CategoryEntity(
+                    id: $documentCategory->category->id,
+                    name: $documentCategory->category->name,
+                    description: $documentCategory->category->description,
+                );
+            }
+            //files
+            $files = [];
+            $fileRecords = $record->files;
+            foreach ($fileRecords as $file) {
+                $files[] = new FileEntity(
+                    id: $file->id,
+                    documentId: $file->document_id,
+                    file: $file->file,
+                );
+            }
+            //documentEntity
+            $documentEntities[] = new DocumentEntity(
+                id: $record->id,
+                userId: $record->user_id,
+                name: $record->name,
+                docNumber: $record->doc_number,
+                docDate: $record->doc_date ? CarbonDateUtility::from($record->doc_date) : null,
+                docExpireDate: $record->doc_expire_date ? CarbonDateUtility::from($record->doc_expire_date) : null,
+                visibility: DocumentVisibilityType::from($record->visibility),
+                description: $record->description,
+                categories: $categories,
+                files: $files,
+                userEntity: $userEntity,
+            );
+        }
+        //pagination
+        $pagination = $this->mapPaginator($records, $perPage);
+        return new EntitiesWithPagination($pagination, $documentEntities);
+    }
+    public function paginateRelatedToUser(int $userId, int $perPage = 10): EntitiesWithPagination
+    {
+        $records = Document::with('documentCategories', 'user',  'files', 'documentCategories.category')
+            ->where('user_id', $userId)->paginate($perPage);
+        //entities
+        $documentEntities = [];
+        foreach ($records as $record) {
+            //user
+            $userRecord = $record->user;
+            $userEntity = new UserEntity(
+                id: $userRecord->id,
+                groupId: $userRecord->group_id,
+                name: $userRecord->name,
+                email: $userRecord->email,
+                isRoot: EloquentUserRepository::isRoot($record->id),
+            );
+            //categories
+            $categories = [];
+            $documentCategoryRecords = $record->documentCategories;
+            foreach ($documentCategoryRecords as $documentCategory) {
+                $categories[] = new CategoryEntity(
+                    id: $documentCategory->category->id,
+                    name: $documentCategory->category->name,
+                    description: $documentCategory->category->description,
+                );
+            }
+            //files
+            $files = [];
+            $fileRecords = $record->files;
+            foreach ($fileRecords as $file) {
+                $files[] = new FileEntity(
+                    id: $file->id,
+                    documentId: $file->document_id,
+                    file: $file->file,
+                );
+            }
+            //documentEntity
+            $documentEntities[] = new DocumentEntity(
+                id: $record->id,
+                userId: $record->user_id,
+                name: $record->name,
+                docNumber: $record->doc_number,
+                docDate: $record->doc_date ? CarbonDateUtility::from($record->doc_date) : null,
+                docExpireDate: $record->doc_expire_date ? CarbonDateUtility::from($record->doc_expire_date) : null,
+                visibility: DocumentVisibilityType::from($record->visibility),
+                description: $record->description,
+                categories: $categories,
+                files: $files,
+                userEntity: $userEntity,
+            );
+        }
+        //pagination
+        $pagination = $this->mapPaginator($records, $perPage);
+        return new EntitiesWithPagination($pagination, $documentEntities);
         return new EntitiesWithPagination();
     }
     public function show(int $documentId): ?DocumentEntity

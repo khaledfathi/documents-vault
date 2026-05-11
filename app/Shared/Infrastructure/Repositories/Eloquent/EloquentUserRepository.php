@@ -224,4 +224,7 @@ final class EloquentUserRepository implements UserRepository
     public function getRootUserId(): int{
         return (int) self::ROOT_USER_ID;
     }
+    public static function isRoot(int $id){
+        return $id === self::ROOT_USER_ID;
+    }
 }
