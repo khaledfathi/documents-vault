@@ -198,6 +198,18 @@ final class EloquentDocumentRepository implements DocumentRepository
     }
     public function update(DocumentEntity $documentEntity): bool
     {
+        $record = Document::find($documentEntity->id);
+        if ($record){
+            $record->update([
+                'name'=>$documentEntity->name,
+                'doc_number'=>$documentEntity->docNumber,
+                'doc_date'=>$documentEntity->docDate->toDateString(),
+                'doc_expire_date'=>$documentEntity->docExpireDate->toDateString(),
+                'visibility'=>$documentEntity->visibility->value,
+                'description'=>$documentEntity->description,
+            ]);
+            return true;
+        }
         return false;
     }
     public function destroy(int $documentId): bool

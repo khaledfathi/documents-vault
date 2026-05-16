@@ -7,7 +7,6 @@ namespace App\Features\Documents\Application\Usecases;
 use App\Features\Documents\Application\Contracts\StoreDocumentContract;
 use App\Features\Documents\Application\Outputs\StoreDocumentOutput;
 use App\Shared\Application\Contracts\Security\CurrentUserContract;
-use App\Shared\Application\Contracts\Storage\FileContract;
 use App\Shared\Application\Contracts\Storage\StorageContract;
 use App\Shared\Application\Contracts\Storage\StorageDirContract;
 use App\Shared\Domain\Entities\Document\DocumentEntity;

@@ -9,12 +9,17 @@ use App\Features\Documents\Application\Contracts\PaginateDocumentContract;
 use App\Features\Documents\Application\Contracts\ShowDocumentContract;
 use App\Features\Documents\Application\Contracts\ShowDocumentFileContract;
 use App\Features\Documents\Application\Contracts\StoreDocumentContract;
+use App\Features\Documents\Application\Contracts\UpdateDocumentContract;
+use App\Features\Documents\Application\DTOs\UpdatedFileDTO;
 use App\Features\Documents\Presentation\API\Presenters\DestroyDocumentPresenter;
 use App\Features\Documents\Presentation\API\Presenters\DownloadDocumnetFilePresenter;
 use App\Features\Documents\Presentation\API\Presenters\PaginateDocumentPresenter;
 use App\Features\Documents\Presentation\API\Presenters\ShowDocumentPresenter;
 use App\Features\Documents\Presentation\API\Presenters\StoreDocumentPresenter;
+use App\Features\Documents\Presentation\API\Presenters\UpdateDocumentPresenter;
 use App\Features\Documents\Presentation\API\Presenters\ViewDocumentFilePresenter;
+use App\Features\Documents\Presentation\API\Requests\StoreDocumentRequest;
+use App\Features\Documents\Presentation\API\Requests\UpdateDocumentRequest;
 use App\Shared\Application\Contracts\Storage\StorageContract;
 use App\Shared\Application\Contracts\Storage\StorageDirContract;
 use App\Shared\Domain\Entities\Document\CategoryEntity;
@@ -35,6 +40,7 @@ class DocumentContoller extends Controller
         private readonly ShowDocumentContract $showDocumentUsecase,
         private readonly ShowDocumentFileContract $showDocumentFileUsecase,
         private readonly PaginateDocumentContract $paginateDocumentUsecase,
+        private readonly UpdateDocumentContract $updateDocumentUsecase,
     ) {}
     public function index(request $request)
     {
@@ -48,17 +54,24 @@ class DocumentContoller extends Controller
         $this->showDocumentUsecase->execute((int)$documentId, $presenter);
         return $presenter->handle();
     }
-    public function store(Request $request)
+    public function store(StoreDocumentRequest $request)
     {
         $documentEntitiy = $this->requestToDocumentEntity($request);
-        $files = $this->requestToLaravelFile($request);
+        $files = $this->requestToLaravelFiles($request);
         $presenter = new StoreDocumentPresenter();
         $this->storeDocumentUsecase->execute($documentEntitiy, $files,  $presenter);
         return $presenter->handle();
     }
-    public function update(Request $request)
+    public function update(UpdateDocumentRequest $request)
     {
-        return "UPDATE";
+        //prepare
+        $files = $this->requestToLaravelFiles($request);
+        $deletedIds = $request->deleted_file_ids;
+        $filesDTO = new UpdatedFileDTO($files, $deletedIds);
+        //action
+        $presenter = new UpdateDocumentPresenter();
+        $this->updateDocumentUsecase->execute($this->requestToDocumentEntity($request), $filesDTO, $presenter);
+        return $presenter->handle();
     }
     public function destroy(string $documentId)
     {
@@ -87,7 +100,6 @@ class DocumentContoller extends Controller
             );
         }
         $entitiy = new DocumentEntity(
-            id: null,
             userId: (int)$request->user_id,
             name: $request->name,
             docNumber: $request->doc_number,
@@ -97,9 +109,11 @@ class DocumentContoller extends Controller
             description: $request->description,
             categories: $categories,
         );
+        $documentId = $request->route('document');
+        if ($documentId) $entitiy->id = (int)$documentId;
         return $entitiy;
     }
-    private function requestToLaravelFile(Request $request, string $requestFileName = 'files'): array
+    private function requestToLaravelFiles(Request $request, string $requestFileName = 'files'): array
     {
         $files = [];
         $requestFiles = $request->file($requestFileName);
