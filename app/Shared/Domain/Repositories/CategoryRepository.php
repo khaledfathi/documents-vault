@@ -12,7 +12,7 @@ interface CategoryRepository
     /**
      * @return EntitiesWithPagination<CategoryEntity>
      */
-    public function paginate(int $perPage=10): EntitiesWithPagination;
+    public function paginate(int $perPage = 10): EntitiesWithPagination;
     public function show(int $categoryId): ?CategoryEntity;
     public function store(CategoryEntity $categoryEntity): CategoryEntity;
     public function update(CategoryEntity $categoryEntity): bool;

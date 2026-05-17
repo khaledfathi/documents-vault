@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Features\Groups\Application\Usecases;
 
 use App\Features\Groups\Application\Contracts\UpdateGroupContract;
@@ -11,22 +12,24 @@ use App\Shared\Domain\Repositories\GroupRepository;
 use Exception;
 use RecursiveArrayIterator;
 
-final class UpdateGroupUsecase implements UpdateGroupContract{
+final class UpdateGroupUsecase implements UpdateGroupContract
+{
     public function __construct(
         private readonly GroupRepository $groupRepository,
         private readonly PermissionGateway $permissionGatewaty,
         private readonly CurrentUserContract $currentUser,
-    ) { }
-    public function execute(GroupEntity $groupEntity, UpdateGroupOutput $presenter): void{
+    ) {}
+    public function execute(GroupEntity $groupEntity, UpdateGroupOutput $presenter): void
+    {
         try {
-            if (! $this->permissionGatewaty->can($this->currentUser->id() , PermissionType::EDIT_GROUP)){
+            if (! $this->permissionGatewaty->can($this->currentUser->id(), PermissionType::EDIT_GROUP)) {
                 $presenter->onUnauthorized();
-                return ;
+                return;
             }
-            $record= $this->groupRepository->show($groupEntity->id);
+            $record = $this->groupRepository->show($groupEntity->id);
             if (!$record) {
                 $presenter->onNotFound();
-                return ;
+                return;
             }
             if ($record->isProtected) {
                 $presenter->onProtectedGroup();
@@ -34,7 +37,7 @@ final class UpdateGroupUsecase implements UpdateGroupContract{
             }
             $this->groupRepository->update($groupEntity);
             $presenter->onSuccess();
-        }catch (Exception $e){
+        } catch (Exception $e) {
             $presenter->onFailure($e->getMessage());
         }
     }

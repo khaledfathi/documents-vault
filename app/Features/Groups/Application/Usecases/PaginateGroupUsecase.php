@@ -18,16 +18,17 @@ final class PaginateGroupUsecase implements PaginateGroupContract
         private readonly GroupRepository $groupRepository,
         private readonly PermissionGateway $permissionGateway,
         private readonly CurrentUserContract $currentUser
-    ) { }
-    public function execute(PaginateGroupOutput $presenter, int $perPage = 10){
-        if (! $this->permissionGateway->can($this->currentUser->id() , PermissionType::VIEW_GROUP)){
+    ) {}
+    public function execute(PaginateGroupOutput $presenter, int $perPage = 10)
+    {
+        if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::VIEW_GROUP)) {
             $presenter->onUnauthorized();
-            return ;
+            return;
         }
-        try{
+        try {
             $pagination = $this->groupRepository->paginate($perPage);
             $presenter->onSuccess($pagination);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             $presenter->onFailure($e->getMessage());
         }
     }

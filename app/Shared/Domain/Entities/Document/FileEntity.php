@@ -22,7 +22,8 @@ final class FileEntity
      * permissions: array{id: int , permission: string}|null
      * }
      * */
-    public function toArray():array {
+    public function toArray(): array
+    {
         $array =  [
             'id' => $this->id,
             'documentId' => $this->documentId,

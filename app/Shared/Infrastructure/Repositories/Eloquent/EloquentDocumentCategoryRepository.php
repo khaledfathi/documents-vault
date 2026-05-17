@@ -21,14 +21,14 @@ final class EloquentDocumentCategoryRepository implements DocumentCategoryReposi
         return new DocumentCategoryEntity();
     }
     /**
-    * @param int $documentId
-    * @return array<DocumentCategoryEntity>
-    */
-    public function showByDocumentId (int $documentCategoryId): array
+     * @param int $documentId
+     * @return array<DocumentCategoryEntity>
+     */
+    public function showByDocumentId(int $documentCategoryId): array
     {
         $records = DocumentCategory::with('category')->where('document_id', $documentCategoryId)->get();
         $documentCategoryEntities = [];
-        foreach($records as $record){
+        foreach ($records as $record) {
             $documentCategoryEntities[] = new CategoryEntity(
                 id: $record->category->id,
                 name: $record->category->name,

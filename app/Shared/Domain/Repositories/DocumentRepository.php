@@ -13,7 +13,7 @@ interface DocumentRepository
      * @return EntitiesWithPagination<DocumentEntity>
      */
     public function paginate(int $perPage = 10): EntitiesWithPagination;
-    public function paginateRelatedToUser(int $userId , int $perPage = 10): EntitiesWithPagination;
+    public function paginateRelatedToUser(int $userId, int $perPage = 10): EntitiesWithPagination;
     public function show(int $documentId): ?DocumentEntity;
     public function showWithRelation(int $documentId): ?DocumentEntity;
     public function store(DocumentEntity $documentEntity): DocumentEntity;

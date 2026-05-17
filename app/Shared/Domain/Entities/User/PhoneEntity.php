@@ -10,6 +10,5 @@ final class PhoneEntity
         public ?int $id = null,
         public ?int $userId = null,
         public ?string $phone = null,
-    ) {
-    }
+    ) {}
 }

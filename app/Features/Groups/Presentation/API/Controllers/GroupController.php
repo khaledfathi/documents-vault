@@ -74,7 +74,7 @@ class GroupController extends Controller
             permissions: $permissions,
         );
         $groupId = $request->id ?? $request->route('group');
-        $groupEntity->id = $groupId ? (int)$groupId : null ;
+        $groupEntity->id = $groupId ? (int)$groupId : null;
         return $groupEntity;
     }
 }

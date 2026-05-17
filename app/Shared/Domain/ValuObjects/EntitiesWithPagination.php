@@ -17,6 +17,5 @@ final class EntitiesWithPagination
     public function __construct(
         public ?Pagination $pagination = null,
         public ?array $entities = null
-    ) {
-    }
+    ) {}
 }

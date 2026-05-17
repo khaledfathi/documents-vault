@@ -20,7 +20,7 @@ final class ViewDocumentFilePresenter implements ShowDocumentFileOutput
     use PresenterTrait;
     public function onSuccess(FileEntity $fileEntity): void
     {
-        $this->response = fn ()=> response()->file($this->storageDir->privatePath()->documents($fileEntity->documentEntity->id).$fileEntity->file);
+        $this->response = fn() => response()->file($this->storageDir->privatePath()->documents($fileEntity->documentEntity->id) . $fileEntity->file);
     }
     public function onForbidden(): void
     {

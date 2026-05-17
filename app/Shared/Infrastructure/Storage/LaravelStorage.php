@@ -21,7 +21,8 @@ final class LaravelStorage implements StorageContract
     {
         return FacadesStorage::delete($filePath);
     }
-    public function removeDirectory (string $dir): bool{
+    public function removeDirectory(string $dir): bool
+    {
         return FacadesStorage::deleteDirectory($dir);
     }
 }

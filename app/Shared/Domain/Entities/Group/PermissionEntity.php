@@ -11,6 +11,5 @@ final class PermissionEntity
     public function __construct(
         public ?int $id = null,
         public ?PermissionType $permissionType = null,
-    ) {
-    }
+    ) {}
 }

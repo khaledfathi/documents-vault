@@ -23,10 +23,11 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:30',
+            'name' => 'required|max:50',
             'email' => [
                 'required',
                 'email',
+                'max:50',
                 Rule::unique('users', 'email')->ignore((int) $this->route('user')),
             ],
 

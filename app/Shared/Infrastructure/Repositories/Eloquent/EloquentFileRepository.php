@@ -10,6 +10,7 @@ use App\Shared\Domain\Enums\Document\DocumentVisibilityType;
 use App\Shared\Domain\Repositories\FileRepository;
 use App\Shared\Infrastructure\Models\File;
 use App\Shared\Infrastructure\Utilities\CarbonDateUtility;
+use Carbon\Carbon;
 
 final class EloquentFileRepository implements FileRepository
 {
@@ -22,9 +23,31 @@ final class EloquentFileRepository implements FileRepository
         $fileEntity->id = $record->id;
         return $fileEntity;
     }
+
+    public function storeMany(array $fileEntities): bool
+    {
+        $data = [];
+        foreach ($fileEntities as $fileEntity) {
+            $data[] = [
+                'document_id' => $fileEntity->documentId,
+                'file' => $fileEntity->file,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+        }
+        return File::insert($data);
+    }
     public function show(int $fileId): ?FileEntity
     {
-        return new FileEntity();
+        $record = File::find($fileId);
+        if (! $record) return null;
+        //file entity
+        $fileEntity = new FileEntity(
+            id: $record->id,
+            documentId: $record->document_id,
+            file: $record->file,
+        );
+        return $fileEntity;
     }
     public function showWithRelation(int $fileId): ?FileEntity
     {
@@ -61,5 +84,9 @@ final class EloquentFileRepository implements FileRepository
         if (!$record) return false;
         $record->delete();
         return true;
+    }
+    public function destroyMany(array $fileIds): int
+    {
+        return File::destroy($fileIds);
     }
 }

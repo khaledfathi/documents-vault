@@ -9,23 +9,27 @@ use Illuminate\Http\Response;
 final class UpdateGroupPresenter implements UpdateGroupOutput
 {
     use PresenterTrait;
-    public function onSuccess(): void {
+    public function onSuccess(): void
+    {
         $this->response = fn() => response()->json([
             "success" => true,
             "message" => "Group Updated Successfuly",
         ], Response::HTTP_OK);
     }
-    public function onUnauthorized(): void {
+    public function onUnauthorized(): void
+    {
         $this->response = fn() => $this->notFoundResponse("group is not found");
     }
-    public function onProtectedGroup(): void{
+    public function onProtectedGroup(): void
+    {
         $this->response = fn() => response()->json([
             'success' => false,
             'message' => 'can not update the default groups (admin , default)',
         ]);
     }
-    public function onNotFound(): void {
-        $this->response = fn ()=> $this->notFoundResponse('Group is not found');
+    public function onNotFound(): void
+    {
+        $this->response = fn() => $this->notFoundResponse('Group is not found');
     }
     public function handle()
     {

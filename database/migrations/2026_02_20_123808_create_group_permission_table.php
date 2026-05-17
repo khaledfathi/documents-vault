@@ -17,7 +17,7 @@ return new class extends Migration
             //FK
             $table->foreignId('group_id')->references('id')->on('groups')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('permission_id')->references('id')->on('permissions')->cascadeOnDelete()->cascadeOnUpdate();
-            //constraints 
+            //constraints
             $table->unique(['group_id', 'permission_id']);
         });
     }

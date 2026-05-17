@@ -41,10 +41,10 @@ class SharedServiceProvider extends ServiceProvider
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
         $this->app->bind(GroupRepository::class, EloquentGroupRepository::class);
         $this->app->bind(PermissionRepository::class, EloquentPermissionRepository::class);
-        $this->app->bind(CategoryRepository::class , EloquentCategoryRepository::class);
-        $this->app->bind(DocumentRepository::class , EloquentDocumentRepository::class);
-        $this->app->bind(DocumentCategoryRepository::class , EloquentDocumentCategoryRepository::class);
-        $this->app->bind(FileRepository::class , EloquentFileRepository::class);
+        $this->app->bind(CategoryRepository::class, EloquentCategoryRepository::class);
+        $this->app->bind(DocumentRepository::class, EloquentDocumentRepository::class);
+        $this->app->bind(DocumentCategoryRepository::class, EloquentDocumentCategoryRepository::class);
+        $this->app->bind(FileRepository::class, EloquentFileRepository::class);
 
         //gateways
         $this->app->bind(PermissionGateway::class, UserPermissionGateway::class);
@@ -52,8 +52,8 @@ class SharedServiceProvider extends ServiceProvider
         //utilities
         $this->app->bind(TokenGeneratorContract::class, TokenGeneratorUtility::class);
         $this->app->bind(PasswordHasherContract::class, PasswordHasherUtility::class);
-        $this->app->bind(StorageDirContract::class , UtilityStorageDir::class);
-        $this->app->bind(StorageContract::class , LaravelStorage::class);
+        $this->app->bind(StorageDirContract::class, UtilityStorageDir::class);
+        $this->app->bind(StorageContract::class, LaravelStorage::class);
 
         //Security
         $this->app->bind(CurrentUserContract::class, LaravelCurrentUser::class);

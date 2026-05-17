@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Features\Categories\Application\Outputs;
+namespace App\Features\Documents\Application\Outputs;
 
-interface UpdateCategoryOutput
+interface UpdateDocumentOutput
 {
     public function onSuccess(): void;
-    public function onNotFound(): void;
     public function onUnauthorized(): void;
+    public function onNotFound(): void;
     public function onFailure(string $error): void;
 }

@@ -13,8 +13,7 @@ final class LaravelCurrentUser implements CurrentUserContract
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-    ) {
-    }
+    ) {}
     public function id(): int
     {
         return  Auth::user()?->id ?? 0;

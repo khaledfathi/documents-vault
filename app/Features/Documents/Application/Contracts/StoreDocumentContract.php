@@ -11,7 +11,7 @@ use App\Shared\Domain\Entities\Document\DocumentEntity;
 interface StoreDocumentContract
 {
     /**
-    * @param $files array<FileContract>
-    */
-    public function execute(DocumentEntity $documentEntity, array $files ,  StoreDocumentOutput $presenter): void;
+     * @param $files array<FileContract>
+     */
+    public function execute(DocumentEntity $documentEntity, array $files,  StoreDocumentOutput $presenter): void;
 }

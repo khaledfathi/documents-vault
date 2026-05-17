@@ -16,7 +16,7 @@ final class UpdateUserPresenter implements UpdateUserOutput
     {
         $this->response = fn() => response()->json([
             "success" => true,
-            "message" => "Group Updated Successfuly",
+            "message" => "User Updated Successfuly",
         ], Response::HTTP_OK);
     }
     public function onNotFound(): void

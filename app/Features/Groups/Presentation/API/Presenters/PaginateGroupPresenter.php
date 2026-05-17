@@ -14,7 +14,8 @@ final class PaginateGroupPresenter implements PaginateGroupOutput
 {
     use PresenterTrait;
 
-    public function onSuccess(EntitiesWithPagination $entitiesWithPagination): void {
+    public function onSuccess(EntitiesWithPagination $entitiesWithPagination): void
+    {
         $this->response = fn() => response()->json([
             'success' => true,
             'data' => [
