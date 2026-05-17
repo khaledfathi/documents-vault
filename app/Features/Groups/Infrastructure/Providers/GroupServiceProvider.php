@@ -24,8 +24,8 @@ class GroupServiceProvider extends ServiceProvider
         $this->app->bind(StoreGroupContract::class, StoreGroupUsecase::class);
         $this->app->bind(ShowGroupContract::class, ShowGroupUsecase::class);
         $this->app->bind(DestroyGroupContract::class, DestroyGroupUsecase::class);
-        $this->app->bind(PaginateGroupContract::class , PaginateGroupUsecase::class);
-        $this->app->bind(UpdateGroupContract::class , UpdateGroupUsecase::class);
+        $this->app->bind(PaginateGroupContract::class, PaginateGroupUsecase::class);
+        $this->app->bind(UpdateGroupContract::class, UpdateGroupUsecase::class);
     }
 
     /**

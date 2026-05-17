@@ -18,8 +18,8 @@ final class GroupEntity
         public ?int $id = null,
         public ?string $name = null,
         public ?array $permissions = null,
-        public  bool $isProtected= false,
-        public  bool $isAdmin= false,
+        public  bool $isProtected = false,
+        public  bool $isAdmin = false,
     ) {}
     public function toArray()
     {

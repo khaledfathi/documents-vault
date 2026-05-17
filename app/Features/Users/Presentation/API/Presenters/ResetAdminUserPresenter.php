@@ -12,7 +12,7 @@ final class ResetAdminUserPresenter implements ResetAdminUserOutput
     public function onSuccess(): void
     {
         $this->message =
-        "admin user has been reset successfuly\n[user: admin , email: admin@mail.com , password: admin]";
+            "admin user has been reset successfuly\n[user: admin , email: admin@mail.com , password: admin]";
     }
     public function onFailure(string $error): void
     {

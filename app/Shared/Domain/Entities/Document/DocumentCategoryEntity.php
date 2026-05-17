@@ -12,6 +12,5 @@ final class DocumentCategoryEntity
         public ?int $categoryId = null,
         public ?CategoryEntity $category = null,
         public ?DocumentEntity $document = null,
-    ) {
-    }
+    ) {}
 }

@@ -70,7 +70,7 @@ final class CarbonDateUtility implements DateProviderContract
     }
     public function yearsUntilNow(): int
     {
-        return (int) $this->carbonDate->diffInYears(Carbon::now()->toDateString()) ;
+        return (int) $this->carbonDate->diffInYears(Carbon::now()->toDateString());
     }
     public function yearsUntil(DateProviderContract $date): int
     {

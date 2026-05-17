@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Shared\Infrastructure\Repositories\Eloquent;
 
 use App\Shared\Domain\Entities\Group\GroupEntity;
-use App\Shared\Domain\Entities\Group\PermissionEntity;;
+use App\Shared\Domain\Entities\Group\PermissionEntity;
 use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Repositories\GroupRepository;
 use App\Shared\Domain\ValuObjects\EntitiesWithPagination;
@@ -45,7 +45,7 @@ final class EloquentGroupRepository implements GroupRepository
                 id: $record->id,
                 name: $record->name,
                 permissions: $permissions,
-                isProtected:$this->isProtected($record->id),
+                isProtected: $this->isProtected($record->id),
                 isAdmin: $record->id == self::ADMIN_GROUP_ID,
             );
         }
@@ -53,8 +53,8 @@ final class EloquentGroupRepository implements GroupRepository
         $pagination = $this->mapPaginator($records, $perPage);
         //
         return new EntitiesWithPagination(
-            pagination:$pagination,
-            entities:$groupEntities,
+            pagination: $pagination,
+            entities: $groupEntities,
         );
     }
     public function show(int $groupId): ?GroupEntity
@@ -74,7 +74,7 @@ final class EloquentGroupRepository implements GroupRepository
             id: $record->id,
             name: $record->name,
             permissions: $permissionEntities,
-            isProtected:$this->isProtected($record->id),
+            isProtected: $this->isProtected($record->id),
             isAdmin: $record->id == self::ADMIN_GROUP_ID,
         );
     }
@@ -94,7 +94,7 @@ final class EloquentGroupRepository implements GroupRepository
                 id: $record->id,
                 name: $record->name,
                 permissions: $permissionEntities,
-                isProtected:$this->isProtected($record->id),
+                isProtected: $this->isProtected($record->id),
                 isAdmin: $record->id == self::ADMIN_GROUP_ID,
             );
         }
@@ -127,7 +127,7 @@ final class EloquentGroupRepository implements GroupRepository
     public function update(GroupEntity $groupEntity): bool
     {
         $record = Group::find($groupEntity->id);
-        if(! $record) return false;
+        if (! $record) return false;
         $record->update([
             'name' => $groupEntity->name,
         ]);
@@ -156,16 +156,19 @@ final class EloquentGroupRepository implements GroupRepository
     {
         return Group::find($groupId)?->delete() ? true : false;
     }
-    public function getAdminGroupId(): int{
+    public function getAdminGroupId(): int
+    {
         return (int) self::ADMIN_GROUP_ID;
     }
-    public function getDefaultGroupId(): int{
+    public function getDefaultGroupId(): int
+    {
         return (int) self::DEFAULT_GROUP_ID;
     }
     /**
-    * check if the 'id' is [ADMIN_GROUP_ID] or [DEFAULT_GROUP_ID]
-    */
-    private function isProtected(int $id):bool{
+     * check if the 'id' is [ADMIN_GROUP_ID] or [DEFAULT_GROUP_ID]
+     */
+    private function isProtected(int $id): bool
+    {
         return $id === self::ADMIN_GROUP_ID || $id === self::DEFAULT_GROUP_ID;
     }
 }

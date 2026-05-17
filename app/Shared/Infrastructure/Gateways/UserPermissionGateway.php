@@ -12,13 +12,12 @@ final class UserPermissionGateway implements PermissionGateway
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-    ) {
-    }
+    ) {}
     public function can(int $userId, PermissionType $ability): bool
     {
         $permissions = $this->userRepository->getPermissions($userId);
         if (!$permissions) {
-            return false ;
+            return false;
         }
         foreach ($permissions as $permission) {
             if ($permission->permissionType == $ability) {

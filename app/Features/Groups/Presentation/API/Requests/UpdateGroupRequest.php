@@ -22,7 +22,7 @@ class UpdateGroupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:50|unique:groups,name,'.$this->route('group'),
+            'name' => 'required|max:50|unique:groups,name,' . $this->route('group'),
             'permission_ids' => 'required|array',
             'permission_ids.*' => 'exists:permissions,id',
         ];

@@ -11,6 +11,5 @@ final class SettingEntity
         public ?int $userId = null,
         public ?string $key = null,
         public ?string $value = null,
-    ) {
-    }
+    ) {}
 }

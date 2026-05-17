@@ -12,6 +12,5 @@ final class GroupPermissionEntity
         public ?int $permissionId = null,
         public ?GroupEntity $group = null,
         public ?PermissionEntity $permission = null,
-    ) {
-    }
+    ) {}
 }

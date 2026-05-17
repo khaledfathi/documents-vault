@@ -10,8 +10,8 @@ use Illuminate\Translation\PotentiallyTranslatedString;
 class TotalFilesSize implements ValidationRule
 {
     /**
-    * @param int $maxSize total files size in megabyte
-    */
+     * @param int $maxSize total files size in megabyte
+     */
     public function __construct(
         private readonly int $totalMaxSize,
     ) {}
