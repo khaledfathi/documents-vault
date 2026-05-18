@@ -13,7 +13,6 @@ final class UpdateDocumentPresenter implements UpdateDocumentOutput
     use PresenterTrait;
     public function onSuccess(): void
     {
-        dd('success');
         $this->response = fn() => response()->json([
             "success" => true,
             "message" => "Document Updated Successfuly",
@@ -21,7 +20,6 @@ final class UpdateDocumentPresenter implements UpdateDocumentOutput
     }
     public function onNotFound(): void
     {
-        dd('not found');
         $this->response = fn() => $this->notFoundResponse("Document is not found");
     }
     public function handle()

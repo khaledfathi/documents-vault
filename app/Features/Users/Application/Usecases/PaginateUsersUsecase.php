@@ -23,6 +23,7 @@ final class PaginateUsersUsecase implements PaginateUsersContract
     {
         try {
             if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::VIEW_USER)) {
+                $presenter->onUnauthorized();
                 return;
             }
             $pagination = $this->userRepository->paginate($perPage);

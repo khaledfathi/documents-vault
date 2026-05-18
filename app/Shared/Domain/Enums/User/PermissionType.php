@@ -23,7 +23,8 @@ enum PermissionType: string
     case EDIT_CATEGORY = "edit_category";
     case DELETE_CATEGORY = "delete_category";
         //
-    case VIEW_DOCUMENT = "view_document";
+    case VIEW_DOCUMENT = "view_document"; // view document releated to current user only
+    case VIEW_ALL_DOCUMENT = "view_all_document"; // view any document
     case CREATE_DOCUMENT = "create_document";
     case EDIT_DOCUMENT = "edit_document";
     case DELETE_DOCUMENT = "delete_document";

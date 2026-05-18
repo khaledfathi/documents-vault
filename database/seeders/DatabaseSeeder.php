@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Shared\Domain\Enums\User\PermissionType;
+use App\Shared\Infrastructure\Models\Category;
 use App\Shared\Infrastructure\Models\Group;
 use App\Shared\Infrastructure\Models\GroupPermission;
 use App\Shared\Infrastructure\Models\Permission;
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
     private $now;
     private $adminGroup;
     private $defaultGroup;
+    private $defaultCategory;
     public function __construct()
     {
         $this->now = Carbon::now();
@@ -30,10 +32,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::transaction(function (){
+        DB::transaction(function () {
             $this->createDefaultGroups();
             $this->createPermissions();
             $this->setPermissionsForAdminGroup();
+            $this->setDefaultCategory();
             $this->createRootUser();
         });
     }
@@ -41,10 +44,14 @@ class DatabaseSeeder extends Seeder
     private function createDefaultGroups()
     {
         $this->adminGroup = Group::updateOrCreate([
-            'name' => 'admin', "created_at" => $this->now, "updated_at" => $this->now
+            'name' => 'admin',
+            "created_at" => $this->now,
+            "updated_at" => $this->now
         ]);
-        $this->defaultGroup= Group::updateOrCreate([
-            'name' => 'default', "created_at" => $this->now, "updated_at" => $this->now
+        $this->defaultGroup = Group::updateOrCreate([
+            'name' => 'default',
+            "created_at" => $this->now,
+            "updated_at" => $this->now
         ]);
     }
     private function createPermissions()
@@ -69,6 +76,13 @@ class DatabaseSeeder extends Seeder
             ];
         }
         GroupPermission::insert($groupPermissions);
+    }
+    public function setDefaultCategory()
+    {
+        $this->defaultCategory = Category::updateOrCreate([
+            'name' => 'default',
+            'description' => 'Default Category',
+        ]);
     }
     public function createRootUser()
     {

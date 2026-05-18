@@ -26,16 +26,14 @@ final class PaginateDocumentUsecase implements PaginateDocumentContract
                 $presenter->onUnauthorized();
                 return;
             }
-            //for user in admin group or root user
-            if ($this->currentUser->entity()->isRoot || $this->currentUser->entity()->group->isAdmin) {
-                $record = $this->documentRepository->paginate($perPage);
+            if ($this->permissionGateway->can($this->currentUser->id(), PermissionType::VIEW_ALL_DOCUMENT)) {
                 // paginate all document
+                $record = $this->documentRepository->paginate($perPage);
             } else {
-                $record = $this->documentRepository->paginateRelatedToUser($this->currentUser->id(), $perPage);
-                // paginate document releated to current user
+                // paginate all public documents
+                $record = $this->documentRepository->paginatePublicDocumnetOnly( $perPage);
             };
             $presenter->onSuccess($record);
-            //show only record releated to the current use , or all if admin user
         } catch (Exception $e) {
             $presenter->onFailure($e->getMessage());
         }

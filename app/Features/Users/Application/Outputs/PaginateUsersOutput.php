@@ -14,5 +14,6 @@ interface PaginateUsersOutput
      * @return void
      */
     public function onSuccess(EntitiesWithPagination $entitiesWithPagination);
+    public function onUnauthorized():void;
     public function onFailure(string $error);
 }

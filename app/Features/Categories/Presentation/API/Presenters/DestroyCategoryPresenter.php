@@ -22,6 +22,13 @@ final class DestroyCategoryPresenter implements DestroyCategoryOutput
     {
         $this->response = fn() => $this->notFoundResponse("Category is not found");
     }
+    public function onDefaultGroup(): void
+    {
+        $this->response = fn() => response()->json([
+            'success' => false,
+            'message' => 'can not delete the default category',
+        ]);
+    }
     public function handle()
     {
         return ($this->response)();

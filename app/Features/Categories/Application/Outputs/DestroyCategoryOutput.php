@@ -8,6 +8,7 @@ interface DestroyCategoryOutput
 {
     public function onSuccess(): void;
     public function onNotFound(): void;
+    public function onDefaultGroup(): void;
     public function onUnauthorized(): void;
     public function onFailure(string $error): void;
 }

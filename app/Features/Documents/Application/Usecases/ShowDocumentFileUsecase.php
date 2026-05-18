@@ -22,19 +22,18 @@ final class ShowDocumentFileUsecase implements ShowDocumentFileContract
     public function execute(int $documentId, int $fileId, ShowDocumentFileOutput $presenter): void
     {
         try {
-
             if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::VIEW_DOCUMENT)) {
                 $presenter->onUnauthorized();
                 return;
             }
-            $fileEntity = $this->fileRepository->showWithRelation($fileId);
+            if ($this->permissionGateway->can($this->currentUser->id(), PermissionType::VIEW_ALL_DOCUMENT)) {
+
+                $fileEntity = $this->fileRepository->showWithRelation($fileId);
+            } else {
+                $fileEntity = $this->fileRepository->showWithRelationPublicOnly($fileId);
+            }
             if (! $fileEntity) {
                 $presenter->onNotFound();
-                return;
-            }
-            //check : is current document owned by current user
-            if (! $fileEntity->documentEntity->userId == $this->currentUser) {
-                $presenter->onForbidden();
                 return;
             }
             $presenter->onSuccess($fileEntity);

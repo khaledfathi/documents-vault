@@ -16,11 +16,7 @@ final class UpdateGroupPresenter implements UpdateGroupOutput
             "message" => "Group Updated Successfuly",
         ], Response::HTTP_OK);
     }
-    public function onUnauthorized(): void
-    {
-        $this->response = fn() => $this->notFoundResponse("group is not found");
-    }
-    public function onProtectedGroup(): void
+    public function onAdminGroup(): void
     {
         $this->response = fn() => response()->json([
             'success' => false,

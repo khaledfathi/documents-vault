@@ -27,16 +27,14 @@ final class GroupEntity
             "id" => $this->id,
             "name" => $this->name,
         ];
-        if ($this->permissions) {
-            $permissions = [];
-            foreach ($this->permissions as $permission) {
-                $permissions[] = [
-                    'id' => $permission->id,
-                    'permission' => $permission->permissionType->value,
-                ];
-            }
-            $data['permissions'] = $permissions;
+        $permissions = [];
+        foreach ($this->permissions as $permission) {
+            $permissions[] = [
+                'id' => $permission->id,
+                'permission' => $permission->permissionType->value,
+            ];
         }
+        $data['permissions'] = $permissions;
         return $data;
     }
 }

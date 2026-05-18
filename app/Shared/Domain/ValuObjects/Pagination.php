@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\ValuObjects;
 
-use Throwable;
 
 final class Pagination
 {
@@ -18,7 +17,7 @@ final class Pagination
         public readonly ?int $total = null,
     ) {
         //prevent zero and negtaive value
-        $this->perPage = $perPage <= 0 ? $this->perPage = 10 : $perPage;
+        $this->perPage = $perPage <= 0 ? 10 : $perPage;
     }
 
     private function generatePageURL(int $pageQueryNumber): mixed
