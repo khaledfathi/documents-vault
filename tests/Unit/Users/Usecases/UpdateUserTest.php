@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Unit\Users\Usecases;
 
-use App\Features\Users\Application\Outputs\ShowUserOutput;
-use App\Features\Users\Application\Usecases\ShowUserUsecase;
+use App\Features\Users\Application\Outputs\UpdateUserOutput;
+use App\Features\Users\Application\Usecases\UpdateUserUsecase;
 use App\Shared\Application\Contracts\Security\CurrentUserContract;
 use App\Shared\Domain\Entities\User\UserEntity;
 use App\Shared\Domain\Enums\User\PermissionType;
@@ -15,7 +15,7 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Exception;
 
-final class ShowUserTest extends TestCase
+final class UpdateUserTest extends TestCase
 {
     protected function tearDown(): void
     {
@@ -27,24 +27,24 @@ final class ShowUserTest extends TestCase
         parent::setUp();
         $this->addToAssertionCount(1);
     }
-    public function test_it_shows_user_record(): void
+    public function test_it_updates_user_record(): void
     {
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $userRepository = Mockery::mock(UserRepository::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
-        $presenter = Mockery::mock(ShowUserOutput::class);
+        $presenter = Mockery::mock(UpdateUserOutput::class);
 
-        $user = new UserEntity(
+        $userEntity = new UserEntity(
             id: 1,
             name: 'user',
             email: 'user@mail.com',
         );
 
         $userRepository
-            ->shouldReceive('show')
+            ->shouldReceive('update')
             ->once()
-            ->with(1)
-            ->andReturn($user);
+            ->with($userEntity)
+            ->andReturn(true);
 
         $currentUser
             ->shouldReceive('id')
@@ -54,27 +54,33 @@ final class ShowUserTest extends TestCase
         $permissionGateway
             ->shouldReceive('can')
             ->once()
-            ->with(1, PermissionType::VIEW_USER)
+            ->with(1, PermissionType::EDIT_USER)
             ->andReturn(true);
 
         $presenter
             ->shouldReceive('onSuccess')
             ->once()
-            ->with($user);
+            ->with(true);
 
-        $usecase = new ShowUserUsecase(
+        $usecase = new UpdateUserUsecase(
             $userRepository,
             $permissionGateway,
             $currentUser,
         );
-        $usecase->execute(1, $presenter);
+        $usecase->execute($userEntity, $presenter);
     }
-    public function test_it_fails_when_current_user_doesnt_have_view_user_permission()
+
+    public function test_it_fails_when_current_user_doesnt_have_edit_user_permission()
     {
         $userRepository = Mockery::mock(UserRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
-        $presenter = Mockery::mock(ShowUserOutput::class);
+        $presenter = Mockery::mock(UpdateUserOutput::class);
+
+        $userEntity = new UserEntity(
+            id: 1,
+            name: 'user',
+        );
 
         $currentUser
             ->shouldReceive('id')
@@ -84,32 +90,39 @@ final class ShowUserTest extends TestCase
         $permissionGateway
             ->shouldReceive('can')
             ->once()
-            ->with(1, PermissionType::VIEW_USER)
+            ->with(1, PermissionType::EDIT_USER)
             ->andReturn(false);
 
         $presenter
             ->shouldReceive('onUnauthorized')
             ->once();
 
-        $usecase = new ShowUserUsecase(
+        $usecase = new UpdateUserUsecase(
             $userRepository,
             $permissionGateway,
             $currentUser,
         );
-        $usecase->execute(1, $presenter);
+        $usecase->execute($userEntity, $presenter);
     }
-    public function test_it_fails_when_user_record_is_not_found()
+
+    public function test_it_fails_when_user_recoed_is_not_found(): void
     {
-        $userRepository = Mockery::mock(UserRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);
+        $userRepository = Mockery::mock(UserRepository::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
-        $presenter = Mockery::mock(ShowUserOutput::class);
+        $presenter = Mockery::mock(UpdateUserOutput::class);
+
+        $userEntity = new UserEntity(
+            id: 1,
+            name: 'user',
+            email: 'user@mail.com',
+        );
 
         $userRepository
-            ->shouldReceive('show')
+            ->shouldReceive('update')
             ->once()
-            ->with(1)
-            ->andReturn(null);
+            ->with($userEntity)
+            ->andReturn(false);
 
         $currentUser
             ->shouldReceive('id')
@@ -119,31 +132,37 @@ final class ShowUserTest extends TestCase
         $permissionGateway
             ->shouldReceive('can')
             ->once()
-            ->with(1, PermissionType::VIEW_USER)
+            ->with(1, PermissionType::EDIT_USER)
             ->andReturn(true);
 
         $presenter
             ->shouldReceive('onNotFound')
             ->once();
 
-        $usecase = new ShowUserUsecase(
+        $usecase = new UpdateUserUsecase(
             $userRepository,
             $permissionGateway,
             $currentUser,
         );
-        $usecase->execute(1, $presenter);
+        $usecase->execute($userEntity, $presenter);
     }
     public function test_it_handles_unexpected_exception()
     {
         $userRepository = Mockery::mock(UserRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
-        $presenter = Mockery::mock(ShowUserOutput::class);
+        $presenter = Mockery::mock(UpdateUserOutput::class);
+
+        $userEntity = new UserEntity(
+            id: 1,
+            name: 'user',
+            email: 'user@mail.com',
+        );
 
         $userRepository
-            ->shouldReceive('show')
+            ->shouldReceive('update')
             ->once()
-            ->with(1)
+            ->with($userEntity)
             ->andThrow(new Exception('database error'));
 
         $currentUser
@@ -154,7 +173,7 @@ final class ShowUserTest extends TestCase
         $permissionGateway
             ->shouldReceive('can')
             ->once()
-            ->with(1, PermissionType::VIEW_USER)
+            ->with(1, PermissionType::EDIT_USER)
             ->andReturn(true);
 
         $presenter
@@ -162,11 +181,11 @@ final class ShowUserTest extends TestCase
             ->once()
             ->with('database error');
 
-        $usecase = new ShowUserUsecase(
+        $usecase = new UpdateUserUsecase(
             $userRepository,
             $permissionGateway,
             $currentUser,
         );
-        $usecase->execute(1, $presenter);
+        $usecase->execute($userEntity, $presenter);
     }
 }

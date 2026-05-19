@@ -34,7 +34,7 @@ final class DestroyUserUsecase implements DestroyUserContract
             }
             //prevent destroy root user
             if ($record->isRoot) {
-                $presenter->onRoorUser();
+                $presenter->onRootUser();
                 return;
             }
             $this->userRepository->destroy($userId);
