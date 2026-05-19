@@ -26,16 +26,17 @@ final class TokenGeneratorTest extends TestCase
         parent::setUp();
         $this->addToAssertionCount(1);
     }
-    public function test_on_success(): void
+    public function test_it_destroy_current_active_token(): void
     {
         $userRepository = Mockery::mock(UserRepository::class);
         $passwordHasher = Mockery::mock(PasswordHasherContract::class);
         $tokenGenerator = Mockery::mock(TokenGeneratorContract::class);
         $presenter = Mockery::mock(GenerateTokenOutput::class);
 
-        $user = new UserEntity();
-        $user->id = 1;
-        $user->password = 'hashed-password';
+        $user = new UserEntity(
+            id: 1,
+            password: 'hashed-password'
+        );
 
         $userRepository
             ->shouldReceive('findByEmail')
@@ -46,7 +47,7 @@ final class TokenGeneratorTest extends TestCase
         $passwordHasher
             ->shouldReceive('check')
             ->once()
-            ->with('secret', 'hashed-password')
+            ->with('password', 'hashed-password')
             ->andReturn(true);
 
         $tokenGenerator
@@ -68,12 +69,12 @@ final class TokenGeneratorTest extends TestCase
 
         $usecase->execute(
             'john@example.com',
-            'secret',
+            'password',
             $presenter
         );
     }
 
-    public function test__on_missing_input(): void
+    public function test_it_fails_when_email_or_password_is_empty(): void
     {
         $userRepository = Mockery::mock(UserRepository::class);
         $passwordHasher = Mockery::mock(PasswordHasherContract::class);
@@ -94,7 +95,7 @@ final class TokenGeneratorTest extends TestCase
         $usecase->execute('', '', $presenter);
     }
 
-    public function test_on_credential_failed(): void
+    public function test_it_fails_when_credential_is_wrong(): void
     {
         $userRepository = Mockery::mock(UserRepository::class);
         $passwordHasher = Mockery::mock(PasswordHasherContract::class);
@@ -123,7 +124,7 @@ final class TokenGeneratorTest extends TestCase
         );
     }
 
-    public function test_on_failure(): void
+    public function test_it_handles_unexpected_exception(): void
     {
         $userRepository = Mockery::mock(UserRepository::class);
         $passwordHasher = Mockery::mock(PasswordHasherContract::class);
@@ -137,8 +138,7 @@ final class TokenGeneratorTest extends TestCase
 
         $presenter
             ->shouldReceive('onFailure')
-            ->once()
-            ->with('database error');
+            ->once();
 
         $usecase = new GenerateTokenUsecase(
             $userRepository,

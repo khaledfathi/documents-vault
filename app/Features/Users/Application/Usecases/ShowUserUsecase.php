@@ -26,7 +26,6 @@ final class ShowUserUsecase implements ShowUserContract
                 $presenter->onUnauthorized();
                 return;
             }
-            $this->userRepository->getPermissions($userId);
             $userEntity = $this->userRepository->show($userId);
             if (! $userEntity) {
                 $presenter->onNotFound();
