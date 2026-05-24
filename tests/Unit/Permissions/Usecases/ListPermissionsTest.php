@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Unit\Permissions\Usecases;
+namespace Tests\Unit\Permissions\Usecases;
 
 use App\Features\Permissions\Application\Outputs\ListPermissionsOutput;
 use App\Features\Permissions\Application\Usecases\ListPermissionsUsecase;

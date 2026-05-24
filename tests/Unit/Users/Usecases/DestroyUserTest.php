@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Unit\Users\Usecases;
+namespace Tests\Unit\Users\Usecases;
 
 use App\Features\Users\Application\Outputs\DestroyUserOutput;
 use App\Features\Users\Application\Usecases\DestroyUserUsecase;

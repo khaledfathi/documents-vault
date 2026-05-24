@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Unit\Users\Usecases;
+namespace Tests\Unit\Users\Usecases;
 
 use App\Features\Users\Application\Outputs\ShowUserOutput;
 use App\Features\Users\Application\Usecases\ShowUserUsecase;

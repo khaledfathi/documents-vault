@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Users\Usecases;
+namespace Tests\Categories\Users\Usecases;
 
-use App\Features\Groups\Application\Outputs\PaginateGroupOutput;
-use App\Features\Groups\Application\Usecases\PaginateGroupUsecase;
+use App\Features\Categories\Application\Outputs\StoreCategoryOutput;
+use App\Features\Categories\Application\Usecases\StoreCategoryUsecase;
 use App\Shared\Application\Contracts\Security\CurrentUserContract;
+use App\Shared\Domain\Entities\Document\CategoryEntity;
 use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Gateways\PermissionGateway;
-use App\Shared\Domain\Repositories\GroupRepository;
-use App\Shared\Domain\ValuObjects\EntitiesWithPagination;
+use App\Shared\Domain\Repositories\CategoryRepository;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Exception;
 
-final class PaginateGroupTest extends TestCase
+final class StoreCategoryTest extends TestCase
 {
     protected function tearDown(): void
     {
@@ -27,95 +27,93 @@ final class PaginateGroupTest extends TestCase
         parent::setUp();
         $this->addToAssertionCount(1);
     }
-    public function test_it_paginates_users_records(): void
+    public function test_it_stores_category_record(): void
     {
-        $groupRepository = Mockery::mock(GroupRepository::class);
+        $categoryRepository = Mockery::mock(CategoryRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
-        $presenter = Mockery::mock(PaginateGroupOutput::class);
+        $presenter = Mockery::mock(StoreCategoryOutput::class);
 
-        $entitiesWithPagination = new EntitiesWithPagination();
-        $groupRepository
-            ->shouldReceive('paginate')
+        $categoryEntity = new CategoryEntity();
+
+        $categoryRepository
+            ->shouldReceive('store')
             ->once()
-            ->with(10)
-            ->andReturn($entitiesWithPagination);
+            ->with($categoryEntity)
+            ->andReturn($categoryEntity);
 
         $currentUser
             ->shouldReceive('id')
-            ->once()
             ->andReturn(1);
 
         $permissionGateway
             ->shouldReceive('can')
-            ->once()
-            ->with(1, PermissionType::VIEW_GROUP)
+            ->with(1, PermissionType::CREATE_CATEGORY)
             ->andReturn(true);
 
         $presenter
             ->shouldReceive('onSuccess')
             ->once()
-            ->with($entitiesWithPagination);
+            ->with($categoryEntity);
 
-        $usecase = new PaginateGroupUsecase(
-            $groupRepository,
+        $usecase = new StoreCategoryUsecase(
             $permissionGateway,
             $currentUser,
+            $categoryRepository,
         );
-        $usecase->execute($presenter);
+        $usecase->execute($categoryEntity, $presenter);
     }
-    public function test_it_fails_when_current_user_doesnt_have_view_group_permission()
+    public function test_it_fails_when_current_user_doesnt_have_store_category_permission()
     {
-        $groupRepository = Mockery::mock(GroupRepository::class);
+        $categoryRepository = Mockery::mock(CategoryRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
-        $presenter = Mockery::mock(PaginateGroupOutput::class);
+        $presenter = Mockery::mock(StoreCategoryOutput::class);
+
+        $categoryEntity = new CategoryEntity();
 
         $currentUser
             ->shouldReceive('id')
-            ->once()
             ->andReturn(1);
 
         $permissionGateway
             ->shouldReceive('can')
-            ->once()
-            ->with(1, PermissionType::VIEW_GROUP)
+            ->with(1, PermissionType::CREATE_CATEGORY)
             ->andReturn(false);
 
         $presenter
             ->shouldReceive('onUnauthorized')
             ->once();
 
-        $usecase = new PaginateGroupUsecase(
-            $groupRepository,
+        $usecase = new StoreCategoryUsecase(
             $permissionGateway,
             $currentUser,
+            $categoryRepository,
         );
-        $usecase->execute($presenter);
+        $usecase->execute($categoryEntity, $presenter);
     }
     public function test_it_handles_unexpected_exception()
     {
-        $groupRepository = Mockery::mock(GroupRepository::class);
+        $categoryRepository = Mockery::mock(CategoryRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
-        $presenter = Mockery::mock(PaginateGroupOutput::class);
+        $presenter = Mockery::mock(StoreCategoryOutput::class);
 
-        $entitiesWithPagination = new EntitiesWithPagination();
-        $groupRepository
-            ->shouldReceive('paginate')
+        $categoryEntity = new CategoryEntity();
+
+        $categoryRepository
+            ->shouldReceive('store')
             ->once()
-            ->with(10)
+            ->with($categoryEntity)
             ->andThrow(new Exception('database error'));
 
         $currentUser
             ->shouldReceive('id')
-            ->once()
             ->andReturn(1);
 
         $permissionGateway
             ->shouldReceive('can')
-            ->once()
-            ->with(1, PermissionType::VIEW_GROUP)
+            ->with(1, PermissionType::CREATE_CATEGORY)
             ->andReturn(true);
 
         $presenter
@@ -123,11 +121,11 @@ final class PaginateGroupTest extends TestCase
             ->once()
             ->with('database error');
 
-        $usecase = new PaginateGroupUsecase(
-            $groupRepository,
+        $usecase = new StoreCategoryUsecase(
             $permissionGateway,
             $currentUser,
+            $categoryRepository,
         );
-        $usecase->execute($presenter);
+        $usecase->execute($categoryEntity, $presenter);
     }
 }

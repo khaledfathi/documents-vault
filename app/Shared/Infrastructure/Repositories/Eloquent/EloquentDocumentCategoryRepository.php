@@ -24,9 +24,9 @@ final class EloquentDocumentCategoryRepository implements DocumentCategoryReposi
      * @param int $documentId
      * @return array<DocumentCategoryEntity>
      */
-    public function showByDocumentId(int $documentCategoryId): array
+    public function getCategoriesByDocumentId(int $documentId): array
     {
-        $records = DocumentCategory::with('category')->where('document_id', $documentCategoryId)->get();
+        $records = DocumentCategory::with('category')->where('document_id', $documentId)->get();
         $documentCategoryEntities = [];
         foreach ($records as $record) {
             $documentCategoryEntities[] = new CategoryEntity(

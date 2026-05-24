@@ -8,5 +8,5 @@ use App\Features\Documents\Application\Outputs\ShowDocumentFileOutput;
 
 interface ShowDocumentFileContract
 {
-    public function execute(int $documentId, int $fileId, ShowDocumentFileOutput $presenter): void;
+    public function execute(int $fileId, ShowDocumentFileOutput $presenter): void;
 }

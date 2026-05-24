@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Unit\Users\Usecases;
+namespace Tests\Unit\Users\Usecases;
 
 use App\Features\Users\Application\Outputs\PaginateUsersOutput;
 use App\Features\Users\Application\Usecases\PaginateUsersUsecase;
@@ -29,7 +29,7 @@ final class PaginateUserTest extends TestCase
         parent::setUp();
         $this->addToAssertionCount(1);
     }
-    public function test_it_paginates_users(): void
+    public function test_it_paginates_users_records(): void
     {
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $userRepository = Mockery::mock(UserRepository::class);

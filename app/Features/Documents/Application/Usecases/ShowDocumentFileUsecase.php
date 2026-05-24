@@ -19,7 +19,7 @@ final class ShowDocumentFileUsecase implements ShowDocumentFileContract
         private readonly PermissionGateway $permissionGateway,
         private readonly CurrentUserContract $currentUser,
     ) {}
-    public function execute(int $documentId, int $fileId, ShowDocumentFileOutput $presenter): void
+    public function execute( int $fileId, ShowDocumentFileOutput $presenter): void
     {
         try {
             if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::VIEW_DOCUMENT)) {

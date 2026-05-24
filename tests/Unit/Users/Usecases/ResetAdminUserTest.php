@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Unit\Users\Usecases;
+namespace Tests\Unit\Users\Usecases;
 
 use App\Features\Users\Application\Outputs\ResetAdminUserOutput;
 use App\Features\Users\Application\Usecases\ResetAdminUserUsecase;
-use App\Shared\Domain\Entities\User\UserEntity;
 use App\Shared\Domain\Repositories\GroupRepository;
 use App\Shared\Domain\Repositories\UserRepository;
 use Mockery;

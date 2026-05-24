@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Unit\Users\Usecases;
+namespace Tests\Unit\Users\Usecases;
 
 use App\Features\Groups\Application\Outputs\StoreGroupOutput;
 use App\Features\Groups\Application\Usecases\StoreGroupUsecase;

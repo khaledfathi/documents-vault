@@ -82,13 +82,13 @@ class DocumentContoller extends Controller
     public function viewFile(string $documentId, string $fileId)
     {
         $presenter = new ViewDocumentFilePresenter($this->storageDir, $this->storage,);
-        $this->showDocumentFileUsecase->execute((int)$documentId, (int)$fileId, $presenter);
+        $this->showDocumentFileUsecase->execute( (int)$fileId, $presenter);
         return $presenter->handle();
     }
     public function downloadFile(string $documentId, string $fileId)
     {
         $presenter = new DownloadDocumnetFilePresenter($this->storageDir, $this->storage,);
-        $this->showDocumentFileUsecase->execute((int)$documentId, (int)$fileId, $presenter);
+        $this->showDocumentFileUsecase->execute((int)$fileId, $presenter);
         return $presenter->handle();
     }
     private function requestToDocumentEntity(Request $request): DocumentEntity
