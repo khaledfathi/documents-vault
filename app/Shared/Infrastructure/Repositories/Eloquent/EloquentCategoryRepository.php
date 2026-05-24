@@ -12,7 +12,12 @@ use App\Shared\Infrastructure\Repositories\Eloquent\Traits\PaginatorTrait;
 
 final class EloquentCategoryRepository implements CategoryRepository
 {
+
     use PaginatorTrait;
+    /**
+     * @var DEFAULT_CATEGORY_ID the id of first category created in the system
+     */
+    private const int DEFAULT_CATEGORY_ID = 1;
     public function paginate(int $perPage = 10): EntitiesWithPagination
     {
         $records = Category::paginate($perPage);
@@ -23,6 +28,7 @@ final class EloquentCategoryRepository implements CategoryRepository
                 id: $record->id,
                 name: $record->name,
                 description: $record->description,
+                isDefaultGroup: self::DEFAULT_CATEGORY_ID == $record->id,
             );
         }
         //pagination
@@ -38,6 +44,7 @@ final class EloquentCategoryRepository implements CategoryRepository
             id: $record->id,
             name: $record->name,
             description: $record->description,
+            isDefaultGroup: self::DEFAULT_CATEGORY_ID == $record->id,
         );
     }
     public function store(CategoryEntity $categoryEntity): CategoryEntity
@@ -65,5 +72,13 @@ final class EloquentCategoryRepository implements CategoryRepository
         if (!$record) return false;
         $record->delete();
         return true;
+    }
+    public function getDefaultGroupId(): int
+    {
+        return (int)self::DEFAULT_CATEGORY_ID;
+    }
+    public function isDefaultGroup(int $groupId): bool
+    {
+        return (int)self::DEFAULT_CATEGORY_ID == $groupId;
     }
 }

@@ -17,4 +17,6 @@ interface CategoryRepository
     public function store(CategoryEntity $categoryEntity): CategoryEntity;
     public function update(CategoryEntity $categoryEntity): bool;
     public function destroy(int $categoryId): bool;
+    public function getDefaultGroupId(): int;
+    public function isDefaultGroup(int $groupId): bool;
 }

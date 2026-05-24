@@ -22,16 +22,9 @@ final class DownloadDocumnetFilePresenter implements ShowDocumentFileOutput
     {
         $this->response = fn() => response()->download($this->storageDir->privatePath()->documents($fileEntity->documentEntity->id) . $fileEntity->file);
     }
-    public function onForbidden(): void
-    {
-        $this->response = fn() => response()->json([
-            "success" => false,
-            "message" => "unauthorized your not owned this file",
-        ], Response::HTTP_FORBIDDEN);
-    }
     public function onNotFound(): void
     {
-        $this->notFoundResponse("file is not found");
+        $this->response = fn() => $this->notFoundResponse("file is not found");
     }
     public function handle()
     {

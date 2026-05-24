@@ -73,6 +73,61 @@ final class EloquentDocumentRepository implements DocumentRepository
         $pagination = $this->mapPaginator($records, $perPage);
         return new EntitiesWithPagination($pagination, $documentEntities);
     }
+    public function paginatePublicDocumnetOnly($perPage): EntitiesWithPagination
+    {
+        $records = Document::with('documentCategories', 'user',  'files', 'documentCategories.category')
+            ->where('visibility', DocumentVisibilityType::PUBLIC->value)->paginate($perPage);
+        //entities
+        $documentEntities = [];
+        foreach ($records as $record) {
+            //user
+            $userRecord = $record->user;
+            $userEntity = new UserEntity(
+                id: $userRecord->id,
+                groupId: $userRecord->group_id,
+                name: $userRecord->name,
+                email: $userRecord->email,
+                isRoot: EloquentUserRepository::isRoot($record->id),
+            );
+            //categories
+            $categories = [];
+            $documentCategoryRecords = $record->documentCategories;
+            foreach ($documentCategoryRecords as $documentCategory) {
+                $categories[] = new CategoryEntity(
+                    id: $documentCategory->category->id,
+                    name: $documentCategory->category->name,
+                    description: $documentCategory->category->description,
+                );
+            }
+            //files
+            $files = [];
+            $fileRecords = $record->files;
+            foreach ($fileRecords as $file) {
+                $files[] = new FileEntity(
+                    id: $file->id,
+                    documentId: $file->document_id,
+                    file: $file->file,
+                );
+            }
+            //documentEntity
+            $documentEntities[] = new DocumentEntity(
+                id: $record->id,
+                userId: $record->user_id,
+                name: $record->name,
+                docNumber: $record->doc_number,
+                docDate: $record->doc_date ? CarbonDateUtility::from($record->doc_date) : null,
+                docExpireDate: $record->doc_expire_date ? CarbonDateUtility::from($record->doc_expire_date) : null,
+                visibility: DocumentVisibilityType::from($record->visibility),
+                description: $record->description,
+                categories: $categories,
+                files: $files,
+                userEntity: $userEntity,
+            );
+        }
+        //pagination
+        $pagination = $this->mapPaginator($records, $perPage);
+        return new EntitiesWithPagination($pagination, $documentEntities);
+    }
     public function paginateRelatedToUser(int $userId, int $perPage = 10): EntitiesWithPagination
     {
         $records = Document::with('documentCategories', 'user',  'files', 'documentCategories.category')
@@ -150,6 +205,57 @@ final class EloquentDocumentRepository implements DocumentRepository
     public function showWithRelation(int $documentId): ?DocumentEntity
     {
         $record = Document::with('documentCategories', 'user',  'files', 'documentCategories.category')->where('id', $documentId)->first();
+        if (! $record) return null;
+        //user
+        $userRecord = $record->user;
+        $userEntity = new UserEntity(
+            id: $userRecord->id,
+            groupId: $userRecord->group_id,
+            name: $userRecord->name,
+            email: $userRecord->email,
+        );
+        //categories
+        $categoryEntities = [];
+        $documentCategoryRecords = $record->documentCategories;
+        foreach ($documentCategoryRecords as $documentCategory) {
+            $categoryEntities[] = new CategoryEntity(
+                id: $documentCategory->category->id,
+                name: $documentCategory->category->name,
+                description: $documentCategory->category->description,
+            );
+        }
+        //files
+        $fileEntities = [];
+        $fileRecords = $record->files;
+        foreach ($fileRecords as $file) {
+            $fileEntities[] = new FileEntity(
+                id: $file->id,
+                documentId: $file->document_id,
+                file: $file->file,
+            );
+        }
+        //document
+        $documentEntity = new DocumentEntity(
+            id: $record->id,
+            userId: $record->user_id,
+            name: $record->name,
+            docNumber: $record->doc_number,
+            docDate: CarbonDateUtility::from($record->doc_date),
+            docExpireDate: CarbonDateUtility::from($record->doc_expire_date),
+            visibility: DocumentVisibilityType::from($record->visibility),
+            description: $record->description,
+            userEntity: $userEntity,
+            categories: $categoryEntities,
+            files: $fileEntities,
+        );
+        //
+        return $documentEntity;
+    }
+    public function showWithRelationPublicOnly(int $documentId): ?DocumentEntity
+    {
+        $record = Document::with('documentCategories', 'user',  'files', 'documentCategories.category')
+            ->where('visibility', DocumentVisibilityType::PUBLIC)
+            ->where('id', $documentId)->first();
         if (! $record) return null;
         //user
         $userRecord = $record->user;

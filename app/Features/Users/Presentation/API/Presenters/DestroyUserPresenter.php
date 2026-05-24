@@ -23,7 +23,7 @@ final class DestroyUserPresenter implements DestroyUserOutput
     {
         $this->response = fn() => $this->notFoundResponse("user is not found");
     }
-    public function onRoorUser(): void
+    public function onRootUser(): void
     {
         $this->response = fn() => response()->json([
             'success' => false,

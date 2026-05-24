@@ -11,6 +11,5 @@ interface ShowDocumentFileOutput
     public function onSuccess(FileEntity $fileEntity): void;
     public function onNotFound(): void;
     public function onUnauthorized(): void;
-    public function onForbidden(): void;
     public function onFailure(string $error): void;
 }

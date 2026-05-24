@@ -74,6 +74,34 @@ final class EloquentFileRepository implements FileRepository
         );
         return $fileEntity;
     }
+    public function showWithRelationPublicOnly(int $fileId): ?FileEntity
+    {
+        $record = File::with([
+            'document' => fn($query) => $query->where('visibility', DocumentVisibilityType::PUBLIC)
+        ])->find($fileId);
+        if (! $record || ! $record->document) return null;
+        //user entity
+        $documentRecord = $record->document;
+        if ($documentRecord)
+            $documentEntity = new DocumentEntity(
+                id: $documentRecord->id,
+                userId: $documentRecord->user_id,
+                name: $documentRecord->name,
+                docNumber: $documentRecord->doc_number,
+                docDate: CarbonDateUtility::from($documentRecord->doc_date),
+                docExpireDate: $documentRecord->doc_expire_date ? CarbonDateUtility::from($documentRecord->doc_expire_date) : null,
+                visibility: DocumentVisibilityType::from($documentRecord->visibility),
+                description: $documentRecord->description,
+            );
+        //file entity
+        $fileEntity = new FileEntity(
+            id: $record->id,
+            documentId: $record->document_id,
+            file: $record->file,
+            documentEntity: $documentEntity,
+        );
+        return $fileEntity;
+    }
     public function update(FileEntity $fileEntity): bool
     {
         return false;

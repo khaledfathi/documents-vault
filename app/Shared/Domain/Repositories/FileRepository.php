@@ -16,6 +16,7 @@ interface FileRepository
     public function storeMany(array $fileEntities): bool;
     public function show(int $fileId): ?FileEntity;
     public function showWithRelation(int $fileId): ?FileEntity;
+    public function showWithRelationPublicOnly(int $fileId): ?FileEntity;
     public function update(FileEntity $fileEntity): bool;
     public function destroy(int $fileId): bool;
     /**

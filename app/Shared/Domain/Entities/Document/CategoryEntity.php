@@ -18,6 +18,7 @@ final class CategoryEntity
         public ?string $name = null,
         public ?string $description = null,
         public ?array $documents = null,
+        public ?bool $isDefaultGroup = false,
     ) {}
     public function toArray()
     {

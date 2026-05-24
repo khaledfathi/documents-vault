@@ -41,10 +41,10 @@ final class StoreDocumentUsecase implements StoreDocumentContract
             // store document data (Record)
             $record = $this->documentRepository->store($documentEntity);
             // add document to categories (Record)
-            $documentCategoryEntity = $record->createDocumentCategoryEntities();
-            $this->documentCategoryRepository->storeMany($documentCategoryEntity);
+            $documentCategoryEntities = $record->createDocumentCategoryEntities();
+            $this->documentCategoryRepository->storeMany($documentCategoryEntities);
             //get categories details
-            $categoryEntities = $this->documentCategoryRepository->showByDocumentId($record->id);
+            $categoryEntities = $this->documentCategoryRepository->getCategoriesByDocumentId($record->id);
             // store document files
             $fileEntities = $this->storeFiles($files, $record->id);
             // add files and categories to document eneities
@@ -53,18 +53,15 @@ final class StoreDocumentUsecase implements StoreDocumentContract
             // presenter
             $presenter->onSuccess($record);
         } catch (Exception $e) {
-            //remove records
             if ($record) {
                 $this->documentRepository->destroy($record->id);
-                //remove files
-                if ($fileEntities) $this->removeFiles($record->id);
             }
-            //-----
             $presenter->onFailure($e->getMessage());
         }
     }
     /**
      * @param $files array<FileEntity>
+     * @return array<FileEntity>
      */
     private function storeFiles(array $files, int $documentId): array
     {
@@ -73,13 +70,12 @@ final class StoreDocumentUsecase implements StoreDocumentContract
             //copy file to private storage
             $fileName = $this->storage->store($this->storageDir->documents($documentId), $file);
             //store file in database
-            $fileEntitiy = $this->fileRepository->store(
+            $entities[] = $this->fileRepository->store(
                 new FileEntity(
                     documentId: $documentId,
                     file: $fileName,
                 )
             );
-            $entities[] = $fileEntitiy;
         }
         return $entities;
     }

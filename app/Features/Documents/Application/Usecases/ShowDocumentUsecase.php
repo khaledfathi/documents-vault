@@ -26,7 +26,11 @@ final class ShowDocumentUsecase implements ShowDocumentContract
                 $presenter->onUnauthorized();
                 return;
             }
-            $documentEntity = $this->documentrepository->showWithRelation($documentId);
+            if ($this->permissionGateway->can($this->currentUser->id(), PermissionType::VIEW_ALL_DOCUMENT)) {
+                $documentEntity = $this->documentrepository->showWithRelation($documentId);
+            } else {
+                $documentEntity = $this->documentrepository->showWithRelationPublicOnly($documentId);
+            }
             if (! $documentEntity) {
                 $presenter->onNotFound();
                 return;

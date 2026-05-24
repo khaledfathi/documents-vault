@@ -10,7 +10,6 @@ use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\GroupRepository;
 use Exception;
-use RecursiveArrayIterator;
 
 final class UpdateGroupUsecase implements UpdateGroupContract
 {
@@ -31,8 +30,8 @@ final class UpdateGroupUsecase implements UpdateGroupContract
                 $presenter->onNotFound();
                 return;
             }
-            if ($record->isProtected) {
-                $presenter->onProtectedGroup();
+            if ($record->isAdmin) {
+                $presenter->onAdminGroup();
                 return;
             }
             $this->groupRepository->update($groupEntity);

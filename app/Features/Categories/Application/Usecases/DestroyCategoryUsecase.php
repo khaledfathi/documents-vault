@@ -31,6 +31,12 @@ final class DestroyCategoryUsecase implements DestroyCategoryContract
                 $presenter->onNotFound();
                 return;
             }
+            if ($record->isDefaultGroup) {
+                $presenter->onDefaultGroup();
+                return;
+            }
+            //---!!!!! move documents from the delete category to default caetgory
+            // before delete it !!!!! ------
             $this->categoryRepository->destroy($categoryId);
             $presenter->onSuccess();
         } catch (Exception $e) {
