@@ -12,12 +12,12 @@ use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\PermissionRepository;
 use Exception;
 
-final class ListPermissionsUsecase implements ListPermissionsContract
+final readonly class ListPermissionsUsecase implements ListPermissionsContract
 {
     public function __construct(
-        private readonly CurrentUserContract $currentUser,
-        private readonly PermissionGateway $permissionGateway,
-        private readonly PermissionRepository $permissionRepository,
+        private CurrentUserContract $currentUser,
+        private PermissionGateway $permissionGateway,
+        private PermissionRepository $permissionRepository,
     ) {}
     public function execute(ListPermissionsOutput $presenter)
     {

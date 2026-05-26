@@ -12,12 +12,12 @@ use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\DocumentRepository;
 use Exception;
 
-final class PaginateDocumentUsecase implements PaginateDocumentContract
+final readonly class PaginateDocumentUsecase implements PaginateDocumentContract
 {
     public function __construct(
-        private readonly PermissionGateway $permissionGateway,
-        private readonly CurrentUserContract $currentUser,
-        private readonly DocumentRepository $documentRepository,
+        private PermissionGateway $permissionGateway,
+        private CurrentUserContract $currentUser,
+        private DocumentRepository $documentRepository,
     ) {}
     public function execute(PaginateDocumentOutput $presenter, int $perPage = 10): void
     {

@@ -30,7 +30,7 @@ use App\Shared\Infrastructure\Utilities\CarbonDateUtility;
 use App\Shared\Presentation\HTTP\Controller;
 use Illuminate\Http\Request;
 
-class DocumentContoller extends Controller
+final class DocumentContoller extends Controller
 {
     public function __construct(
         private readonly StorageDirContract $storageDir,

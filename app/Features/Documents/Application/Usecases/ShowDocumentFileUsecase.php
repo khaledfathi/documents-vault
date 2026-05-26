@@ -12,12 +12,12 @@ use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\FileRepository;
 use Exception;
 
-final class ShowDocumentFileUsecase implements ShowDocumentFileContract
+final readonly class ShowDocumentFileUsecase implements ShowDocumentFileContract
 {
     public function __construct(
-        private readonly FileRepository $fileRepository,
-        private readonly PermissionGateway $permissionGateway,
-        private readonly CurrentUserContract $currentUser,
+        private FileRepository $fileRepository,
+        private PermissionGateway $permissionGateway,
+        private CurrentUserContract $currentUser,
     ) {}
     public function execute( int $fileId, ShowDocumentFileOutput $presenter): void
     {

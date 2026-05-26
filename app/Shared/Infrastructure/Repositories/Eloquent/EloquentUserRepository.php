@@ -148,6 +148,7 @@ final class EloquentUserRepository implements UserRepository
         $userEntity->name ? $data['name'] = $userEntity->name : null;
         $userEntity->email ? $data['email'] = $userEntity->email : null;
         $userEntity->password ? $data['password'] = Hash::make($userEntity->password) : null;
+        $userEntity->groupId ? $data['group_id'] = $userEntity->groupId : null;
 
         $record = User::find($userEntity->id);
         if (!$record) {
@@ -225,7 +226,7 @@ final class EloquentUserRepository implements UserRepository
     {
         return (int) self::ROOT_USER_ID;
     }
-    public static function isRoot(int $id)
+    public static function isRoot(int $id): bool
     {
         return $id === self::ROOT_USER_ID;
     }

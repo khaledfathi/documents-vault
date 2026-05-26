@@ -27,5 +27,5 @@ interface UserRepository
      */
     public function getPermissions(int $userId): array;
     public function getRootUserId(): int;
-    public static function isRoot(int $id);
+    public static function isRoot(int $id): bool;
 }

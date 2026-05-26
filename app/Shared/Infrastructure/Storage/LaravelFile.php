@@ -6,14 +6,14 @@ namespace App\Shared\Infrastructure\Storage;
 
 use App\Shared\Application\Contracts\Storage\FileContract;
 
-final class LaravelFile implements FileContract
+final readonly class LaravelFile implements FileContract
 {
     public function __construct(
-        private readonly string $originalName,
-        private readonly string $originalExtension,
-        private readonly string $mimeType,
-        private readonly string $tempPath,
-        private readonly string $content,
+        private string $originalName,
+        private string $originalExtension,
+        private string $mimeType,
+        private string $tempPath,
+        private string $content,
     ) {}
     public function getOriginalName(): string
     {

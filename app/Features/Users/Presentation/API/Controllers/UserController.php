@@ -26,7 +26,7 @@ use App\Shared\Presentation\HTTP\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+final class UserController extends Controller
 {
     public function __construct(
         private readonly GenerateTokenContract $generateTokenUsecase,

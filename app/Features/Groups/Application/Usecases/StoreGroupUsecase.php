@@ -13,12 +13,12 @@ use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\GroupRepository;
 use Exception;
 
-final class StoreGroupUsecase implements StoreGroupContract
+final readonly class StoreGroupUsecase implements StoreGroupContract
 {
     public function __construct(
-        private readonly GroupRepository $groupRepository,
-        private readonly CurrentUserContract $currentUser,
-        private readonly PermissionGateway $permissionGateway,
+        private GroupRepository $groupRepository,
+        private CurrentUserContract $currentUser,
+        private PermissionGateway $permissionGateway,
     ) {}
     public function execute(GroupEntity $groupEntity, StoreGroupOutput $presenter)
     {

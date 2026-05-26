@@ -11,12 +11,12 @@ use App\Shared\Application\Contracts\Utilities\TokenGeneratorContract;
 use App\Shared\Domain\Repositories\UserRepository;
 use Exception;
 
-final class GenerateTokenUsecase implements GenerateTokenContract
+final readonly class GenerateTokenUsecase implements GenerateTokenContract
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
-        private readonly PasswordHasherContract $passwordHasher,
-        private readonly TokenGeneratorContract $tokenGenerator
+        private UserRepository $userRepository,
+        private PasswordHasherContract $passwordHasher,
+        private TokenGeneratorContract $tokenGenerator
     ) {}
     public function execute(
         string $email,

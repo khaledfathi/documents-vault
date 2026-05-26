@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
-class TotalFilesSize implements ValidationRule
+final readonly class TotalFilesSize implements ValidationRule
 {
     /**
      * @param int $maxSize total files size in megabyte

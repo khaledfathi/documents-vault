@@ -6,7 +6,7 @@ use App\Features\Users\Application\Contracts\ResetAdminUserContract;
 use App\Features\Users\Presentation\API\Presenters\ResetAdminUserPresenter;
 use Illuminate\Console\Command;
 
-class ResetAdmin extends Command
+final class ResetAdmin extends Command
 {
     public function __construct(
         private readonly ResetAdminUserContract $resetAdminUserUsecase,

@@ -80,8 +80,9 @@ final class EloquentGroupRepository implements GroupRepository
     }
     public function showByUserId(int $userId): ?GroupEntity
     {
-        $record = Group::with('groupPermissions', 'groupPermissions.permission')
-            ->leftJoin('users', 'users.id', '=', $userId)->select('groups.*')->first();
+        $record = Group::with(['groupPermissions', 'groupPermissions.permission'])
+            ->whereHas('users', fn($query) =>  $query->where('users.id', $userId))
+            ->first();
         if ($record->groupPermissions) {
             $permissionEntities = [];
             foreach ($record->groupPermissions as $groupPermission) {

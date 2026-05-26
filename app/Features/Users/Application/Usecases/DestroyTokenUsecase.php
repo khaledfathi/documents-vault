@@ -9,7 +9,7 @@ use App\Features\Users\Application\Outputs\DestroyTokenOutput;
 use App\Shared\Application\Contracts\Utilities\TokenGeneratorContract;
 use Exception;
 
-final class DestroyTokenUsecase implements DestroyTokenContract
+final readonly class DestroyTokenUsecase implements DestroyTokenContract
 {
     public function __construct(
         private TokenGeneratorContract $tokenGenerator

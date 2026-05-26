@@ -19,4 +19,9 @@ interface CategoryRepository
     public function destroy(int $categoryId): bool;
     public function getDefaultGroupId(): int;
     public function isDefaultGroup(int $groupId): bool;
+    /**
+    * @param int $categoryId
+    * @return int the count of ubdated rows
+    */
+    public function updateDocumentWithCategoryIdToDefaultCategory(int $categoryId):int;
 }

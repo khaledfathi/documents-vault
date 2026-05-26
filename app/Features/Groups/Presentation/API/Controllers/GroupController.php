@@ -22,7 +22,7 @@ use App\Shared\Domain\Entities\Group\PermissionEntity;;
 use App\Shared\Presentation\HTTP\Controller;
 use Illuminate\Http\Request;
 
-class GroupController extends Controller
+final class GroupController extends Controller
 {
     public function __construct(
         private readonly PaginateGroupContract $paginateGroupUsecase,

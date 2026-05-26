@@ -18,16 +18,16 @@ use App\Shared\Domain\Repositories\DocumentRepository;
 use App\Shared\Domain\Repositories\FileRepository;
 use Exception;
 
-final class StoreDocumentUsecase implements StoreDocumentContract
+final readonly class StoreDocumentUsecase implements StoreDocumentContract
 {
     public function __construct(
-        private readonly PermissionGateway $permissionGateway,
-        private readonly CurrentUserContract $currentUser,
-        private readonly DocumentRepository $documentRepository,
-        private readonly DocumentCategoryRepository $documentCategoryRepository,
-        private readonly FileRepository $fileRepository,
-        private readonly StorageContract $storage,
-        private readonly StorageDirContract $storageDir,
+        private PermissionGateway $permissionGateway,
+        private CurrentUserContract $currentUser,
+        private DocumentRepository $documentRepository,
+        private DocumentCategoryRepository $documentCategoryRepository,
+        private FileRepository $fileRepository,
+        private StorageContract $storage,
+        private StorageDirContract $storageDir,
     ) {}
     public function execute(DocumentEntity $documentEntity, array $files,  StoreDocumentOutput $presenter): void
     {
