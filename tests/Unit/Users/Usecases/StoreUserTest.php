@@ -48,6 +48,11 @@ final class StoreUserTest extends TestCase
             name: 'test group name',
         );
 
+        $groupRepository
+            ->shouldReceive('getDefaultGroupId')
+            ->once()
+            ->andReturn(1);
+
         $userRepository
             ->shouldReceive('store')
             ->once()
@@ -134,6 +139,11 @@ final class StoreUserTest extends TestCase
             name: 'user',
             email: 'user@mail.com',
         );
+
+        $groupRepository
+            ->shouldReceive('getDefaultGroupId')
+            ->once()
+            ->andReturn(1);
 
         $userRepository
             ->shouldReceive('store')

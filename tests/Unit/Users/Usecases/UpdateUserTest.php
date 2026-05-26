@@ -10,6 +10,7 @@ use App\Shared\Application\Contracts\Security\CurrentUserContract;
 use App\Shared\Domain\Entities\User\UserEntity;
 use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Gateways\PermissionGateway;
+use App\Shared\Domain\Repositories\GroupRepository;
 use App\Shared\Domain\Repositories\UserRepository;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -31,6 +32,7 @@ final class UpdateUserTest extends TestCase
     {
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $userRepository = Mockery::mock(UserRepository::class);
+        $groupRepository = Mockery::mock(GroupRepository::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
         $presenter = Mockery::mock(UpdateUserOutput::class);
 
@@ -39,6 +41,11 @@ final class UpdateUserTest extends TestCase
             name: 'user',
             email: 'user@mail.com',
         );
+
+        $groupRepository
+            ->shouldReceive('getDefaultGroupId')
+            ->once()
+            ->andReturn(1);
 
         $userRepository
             ->shouldReceive('update')
@@ -64,6 +71,7 @@ final class UpdateUserTest extends TestCase
 
         $usecase = new UpdateUserUsecase(
             $userRepository,
+            $groupRepository,
             $permissionGateway,
             $currentUser,
         );
@@ -73,6 +81,7 @@ final class UpdateUserTest extends TestCase
     public function test_it_fails_when_current_user_doesnt_have_edit_user_permission()
     {
         $userRepository = Mockery::mock(UserRepository::class);
+        $groupRepository = Mockery::mock(GroupRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
         $presenter = Mockery::mock(UpdateUserOutput::class);
@@ -99,6 +108,7 @@ final class UpdateUserTest extends TestCase
 
         $usecase = new UpdateUserUsecase(
             $userRepository,
+            $groupRepository,
             $permissionGateway,
             $currentUser,
         );
@@ -109,6 +119,7 @@ final class UpdateUserTest extends TestCase
     {
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $userRepository = Mockery::mock(UserRepository::class);
+        $groupRepository = Mockery::mock(GroupRepository::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
         $presenter = Mockery::mock(UpdateUserOutput::class);
 
@@ -117,6 +128,11 @@ final class UpdateUserTest extends TestCase
             name: 'user',
             email: 'user@mail.com',
         );
+
+        $groupRepository
+            ->shouldReceive('getDefaultGroupId')
+            ->once()
+            ->andReturn(1);
 
         $userRepository
             ->shouldReceive('update')
@@ -141,6 +157,7 @@ final class UpdateUserTest extends TestCase
 
         $usecase = new UpdateUserUsecase(
             $userRepository,
+            $groupRepository,
             $permissionGateway,
             $currentUser,
         );
@@ -149,6 +166,7 @@ final class UpdateUserTest extends TestCase
     public function test_it_handles_unexpected_exception()
     {
         $userRepository = Mockery::mock(UserRepository::class);
+        $groupRepository = Mockery::mock(GroupRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
         $presenter = Mockery::mock(UpdateUserOutput::class);
@@ -158,6 +176,11 @@ final class UpdateUserTest extends TestCase
             name: 'user',
             email: 'user@mail.com',
         );
+
+        $groupRepository
+            ->shouldReceive('getDefaultGroupId')
+            ->once()
+            ->andReturn(1);
 
         $userRepository
             ->shouldReceive('update')
@@ -183,6 +206,7 @@ final class UpdateUserTest extends TestCase
 
         $usecase = new UpdateUserUsecase(
             $userRepository,
+            $groupRepository,
             $permissionGateway,
             $currentUser,
         );

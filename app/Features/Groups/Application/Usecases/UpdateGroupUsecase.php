@@ -11,12 +11,12 @@ use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\GroupRepository;
 use Exception;
 
-final class UpdateGroupUsecase implements UpdateGroupContract
+final readonly class UpdateGroupUsecase implements UpdateGroupContract
 {
     public function __construct(
-        private readonly GroupRepository $groupRepository,
-        private readonly PermissionGateway $permissionGatewaty,
-        private readonly CurrentUserContract $currentUser,
+        private GroupRepository $groupRepository,
+        private PermissionGateway $permissionGatewaty,
+        private CurrentUserContract $currentUser,
     ) {}
     public function execute(GroupEntity $groupEntity, UpdateGroupOutput $presenter): void
     {

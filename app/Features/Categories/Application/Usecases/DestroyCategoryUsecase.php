@@ -12,12 +12,12 @@ use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\CategoryRepository;
 use Exception;
 
-final class DestroyCategoryUsecase implements DestroyCategoryContract
+final readonly class DestroyCategoryUsecase implements DestroyCategoryContract
 {
     public function __construct(
-        private readonly PermissionGateway $permissionGateway,
-        private readonly CurrentUserContract $currentUser,
-        private readonly CategoryRepository $categoryRepository,
+        private PermissionGateway $permissionGateway,
+        private CurrentUserContract $currentUser,
+        private CategoryRepository $categoryRepository,
     ) {}
     public function execute(int $categoryId, DestroyCategoryOutput $presenter): void
     {
@@ -35,12 +35,19 @@ final class DestroyCategoryUsecase implements DestroyCategoryContract
                 $presenter->onDefaultGroup();
                 return;
             }
-            //---!!!!! move documents from the delete category to default caetgory
-            // before delete it !!!!! ------
+            $this->moveDocumentsToDefaultCategory($categoryId);
             $this->categoryRepository->destroy($categoryId);
             $presenter->onSuccess();
         } catch (Exception $e) {
             $presenter->onFailure($e->getMessage());
         }
+    }
+    /**
+     * move documents releated this [$categoryId] to
+     * @param int $categoryId
+     */
+    private function moveDocumentsToDefaultCategory(int $categoryId): void
+    {
+        $x= $this->categoryRepository->updateDocumentWithCategoryIdToDefaultCategory($categoryId);
     }
 }

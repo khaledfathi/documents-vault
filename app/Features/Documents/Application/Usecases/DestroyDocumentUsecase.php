@@ -14,14 +14,14 @@ use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\DocumentRepository;
 use Exception;
 
-final class DestroyDocumentUsecase implements DestroyDocumentContract
+final readonly class DestroyDocumentUsecase implements DestroyDocumentContract
 {
     public function __construct(
-        private readonly PermissionGateway $permissionGateWay,
-        private readonly CurrentUserContract $currentUser,
-        private readonly DocumentRepository $documentRepository,
-        private readonly StorageDirContract $storageDir,
-        private readonly StorageContract $storage,
+        private PermissionGateway $permissionGateWay,
+        private CurrentUserContract $currentUser,
+        private DocumentRepository $documentRepository,
+        private StorageDirContract $storageDir,
+        private StorageContract $storage,
     ) {}
     public function execute(int $documentId, DestroyDocumentOutput $presenter): void
     {

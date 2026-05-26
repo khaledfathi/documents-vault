@@ -15,9 +15,9 @@ use Exception;
 final class ShowCategoryUsecase implements ShowCategoryContract
 {
     public function __construct(
-        private readonly PermissionGateway $permissionGateway,
-        private readonly CurrentUserContract $currentUser,
-        private readonly CategoryRepository $categoryRepository,
+        private PermissionGateway $permissionGateway,
+        private CurrentUserContract $currentUser,
+        private CategoryRepository $categoryRepository,
     ) {}
     public function execute(int $categoryId, ShowCategoryOutput $presenter): void
     {

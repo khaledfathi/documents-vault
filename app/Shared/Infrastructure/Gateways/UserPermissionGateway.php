@@ -8,10 +8,10 @@ use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\UserRepository;
 
-final class UserPermissionGateway implements PermissionGateway
+final readonly class UserPermissionGateway implements PermissionGateway
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private UserRepository $userRepository,
     ) {}
     public function can(int $userId, PermissionType $ability): bool
     {

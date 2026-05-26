@@ -81,4 +81,13 @@ final class EloquentCategoryRepository implements CategoryRepository
     {
         return (int)self::DEFAULT_CATEGORY_ID == $groupId;
     }
+    public function updateDocumentWithCategoryIdToDefaultCategory(int $categoryId):int
+    {
+        $record = Category::with('documentCategories', 'documentCategories.document')->find($categoryId);
+        $rowAffected = 0;
+        foreach($record->documentCategories as $documentCategory){
+            $rowAffected += $documentCategory->update(['category_id' => self::DEFAULT_CATEGORY_ID]) ? 1 : 0 ;
+        }
+        return $rowAffected;
+    }
 }

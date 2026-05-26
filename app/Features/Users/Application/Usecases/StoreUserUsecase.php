@@ -14,13 +14,13 @@ use App\Shared\Domain\Repositories\GroupRepository;
 use App\Shared\Domain\Repositories\UserRepository;
 use Exception;
 
-final class StoreUserUsecase implements StoreUserContract
+final readonly class StoreUserUsecase implements StoreUserContract
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
-        private readonly GroupRepository $groupRepository,
-        private readonly PermissionGateway $permissionGateway,
-        private readonly CurrentUserContract $currentUser,
+        private UserRepository $userRepository,
+        private GroupRepository $groupRepository,
+        private PermissionGateway $permissionGateway,
+        private CurrentUserContract $currentUser,
     ) {}
     public function execute(UserEntity $userEntity, StoreUserOutput $presenter): void
     {
@@ -29,6 +29,7 @@ final class StoreUserUsecase implements StoreUserContract
                 $presenter->onUnauthorized();
                 return;
             }
+            if (! $userEntity->groupId) $userEntity->groupId = $this->groupRepository->getDefaultGroupId();
             $userRecord = $this->userRepository->store($userEntity);
             $userEntity->id = $userRecord->id;
 

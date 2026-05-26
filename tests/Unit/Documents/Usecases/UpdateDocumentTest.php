@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Users\Usecases;
+namespace Tests\Unit\Documents\Usecases;
 
 use App\Features\Documents\Application\DTOs\UpdatedFileDTO;
 use App\Features\Documents\Application\Outputs\UpdateDocumentOutput;
@@ -16,6 +16,7 @@ use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\DocumentRepository;
 use App\Shared\Domain\Repositories\FileRepository;
+use App\Shared\Domain\Repositories\UserRepository;
 use App\Shared\Infrastructure\Storage\LaravelFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -37,6 +38,7 @@ final class UpdateDocumentTest extends TestCase
     {
         $documentRepository = Mockery::mock(DocumentRepository::class);
         $fileRepository = Mockery::mock(FileRepository::class);
+        $userRepository = Mockery::mock(UserRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
         $storage = Mockery::mock(StorageContract::class);
@@ -63,6 +65,22 @@ final class UpdateDocumentTest extends TestCase
             ->shouldReceive('can')
             ->with($userId, PermissionType::EDIT_DOCUMENT)
             ->andReturn(true);
+
+        //----
+        $permissionGateway
+            ->shouldReceive('can')
+            ->with($userId, PermissionType::EDIT_ANY_DOCUMENT)
+            ->andReturn(false);
+
+        $documentRepository
+            ->shouldReceive('isOwnedByUser')
+            ->with($documentId, $userId)
+            ->andReturn(true);
+
+        $userRepository
+            ->shouldReceive('isRoot')
+            ->with($userId)
+            ->andReturn(false);
 
         $documentRepository
             ->shouldReceive('update')
@@ -105,6 +123,7 @@ final class UpdateDocumentTest extends TestCase
         $usecase = new UpdateDocumentUsecase(
             $permissionGateway,
             $currentUser,
+            $userRepository,
             $documentRepository,
             $fileRepository,
             $storage,
@@ -116,6 +135,7 @@ final class UpdateDocumentTest extends TestCase
     {
         $documentRepository = Mockery::mock(DocumentRepository::class);
         $fileRepository = Mockery::mock(FileRepository::class);
+        $userRepository = Mockery::mock(UserRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
         $storage = Mockery::mock(StorageContract::class);
@@ -142,6 +162,21 @@ final class UpdateDocumentTest extends TestCase
             ->with(1, PermissionType::EDIT_DOCUMENT)
             ->andReturn(false);
 
+        $permissionGateway
+            ->shouldReceive('can')
+            ->with($userId, PermissionType::EDIT_ANY_DOCUMENT)
+            ->andReturn(false);
+
+        $documentRepository
+            ->shouldReceive('isOwnedByUser')
+            ->with($documentId, $userId)
+            ->andReturn(true);
+
+        $userRepository
+            ->shouldReceive('isRoot')
+            ->with($userId)
+            ->andReturn(false);
+
         $storageDir
             ->shouldReceive('documents')
             ->once()
@@ -154,6 +189,7 @@ final class UpdateDocumentTest extends TestCase
         $usecase = new UpdateDocumentUsecase(
             $permissionGateway,
             $currentUser,
+            $userRepository,
             $documentRepository,
             $fileRepository,
             $storage,
@@ -163,9 +199,9 @@ final class UpdateDocumentTest extends TestCase
     }
     public function test_it_fails_when_document_record_is_not_found()
     {
-
         $documentRepository = Mockery::mock(DocumentRepository::class);
         $fileRepository = Mockery::mock(FileRepository::class);
+        $userRepository = Mockery::mock(UserRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
         $storage = Mockery::mock(StorageContract::class);
@@ -192,6 +228,21 @@ final class UpdateDocumentTest extends TestCase
             ->shouldReceive('can')
             ->with($userId, PermissionType::EDIT_DOCUMENT)
             ->andReturn(true);
+
+        $permissionGateway
+            ->shouldReceive('can')
+            ->with($userId, PermissionType::EDIT_ANY_DOCUMENT)
+            ->andReturn(false);
+
+        $documentRepository
+            ->shouldReceive('isOwnedByUser')
+            ->with($documentId, $userId)
+            ->andReturn(true);
+
+        $userRepository
+            ->shouldReceive('isRoot')
+            ->with($userId)
+            ->andReturn(false);
 
         $documentRepository
             ->shouldReceive('update')
@@ -210,6 +261,7 @@ final class UpdateDocumentTest extends TestCase
         $usecase = new UpdateDocumentUsecase(
             $permissionGateway,
             $currentUser,
+            $userRepository,
             $documentRepository,
             $fileRepository,
             $storage,
@@ -217,10 +269,11 @@ final class UpdateDocumentTest extends TestCase
         );
         $usecase->execute($documentEntity, $updatedFileDTO, $presenter);
     }
-    public function test_it_handles_unexpected_exception(){
-
+    public function test_it_handles_unexpected_exception()
+    {
         $documentRepository = Mockery::mock(DocumentRepository::class);
         $fileRepository = Mockery::mock(FileRepository::class);
+        $userRepository = Mockery::mock(UserRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $currentUser = Mockery::mock(CurrentUserContract::class);
         $storage = Mockery::mock(StorageContract::class);
@@ -247,6 +300,21 @@ final class UpdateDocumentTest extends TestCase
             ->shouldReceive('can')
             ->with($userId, PermissionType::EDIT_DOCUMENT)
             ->andReturn(true);
+
+        $permissionGateway
+            ->shouldReceive('can')
+            ->with($userId, PermissionType::EDIT_ANY_DOCUMENT)
+            ->andReturn(false);
+
+        $documentRepository
+            ->shouldReceive('isOwnedByUser')
+            ->with($documentId, $userId)
+            ->andReturn(true);
+
+        $userRepository
+            ->shouldReceive('isRoot')
+            ->with($userId)
+            ->andReturn(false);
 
         $documentRepository
             ->shouldReceive('update')
@@ -266,6 +334,7 @@ final class UpdateDocumentTest extends TestCase
         $usecase = new UpdateDocumentUsecase(
             $permissionGateway,
             $currentUser,
+            $userRepository,
             $documentRepository,
             $fileRepository,
             $storage,

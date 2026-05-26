@@ -13,12 +13,12 @@ use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\CategoryRepository;
 use Exception;
 
-final class UpdateCategoryUsecase implements UpdateCategoryContract
+final readonly class UpdateCategoryUsecase implements UpdateCategoryContract
 {
     public function __construct(
-        private readonly PermissionGateway $permissionGateway,
-        private readonly CurrentUserContract $currentUser,
-        private readonly CategoryRepository $categoryRepository,
+        private PermissionGateway $permissionGateway,
+        private CurrentUserContract $currentUser,
+        private CategoryRepository $categoryRepository,
     ) {}
     public function execute(CategoryEntity $categoryEntity, UpdateCategoryOutput $presenter): void
     {

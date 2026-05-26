@@ -11,7 +11,7 @@ use App\Shared\Domain\Repositories\GroupRepository;
 use App\Shared\Domain\Repositories\UserRepository;
 use Exception;
 
-final class ResetAdminUserUsecase implements ResetAdminUserContract
+final readonly class ResetAdminUserUsecase implements ResetAdminUserContract
 {
     public function __construct(
         private UserRepository $userRepository,

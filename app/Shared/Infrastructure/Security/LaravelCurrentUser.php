@@ -9,10 +9,10 @@ use App\Shared\Domain\Entities\User\UserEntity;
 use App\Shared\Domain\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 
-final class LaravelCurrentUser implements CurrentUserContract
+final readonly class LaravelCurrentUser implements CurrentUserContract
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private UserRepository $userRepository,
     ) {}
     public function id(): int
     {

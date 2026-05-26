@@ -49,6 +49,11 @@ final class DestroyCategoryTest extends TestCase
             ->with($categoryId)
             ->andReturn(true);
 
+        $categoryRepository
+            ->shouldReceive('updateDocumentWithCategoryIdToDefaultCategory')
+            ->once()
+            ->with($categoryId);
+
         $currentUser
             ->shouldReceive('id')
             ->andReturn(1);
@@ -184,6 +189,10 @@ final class DestroyCategoryTest extends TestCase
             ->once()
             ->with($categoryId)
             ->andReturn($categoryEntity);
+
+        $categoryRepository
+            ->shouldReceive('updateDocumentWithCategoryIdToDefaultCategory')
+            ->once();
 
         $categoryRepository
             ->shouldReceive('destroy')

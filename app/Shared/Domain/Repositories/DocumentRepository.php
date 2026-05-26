@@ -32,4 +32,5 @@ interface DocumentRepository
     public function store(DocumentEntity $documentEntity): DocumentEntity;
     public function update(DocumentEntity $documentEntity): bool;
     public function destroy(int $documentId): bool;
+    public function isOwnedByUser ($documentId , int $userId):bool;
 }

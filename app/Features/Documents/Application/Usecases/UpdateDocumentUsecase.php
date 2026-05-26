@@ -16,6 +16,7 @@ use App\Shared\Domain\Enums\User\PermissionType;
 use App\Shared\Domain\Gateways\PermissionGateway;
 use App\Shared\Domain\Repositories\DocumentRepository;
 use App\Shared\Domain\Repositories\FileRepository;
+use App\Shared\Domain\Repositories\UserRepository;
 use Exception;
 
 final class UpdateDocumentUsecase implements UpdateDocumentContract
@@ -24,6 +25,7 @@ final class UpdateDocumentUsecase implements UpdateDocumentContract
     public function __construct(
         private readonly PermissionGateway $permissionGateway,
         private readonly CurrentUserContract $currentUser,
+        private readonly UserRepository $userRepository,
         private readonly DocumentRepository $documentRepository,
         private readonly FileRepository $fileRepository,
         private readonly StorageContract $storage,
@@ -33,12 +35,19 @@ final class UpdateDocumentUsecase implements UpdateDocumentContract
     {
         $this->dir = $this->storageDir->documents($documentEntity->id);
         try {
-            if (! $this->permissionGateway->can($this->currentUser->id(), PermissionType::EDIT_DOCUMENT)) {
+            $currentUserId = $this->currentUser->id();
+            //
+            // [current user must has edit_permission (and) must be the owner of the document]
+            // (or) [the current user is root (or) the current user has edit_any_document]
+            $isOwnerWithPermission = $this->permissionGateway->can($currentUserId, PermissionType::EDIT_DOCUMENT)
+                && $this->documentRepository->isOwnedByUser($documentEntity->id, $currentUserId);
+            $isRoot = $this->userRepository->isRoot($currentUserId);
+            $canEditAny = $this->permissionGateway->can($currentUserId, PermissionType::EDIT_ANY_DOCUMENT);
+            if (! ($isOwnerWithPermission || $isRoot || $canEditAny)) {
                 $presenter->onUnauthorized();
                 return;
             }
-            //--????? __NEED FIX ! : user must own this document/file or admin to performe update__ ?????--
-            //handle update document
+            //
             $status = $this->documentRepository->update($documentEntity);
             if (! $status) {
                 $presenter->onNotFound();

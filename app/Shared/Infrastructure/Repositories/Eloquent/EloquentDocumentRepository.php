@@ -325,4 +325,9 @@ final class EloquentDocumentRepository implements DocumentRepository
         $record->delete();
         return true;
     }
+    public function isOwnedByUser($documentId, int $userId): bool
+    {
+        $record = Document::where('id', $documentId)->where('user_id', $userId)->get();
+        return count($record) ? true : false;
+    }
 }

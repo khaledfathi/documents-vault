@@ -27,5 +27,6 @@ enum PermissionType: string
     case VIEW_ALL_DOCUMENT = "view_all_document"; // view any document
     case CREATE_DOCUMENT = "create_document";
     case EDIT_DOCUMENT = "edit_document";
+    case EDIT_ANY_DOCUMENT= "edit_any_document";
     case DELETE_DOCUMENT = "delete_document";
 }

@@ -6,7 +6,7 @@ namespace App\Features\Documents\Application\DTOs;
 
 use App\Shared\Application\Contracts\Storage\FileContract;
 
-class UpdatedFileDTO
+final readonly class UpdatedFileDTO
 {
     /**
      * @param array<FileContract>
