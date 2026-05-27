@@ -18,8 +18,8 @@ return new class extends Migration
             $table->text('value');
             //FK
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
-            //constraints 
-            $table->unique(['user_id', 'id']);
+            //constraints
+            $table->unique(['user_id', 'key']);
         });
     }
 
