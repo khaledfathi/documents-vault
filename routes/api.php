@@ -1,5 +1,6 @@
 <?php
 
+use App\Features\AppInfos\Presentation\API\Controllers\AppInfoContoller;
 use app\Features\Categories\Presentation\API\Controllers\CategoryController;
 use app\Features\Documents\Presentation\API\Controllers\DocumentContoller;
 use App\Features\Groups\Presentation\API\Controllers\GroupController;
@@ -29,3 +30,5 @@ Route::middleware('auth:sanctum')->group(function () {
     //
     Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
 });
+
+Route::get('app-info', [AppInfoContoller::class , 'index'])->name('app_info.index');
