@@ -106,7 +106,6 @@ final class PaginateUserTest extends TestCase
         );
         $usecase->execute($presenter, 10);
     }
-
     public function test_it_handles_unexpected_exception()
     {
         $userRepository = Mockery::mock(UserRepository::class);

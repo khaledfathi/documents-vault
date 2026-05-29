@@ -77,8 +77,7 @@ final class UpdateUserTest extends TestCase
         );
         $usecase->execute($userEntity, $presenter);
     }
-
-    public function test_it_fails_when_current_user_doesnt_have_edit_user_permission()
+    public function test_it_fails_when_current_user_doesnt_have_update_user_permission()
     {
         $userRepository = Mockery::mock(UserRepository::class);
         $groupRepository = Mockery::mock(GroupRepository::class);
@@ -114,7 +113,6 @@ final class UpdateUserTest extends TestCase
         );
         $usecase->execute($userEntity, $presenter);
     }
-
     public function test_it_fails_when_user_recoed_is_not_found(): void
     {
         $permissionGateway = Mockery::mock(PermissionGateway::class);

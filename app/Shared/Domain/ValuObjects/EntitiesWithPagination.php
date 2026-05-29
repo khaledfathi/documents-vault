@@ -11,7 +11,7 @@ final class EntitiesWithPagination
 {
     /**
      *
-     * @param ?{agination $pagination
+     * @param ?Pagination $pagination
      * @param ?array<T> $entities
      */
     public function __construct(

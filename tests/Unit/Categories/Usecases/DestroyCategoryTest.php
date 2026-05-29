@@ -27,7 +27,7 @@ final class DestroyCategoryTest extends TestCase
         parent::setUp();
         $this->addToAssertionCount(1);
     }
-    public function test_it_destroy_category_record(): void
+    public function test_it_destroys_category_record(): void
     {
         $categoryRepository = Mockery::mock(CategoryRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);
@@ -137,8 +137,7 @@ final class DestroyCategoryTest extends TestCase
         );
         $usecase->execute($categoryId, $presenter);
     }
-
-    public function test_it_fails_when_trying_to_delete_default_group()
+    public function test_it_fails_when_trying_to_delete_default_category()
     {
         $categoryRepository = Mockery::mock(CategoryRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);

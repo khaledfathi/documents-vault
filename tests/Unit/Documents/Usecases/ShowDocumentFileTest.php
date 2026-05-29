@@ -27,7 +27,7 @@ final class ShowDocumentFileTest extends TestCase
         parent::setUp();
         $this->addToAssertionCount(1);
     }
-    public function test_it_show_public_document_file_record(): void
+    public function test_it_shows_public_document_file_record(): void
     {
         $fileRrepository = Mockery::mock(FileRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);
@@ -68,7 +68,7 @@ final class ShowDocumentFileTest extends TestCase
         );
         $usecase->execute(1, $presenter);
     }
-    public function test_it_show_public_and_private_document_file_record(): void
+    public function test_it_shows_public_and_private_document_file_record(): void
     {
         $fileRrepository = Mockery::mock(FileRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);

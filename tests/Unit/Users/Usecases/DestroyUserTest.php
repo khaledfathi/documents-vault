@@ -27,7 +27,7 @@ final class DestroyUserTest extends TestCase
         parent::setUp();
         $this->addToAssertionCount(1);
     }
-    public function test_it_destroy_user_record(): void
+    public function test_it_destroys_user_record(): void
     {
         $permissionGateway = Mockery::mock(PermissionGateway::class);
         $userRepository = Mockery::mock(UserRepository::class);
@@ -178,7 +178,6 @@ final class DestroyUserTest extends TestCase
         );
         $usecase->execute(1, $presenter);
     }
-
     public function test_it_handles_unexpected_exception()
     {
         $userRepository = Mockery::mock(UserRepository::class);

@@ -28,7 +28,7 @@ final class DestroyDocumentTest extends TestCase
         parent::setUp();
         $this->addToAssertionCount(1);
     }
-    public function test_it_destroy_document_record(): void
+    public function test_it_destroys_document_record(): void
     {
         $documentRepository = Mockery::mock(DocumentRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);

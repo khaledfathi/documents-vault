@@ -27,7 +27,7 @@ final class DestroyGroupTest extends TestCase
         parent::setUp();
         $this->addToAssertionCount(1);
     }
-    public function test_it_destroy_group_record(): void
+    public function test_it_destroys_group_record(): void
     {
         $groupRepository = Mockery::mock(GroupRepository::class);
         $permissionGateway = Mockery::mock(PermissionGateway::class);

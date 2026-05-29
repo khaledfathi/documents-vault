@@ -14,7 +14,7 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Exception;
 
-final class TokenGeneratorTest extends TestCase
+final class GenerateTokenTest extends TestCase
 {
     protected function tearDown(): void
     {
@@ -26,7 +26,7 @@ final class TokenGeneratorTest extends TestCase
         parent::setUp();
         $this->addToAssertionCount(1);
     }
-    public function test_it_destroy_current_active_token(): void
+    public function test_it_destroys_current_active_token(): void
     {
         $userRepository = Mockery::mock(UserRepository::class);
         $passwordHasher = Mockery::mock(PasswordHasherContract::class);
@@ -73,7 +73,6 @@ final class TokenGeneratorTest extends TestCase
             $presenter
         );
     }
-
     public function test_it_fails_when_email_or_password_is_empty(): void
     {
         $userRepository = Mockery::mock(UserRepository::class);
@@ -94,7 +93,6 @@ final class TokenGeneratorTest extends TestCase
 
         $usecase->execute('', '', $presenter);
     }
-
     public function test_it_fails_when_credential_is_wrong(): void
     {
         $userRepository = Mockery::mock(UserRepository::class);
@@ -123,7 +121,6 @@ final class TokenGeneratorTest extends TestCase
             $presenter
         );
     }
-
     public function test_it_handles_unexpected_exception(): void
     {
         $userRepository = Mockery::mock(UserRepository::class);

@@ -20,8 +20,8 @@ final class UpdateGroupPresenter implements UpdateGroupOutput
     {
         $this->response = fn() => response()->json([
             'success' => false,
-            'message' => 'can not update the default groups (admin , default)',
-        ]);
+            'message' => "can not update 'Admin' group , this group is protected",
+        ], Response::HTTP_FORBIDDEN);
     }
     public function onNotFound(): void
     {

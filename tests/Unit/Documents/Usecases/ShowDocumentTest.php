@@ -182,7 +182,6 @@ final class ShowDocumentTest extends TestCase
         );
         $usecase->execute($documentId, $presenter);
     }
-
     public function test_it_handles_unexpected_exception()
     {
         $documentRepository = Mockery::mock(DocumentRepository::class);
