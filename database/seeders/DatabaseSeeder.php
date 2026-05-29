@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Shared\Domain\Enums\User\PermissionType;
+use App\Shared\Infrastructure\Models\AppInfo;
 use App\Shared\Infrastructure\Models\Category;
 use App\Shared\Infrastructure\Models\Group;
 use App\Shared\Infrastructure\Models\GroupPermission;
@@ -38,6 +39,7 @@ class DatabaseSeeder extends Seeder
             $this->setPermissionsForAdminGroup();
             $this->setDefaultCategory();
             $this->createRootUser();
+            $this->createAppInfo();
         });
     }
 
@@ -92,5 +94,16 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('admin'),
             'group_id' => $this->adminGroup->id,
         ]);
+    }
+    public function createAppInfo()
+    {
+        $infoData = [
+            ['key' => 'App Name', 'value' => 'kidev Document Vault'],
+            ['key' => 'Version', 'value' => '0.1.0'],
+            ['key' => 'Licenes', 'value' => 'GPL3'],
+            ['key' => 'Source Code', 'value' => 'https://github.com/khaledfathi/documents-vault'],
+            ['key' => 'Contact', 'value' => 'dev@khaledfathi.com'],
+        ];
+        AppInfo::insert($infoData);
     }
 }

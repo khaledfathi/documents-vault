@@ -127,7 +127,6 @@ final class ShowCategoryTest extends TestCase
         );
         $usecase->execute($categoryId, $presenter);
     }
-
     public function test_it_handles_unexpected_exception()
     {
         $categoryRepository = Mockery::mock(CategoryRepository::class);

@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
+        Schema::create('app_infos', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('key', 255);
             $table->text('value');
-            //FK
-            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
-            //constraints
-            $table->unique(['user_id', 'key']);
+            $table->timestamps();
         });
     }
 
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('settings');
+        Schema::dropIfExists('app_infos');
     }
 };

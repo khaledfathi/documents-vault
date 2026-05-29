@@ -29,7 +29,7 @@ final class StoreUserTest extends TestCase
         parent::setUp();
         $this->addToAssertionCount(1);
     }
-    public function test_it_store_user_record(): void
+    public function test_it_stores_user_record(): void
     {
         $userRepository = Mockery::mock(UserRepository::class);
         $groupRepository = Mockery::mock(GroupRepository::class);

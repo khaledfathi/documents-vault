@@ -23,7 +23,7 @@ final class DestroyTokenTest extends TestCase
         parent::setUp();
         $this->addToAssertionCount(1);
     }
-    public function test_it_generates_token_when_credentials_are_valid(): void
+    public function test_it_destroys_current_active_token(): void
     {
         $presenter = Mockery::mock(DestroyTokenOutput::class);
         $tokenGenerator = Mockery::mock(TokenGeneratorContract::class);

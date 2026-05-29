@@ -22,7 +22,6 @@ use App\Shared\Infrastructure\Storage\LaravelFile;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Exception;
-use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 final class StoreDocumentTest extends TestCase
 {
@@ -36,7 +35,7 @@ final class StoreDocumentTest extends TestCase
         parent::setUp();
         $this->addToAssertionCount(1);
     }
-    public function test_it_store_document_record(): void
+    public function test_it_stores_document_record(): void
     {
         $documentRepository = Mockery::mock(DocumentRepository::class);
         $documentCategoryRepository = Mockery::mock(DocumentCategoryRepository::class);
@@ -112,7 +111,7 @@ final class StoreDocumentTest extends TestCase
         );
         $usecase->execute($documentEntity, $files, $presenter);
     }
-    public function test_it_fails_when_current_user_doesnt_have_create_document_permission()
+    public function test_it_fails_when_current_user_doesnt_have_store_document_permission()
     {
         $documentRepository = Mockery::mock(DocumentRepository::class);
         $documentCategoryRepository = Mockery::mock(DocumentCategoryRepository::class);
@@ -151,7 +150,6 @@ final class StoreDocumentTest extends TestCase
         );
         $usecase->execute($documentEntity, $files, $presenter);
     }
-
     public function test_it_handles_unexpected_exception()
     {
         $documentRepository = Mockery::mock(DocumentRepository::class);
