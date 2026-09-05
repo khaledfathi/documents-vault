@@ -33,7 +33,7 @@ final readonly class GenerateTokenUsecase implements GenerateTokenContract
             if ($user) {
                 if ($this->passwordHasher->check($password, $user->password)) {
                     $token = $this->tokenGenerator->generate($user->id ?? 0);
-                    $presenter->onSuccess($token);
+                    $presenter->onSuccess($token , $user);
                     return;
                 }
             }
